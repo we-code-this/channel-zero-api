@@ -1,0 +1,15 @@
+{
+  "name": "channel-zero-data-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Michael Gregoire <mgregoire@nvzion.com>",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "fastify": "^1.13.4"
+  }
+}
