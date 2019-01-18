@@ -1,15 +1,11 @@
-const fastify = require("fastify")();
-
-fastify.get("/", async (request, reply) => {
-  return { channel: "zero" };
-});
+const app = require("./app")();
 
 const start = async () => {
   try {
-    await fastify.listen(3001);
-    fastify.log.info(`server listening on ${fastify.server.address().port}`);
+    await app.listen(3001);
+    app.log.info(`server listening on ${app.server.address().port}`);
   } catch (err) {
-    fastify.log.error(err);
+    app.log.error(err);
     process.exit(1);
   }
 };
