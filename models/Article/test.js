@@ -14,9 +14,9 @@ async function get(params = {}) {
 
   let articles = JSON.parse(data);
 
-  // default count is 10
-  if (params.count) {
-    articles = articles.slice(0, params.count);
+  // default limit is 10
+  if (params.limit) {
+    articles = articles.slice(0, params.limit);
   } else {
     articles = articles.slice(0, 10);
   }

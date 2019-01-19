@@ -1,5 +1,9 @@
-require("dotenv").config();
-const app = require("./app")();
+import dotenv from "dotenv";
+import buildApp from "./app";
+
+dotenv.config();
+
+const app = buildApp();
 
 const start = async () => {
   try {

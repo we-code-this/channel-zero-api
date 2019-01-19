@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node ./server",
+    "start": "NODE_ENV=production node -r esm ./server",
+    "development": "NODE_ENV=development node -r esm ./server",
     "test": "NODE_ENV=test nyc --all mocha -r esm"
   },
   "keywords": [],

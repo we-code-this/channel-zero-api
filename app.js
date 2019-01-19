@@ -1,8 +1,8 @@
-const Fastify = require("fastify");
-const Article = require("./models/Article");
+import Fastify from "fastify";
+import Article from "./models/Article";
 
 function buildApp() {
-  const logging = false;
+  const logging = true;
   const fastify = Fastify({ logger: logging });
 
   fastify.get("/articles", async function(req, reply) {
@@ -10,12 +10,12 @@ function buildApp() {
     reply.send(articles);
   });
 
-  fastify.get("/articles/:count", async function(req, reply) {
-    const articles = await Article.get({ count: req.params.count });
+  fastify.get("/articles/:limit", async function(req, reply) {
+    const articles = await Article.get({ limit: req.params.limit });
     reply.send(articles);
   });
 
   return fastify;
 }
 
-module.exports = buildApp;
+export default buildApp;

@@ -24,8 +24,8 @@ describe("/articles path", function() {
     }
   });
 
-  describe("/articles/:count path", function() {
-    it("should return 11 articles if :count is 11", async function() {
+  describe("/articles/:limit path", function() {
+    it("should return 11 articles if :limit is 11", async function() {
       try {
         const response = await app.inject({
           method: "GET",
@@ -40,7 +40,7 @@ describe("/articles path", function() {
       }
     });
 
-    it("should return 9 articles if :count is 9", async function() {
+    it("should return 9 articles if :limit is 9", async function() {
       try {
         const response = await app.inject({
           method: "GET",

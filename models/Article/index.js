@@ -14,6 +14,6 @@ async function get(params = {}) {
   return articles;
 }
 
-module.exports = {
+export default {
   get: get
 };
