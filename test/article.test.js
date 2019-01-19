@@ -3,7 +3,7 @@ import { default as buildApp } from "../app";
 
 const expect = chai.expect;
 
-describe("/articles path", function() {
+describe("/articles", function() {
   let app;
 
   before(function() {
@@ -26,7 +26,7 @@ describe("/articles path", function() {
     }
   });
 
-  describe("/articles/:limit path", function() {
+  describe("/articles/:limit", function() {
     it("should return 11 articles if :limit is 11", async function() {
       try {
         const response = await app.inject({
