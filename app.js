@@ -30,6 +30,14 @@ function buildApp() {
     reply.send(articles);
   });
 
+  fastify.get("/promos/:location/:limit", async function(req, reply) {
+    const promos = await Promo.get({
+      location: req.params.location,
+      limit: req.params.limit
+    });
+    reply.send(promos);
+  });
+
   fastify.get("/promos/:location", async function(req, reply) {
     const promos = await Promo.get({ location: req.params.location });
     reply.send(promos);

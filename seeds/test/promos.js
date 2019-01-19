@@ -17,7 +17,7 @@ exports.seed = function(knex, Promise) {
           name: "Promo 2",
           url: "#",
           filename: "promo-2.svg",
-          location: "vertical",
+          location: "horizontal",
           published: true,
           created_at: "2019-01-19 12:01:00"
         },
@@ -26,9 +26,63 @@ exports.seed = function(knex, Promise) {
           name: "Promo 3",
           url: "#",
           filename: "promo-3.svg",
-          location: "vertical",
+          location: "horizontal",
           published: true,
           created_at: "2019-01-19 12:02:00"
+        },
+        {
+          id: 4,
+          name: "Promo 4",
+          url: "#",
+          filename: "promo-4.svg",
+          location: "horizontal",
+          published: true,
+          created_at: "2019-01-19 12:03:00"
+        },
+        {
+          id: 5,
+          name: "Promo 5",
+          url: "#",
+          filename: "promo-5.svg",
+          location: "horizontal",
+          published: true,
+          created_at: "2019-01-19 12:04:00"
+        },
+        {
+          id: 6,
+          name: "Promo 6",
+          url: "#",
+          filename: "promo-6.svg",
+          location: "vertical",
+          published: true,
+          created_at: "2019-01-19 12:05:00"
+        },
+        {
+          id: 7,
+          name: "Promo 7",
+          url: "#",
+          filename: "promo-7.svg",
+          location: "vertical",
+          published: true,
+          created_at: "2019-01-19 12:06:00"
+        },
+        {
+          id: 8,
+          name: "Promo 8",
+          url: "#",
+          filename: "promo-8.svg",
+          location: "vertical",
+          published: true,
+          created_at: "2019-01-19 12:07:00"
+        },
+        {
+          id: 9,
+          name: "Promo 9",
+          url: "#",
+          filename: "promo-9.svg",
+          location: "vertical",
+          published: true,
+          created_at: "2019-01-19 12:08:00"
         }
       ]);
     });
