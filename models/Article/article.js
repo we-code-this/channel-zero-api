@@ -9,6 +9,7 @@ async function get(params = {}) {
   const res = await knex
     .select("*")
     .from(tablename)
+    .where("published", true)
     .limit(limit)
     .orderBy("created_at", order);
 

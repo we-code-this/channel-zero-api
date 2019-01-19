@@ -6,6 +6,7 @@ async function get() {
   const res = await knex
     .select("*")
     .from(tablename)
+    .where("published", true)
     .orderByRaw("RAND()")
     .limit(1);
 
