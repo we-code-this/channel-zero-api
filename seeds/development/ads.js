@@ -9,6 +9,7 @@ exports.seed = function(knex, Promise) {
           alt: "Something awesome to promote",
           desktop_filename: "leaderboard.jpg",
           mobile_filename: "mobile.jpg",
+          published: true,
           created_at: "2019-01-19 12:00:00"
         }
       ]);

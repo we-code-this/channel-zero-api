@@ -5,6 +5,10 @@ exports.up = function(knex, Promise) {
     table.string("alt").notNullable();
     table.string("desktop_filename").notNullable();
     table.string("mobile_filename").notNullable();
+    table
+      .boolean("published")
+      .notNullable()
+      .defaultTo(false);
     table.timestamp("created_at").defaultTo(knex.fn.now());
     table.timestamp("updated_at").nullable();
   });

@@ -9,6 +9,7 @@ exports.seed = function(knex, Promise) {
           title: "Sollicitudin Ligula Parturient",
           summary:
             "Donec sed odio dui. Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus…",
+          published: true,
           created_at: "2019-01-19 12:00:00"
         },
         {
@@ -17,6 +18,7 @@ exports.seed = function(knex, Promise) {
           title: "Mattis Ultricies Egestas Pharetra",
           summary:
             "Maecenas sed diam eget risus varius blandit sit amet non magna. Donec ullamcorper nulla non metus auctor fringilla…",
+          published: true,
           created_at: "2019-01-19 12:01:00"
         },
         {
@@ -25,6 +27,7 @@ exports.seed = function(knex, Promise) {
           title: "Parturient Fermentum Bibendum, Yo!",
           summary:
             "Aenean lacinia bibendum nulla sed consectetur. Donec sed odio dui. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis. Cras justo odio, dapibus ac facilisis in, egestas eget quam",
+          published: true,
           created_at: "2019-01-19 12:02:00"
         },
         {
@@ -33,6 +36,7 @@ exports.seed = function(knex, Promise) {
           title: "Sollicitudin Ligula Parturient",
           summary:
             "Vestibulum id ligula porta felis euismod semper. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros",
+          published: true,
           created_at: "2019-01-19 12:03:00"
         },
         {
@@ -41,6 +45,7 @@ exports.seed = function(knex, Promise) {
           title: "Mattis Ultricies Egestas Pharetra",
           summary:
             "Maecenas faucibus mollis interdum. Donec ullamcorper nulla non metus auctor fringilla. Donec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue",
+          published: true,
           created_at: "2019-01-19 12:04:00"
         },
         {
@@ -49,6 +54,7 @@ exports.seed = function(knex, Promise) {
           title: "Parturient Fermentum Bibendum",
           summary:
             "Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Nulla vitae elit libero, a pharetra augue. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Nulla vitae elit libero, a pharetra augue. Aenean lacinia bibendum nulla sed consectetur",
+          published: true,
           created_at: "2019-01-19 12:05:00"
         },
         {
@@ -57,6 +63,7 @@ exports.seed = function(knex, Promise) {
           title: "Egestas Ornare Commodo Cursus",
           summary:
             "Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Sed posuere consectetur est at lobortis. Vestibulum id ligula porta felis euismod semper. Maecenas faucibus mollis interdum",
+          published: true,
           created_at: "2019-01-19 12:06:00"
         },
         {
@@ -65,6 +72,7 @@ exports.seed = function(knex, Promise) {
           title: "Ullamcorper Sit Vehicula Condimentum",
           summary:
             "Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Donec ullamcorper nulla non metus auctor fringilla. Cras mattis consectetur purus sit amet fermentum. Donec sed odio dui",
+          published: true,
           created_at: "2019-01-19 12:07:00"
         },
         {
@@ -73,6 +81,7 @@ exports.seed = function(knex, Promise) {
           title: "Elit Cursus Nibh",
           summary:
             "Aenean lacinia bibendum nulla sed consectetur. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor",
+          published: true,
           created_at: "2019-01-19 12:08:00"
         },
         {
@@ -81,6 +90,7 @@ exports.seed = function(knex, Promise) {
           title: "Fermentum Commodo Tortor Vehicula Mattis",
           summary:
             "Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Donec sed odio dui",
+          published: true,
           created_at: "2019-01-19 12:09:00"
         },
         {
@@ -89,6 +99,7 @@ exports.seed = function(knex, Promise) {
           title: "Tristique Sem Sollicitudin Amet",
           summary:
             "Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Donec id elit non mi porta gravida at eget metus. Cras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at lobortis.",
+          published: true,
           created_at: "2019-01-19 12:10:00"
         }
       ]);
