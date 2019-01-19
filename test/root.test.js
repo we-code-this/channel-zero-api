@@ -1,5 +1,7 @@
-const expect = require("chai").expect;
-const buildApp = require("../app");
+import chai from "chai";
+import { default as buildApp } from "../app";
+
+const expect = chai.expect;
 
 describe("Root '/' path", function() {
   let app;

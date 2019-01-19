@@ -2,9 +2,18 @@ require("dotenv").config();
 
 module.exports = {
   test: {
-    client: "sqlite3",
+    client: "mysql2",
     connection: {
-      filename: "./test/test.sqlite3"
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_TEST_DATABASE
+    },
+    migrations: {
+      tableName: process.env.DB_MIGRATIONS_TABLE
+    },
+    seeds: {
+      directory: "./seeds/test"
     }
   },
 
@@ -18,6 +27,9 @@ module.exports = {
     },
     migrations: {
       tableName: process.env.DB_MIGRATIONS_TABLE
+    },
+    seeds: {
+      directory: "./seeds/development"
     }
   },
 
@@ -31,6 +43,9 @@ module.exports = {
     },
     migrations: {
       tableName: process.env.DB_MIGRATIONS_TABLE
+    },
+    seeds: {
+      directory: "./seeds/production"
     }
   }
 };

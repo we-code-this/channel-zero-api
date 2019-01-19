@@ -2,9 +2,10 @@ let ArticlesModule;
 
 async function model() {
   if (ArticlesModule) return ArticlesModule;
-  const filename = process.env.NODE_ENV === "test" ? "test" : "article";
+  // const filename = process.env.NODE_ENV === "test" ? "test" : "article";
+  const filename = "article";
 
-  ArticlesModule = await import(`./${filename}`);
+  ArticlesModule = (await import(`./${filename}`)).default;
 
   return ArticlesModule;
 }

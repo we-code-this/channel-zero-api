@@ -4,7 +4,8 @@ exports.up = function(knex, Promise) {
     table.string("url").notNullable();
     table.string("title").notNullable();
     table.text("summary").notNullable();
-    table.timestamps(false, true);
+    table.timestamp("created_at").defaultTo(knex.fn.now());
+    table.timestamp("updated_at").nullable();
   });
 };
 

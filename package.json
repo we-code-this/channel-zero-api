@@ -3,14 +3,26 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
-  "scripts": {
-    "start": "NODE_ENV=production node -r esm ./server",
-    "development": "NODE_ENV=development node -r esm ./server",
-    "test": "NODE_ENV=test nyc --all mocha -r esm"
-  },
   "keywords": [],
   "author": "Michael Gregoire <mgregoire@nvzion.com>",
   "license": "Apache-2.0",
+  "scripts": {
+    "start": "NODE_ENV=production node -r esm ./server",
+    "dev": "NODE_ENV=development node -r esm ./server",
+    "test": "NODE_ENV=test knex migrate:rollback && NODE_ENV=test knex migrate:latest && NODE_ENV=test knex seed:run && NODE_ENV=test nyc --reporter=lcov --all mocha -r esm"
+  },
+  "nyc": {
+    "exclude": [
+      "coverage/**",
+      "test/**",
+      "test{,-*}.js",
+      "**/*.test.js",
+      "**/__tests__/**",
+      "**/node_modules/**"
+    ],
+    "sourceMap": false,
+    "instrument": false
+  },
   "dependencies": {
     "dotenv": "^6.2.0",
     "esm": "^3.1.0",

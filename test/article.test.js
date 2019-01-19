@@ -1,5 +1,7 @@
-const expect = require("chai").expect;
-const buildApp = require("../app");
+import chai from "chai";
+import { default as buildApp } from "../app";
+
+const expect = chai.expect;
 
 describe("/articles path", function() {
   let app;
@@ -50,6 +52,38 @@ describe("/articles path", function() {
           "application/json; charset=utf-8"
         );
         expect(JSON.parse(response.payload).length).to.equal(9);
+      } catch (err) {
+        console.error(err);
+      }
+    });
+  });
+
+  describe("/articles/:limit/:order", function() {
+    it("should return article with id of 11 when :order is 'desc'", async function() {
+      try {
+        const response = await app.inject({
+          method: "GET",
+          url: "/articles/1/desc"
+        });
+        expect(response.headers["content-type"]).to.equal(
+          "application/json; charset=utf-8"
+        );
+        expect(JSON.parse(response.payload)[0].id).to.equal(11);
+      } catch (err) {
+        console.error(err);
+      }
+    });
+
+    it("should return article with id of 1 when :order is 'asc'", async function() {
+      try {
+        const response = await app.inject({
+          method: "GET",
+          url: "/articles/1/asc"
+        });
+        expect(response.headers["content-type"]).to.equal(
+          "application/json; charset=utf-8"
+        );
+        expect(JSON.parse(response.payload)[0].id).to.equal(1);
       } catch (err) {
         console.error(err);
       }
