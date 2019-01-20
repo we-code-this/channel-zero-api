@@ -13,6 +13,12 @@ async function get(params = {}) {
   return releases;
 }
 
+async function findBySlug(slug) {
+  const release = await (await model()).findBySlug(slug);
+  return release;
+}
+
 export default {
-  get: get
+  get: get,
+  findBySlug: findBySlug
 };

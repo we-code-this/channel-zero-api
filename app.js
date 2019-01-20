@@ -67,6 +67,11 @@ function buildApp() {
     reply.send(releases);
   });
 
+  fastify.get("/release/:slug", async function(req, reply) {
+    const release = await Release.findBySlug(req.params.slug);
+    reply.send(release);
+  });
+
   return fastify;
 }
 

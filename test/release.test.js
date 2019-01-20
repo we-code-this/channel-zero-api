@@ -89,4 +89,18 @@ describe("/releases", function() {
       }
     });
   });
+
+  describe("/release/:slug", function() {
+    it("should return the release that has the :slug supplied", async function() {
+      try {
+        const response = await app.inject({
+          method: "GET",
+          url: "/release/artist-9-album-9"
+        });
+        expect(JSON.parse(response.payload).slug).to.equal("artist-9-album-9");
+      } catch (err) {
+        console.error(err);
+      }
+    });
+  });
 });

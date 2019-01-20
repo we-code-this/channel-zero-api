@@ -16,6 +16,16 @@ async function get(params = {}) {
   return res;
 }
 
+async function findBySlug(slug) {
+  const res = await knex
+    .select("*")
+    .from(tablename)
+    .where("slug", slug);
+
+  return res[0];
+}
+
 export default {
-  get: get
+  get: get,
+  findBySlug: findBySlug
 };
