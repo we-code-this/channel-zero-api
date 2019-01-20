@@ -2,6 +2,7 @@ import Fastify from "fastify";
 import { default as Ad } from "./models/Ad";
 import { default as Article } from "./models/Article";
 import { default as Promo } from "./models/Promo";
+import { default as Release } from "./models/Release";
 
 function buildApp() {
   const logging = false;
@@ -46,6 +47,24 @@ function buildApp() {
   fastify.get("/promos", async function(req, reply) {
     const promos = await Promo.get();
     reply.send(promos);
+  });
+
+  fastify.get("/releases/:limit/:order", async function(req, reply) {
+    const releases = await Release.get({
+      limit: req.params.limit,
+      order: req.params.order
+    });
+    reply.send(releases);
+  });
+
+  fastify.get("/releases/:limit", async function(req, reply) {
+    const releases = await Release.get({ limit: req.params.limit });
+    reply.send(releases);
+  });
+
+  fastify.get("/releases", async function(req, reply) {
+    const releases = await Release.get();
+    reply.send(releases);
   });
 
   return fastify;
