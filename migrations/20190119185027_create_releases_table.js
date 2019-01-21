@@ -7,6 +7,7 @@ exports.up = function(knex, Promise) {
       .notNullable();
     table.string("title").notNullable();
     table.string("slug").notNullable();
+    table.text("description");
     table.string("filename").notNullable();
     table
       .boolean("published")

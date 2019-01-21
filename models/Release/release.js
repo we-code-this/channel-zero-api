@@ -8,6 +8,7 @@ function buildRelease(record) {
     title: record.title,
     slug: record.slug,
     filename: record.filename,
+    description: record.description,
     published: record.published,
     created_at: record.created_at,
     updated_at: record.updated_at,

@@ -9,6 +9,7 @@ exports.seed = function(knex, Promise) {
           title: "Album 1",
           slug: "artist-1-album-1",
           filename: "example.png",
+          description: "album description",
           published: true,
           created_at: "2019-01-19 12:00:00"
         },
@@ -18,6 +19,7 @@ exports.seed = function(knex, Promise) {
           title: "Album 2",
           slug: "artist-2-album-2",
           filename: "example.png",
+          description: "album description",
           published: true,
           created_at: "2019-01-19 12:01:00"
         },
@@ -27,6 +29,7 @@ exports.seed = function(knex, Promise) {
           title: "Album 3",
           slug: "artist-3-album-3",
           filename: "example.png",
+          description: "album description",
           published: true,
           created_at: "2019-01-19 12:02:00"
         },
@@ -36,6 +39,7 @@ exports.seed = function(knex, Promise) {
           title: "Album 4",
           slug: "artist-4-album-4",
           filename: "example.png",
+          description: "album description",
           published: true,
           created_at: "2019-01-19 12:03:00"
         },
@@ -45,6 +49,7 @@ exports.seed = function(knex, Promise) {
           title: "Album 5",
           slug: "artist-5-album-5",
           filename: "example.png",
+          description: "album description",
           published: true,
           created_at: "2019-01-19 12:04:00"
         },
@@ -54,6 +59,7 @@ exports.seed = function(knex, Promise) {
           title: "Album 6",
           slug: "artist-6-album-6",
           filename: "example.png",
+          description: "album description",
           published: true,
           created_at: "2019-01-19 12:05:00"
         },
@@ -63,6 +69,7 @@ exports.seed = function(knex, Promise) {
           title: "Album 7",
           slug: "artist-7-album-7",
           filename: "example.png",
+          description: "album description",
           published: true,
           created_at: "2019-01-19 12:06:00"
         },
@@ -72,6 +79,7 @@ exports.seed = function(knex, Promise) {
           title: "Album 8",
           slug: "artist-8-album-8",
           filename: "example.png",
+          description: "album description",
           published: true,
           created_at: "2019-01-19 12:07:00"
         },
@@ -81,6 +89,7 @@ exports.seed = function(knex, Promise) {
           title: "Album 9",
           slug: "artist-9-album-9",
           filename: "example.png",
+          description: "album description",
           published: true,
           created_at: "2019-01-19 12:08:00"
         },
@@ -90,6 +99,7 @@ exports.seed = function(knex, Promise) {
           title: "Album 10",
           slug: "artist-10-album-10",
           filename: "example.png",
+          description: "album description",
           published: true,
           created_at: "2019-01-19 12:09:00"
         },
@@ -99,6 +109,7 @@ exports.seed = function(knex, Promise) {
           title: "Album 11",
           slug: "artist-11-album-11",
           filename: "example.png",
+          description: "album description",
           published: true,
           created_at: "2019-01-19 12:10:00"
         }
