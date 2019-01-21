@@ -1,7 +1,10 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable("releases", function(table) {
     table.increments();
-    table.string("artist").notNullable();
+    table
+      .integer("artist_id")
+      .unsigned()
+      .notNullable();
     table.string("title").notNullable();
     table.string("slug").notNullable();
     table.string("filename").notNullable();

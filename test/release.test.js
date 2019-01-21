@@ -102,5 +102,18 @@ describe("/releases", function() {
         console.error(err);
       }
     });
+
+    it("should return the release with an artist property set to an object", async function() {
+      try {
+        const response = await app.inject({
+          method: "GET",
+          url: "/release/artist-9-album-9"
+        });
+        expect(JSON.parse(response.payload)).to.have.property("artist");
+        expect(JSON.parse(response.payload).artist).to.be.an.instanceof(Object);
+      } catch (err) {
+        console.error(err);
+      }
+    });
   });
 });

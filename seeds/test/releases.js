@@ -5,7 +5,7 @@ exports.seed = function(knex, Promise) {
       return knex("releases").insert([
         {
           id: 1,
-          artist: "Artist 1",
+          artist_id: 1,
           title: "Album 1",
           slug: "artist-1-album-1",
           filename: "example.png",
@@ -14,7 +14,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           id: 2,
-          artist: "Artist 2",
+          artist_id: 2,
           title: "Album 2",
           slug: "artist-2-album-2",
           filename: "example.png",
@@ -23,7 +23,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           id: 3,
-          artist: "Artist 3",
+          artist_id: 3,
           title: "Album 3",
           slug: "artist-3-album-3",
           filename: "example.png",
@@ -32,7 +32,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           id: 4,
-          artist: "Artist 4",
+          artist_id: 4,
           title: "Album 4",
           slug: "artist-4-album-4",
           filename: "example.png",
@@ -41,7 +41,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           id: 5,
-          artist: "Artist 5",
+          artist_id: 5,
           title: "Album 5",
           slug: "artist-5-album-5",
           filename: "example.png",
@@ -50,7 +50,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           id: 6,
-          artist: "Artist 6",
+          artist_id: 6,
           title: "Album 6",
           slug: "artist-6-album-6",
           filename: "example.png",
@@ -59,7 +59,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           id: 7,
-          artist: "Artist 7",
+          artist_id: 7,
           title: "Album 7",
           slug: "artist-7-album-7",
           filename: "example.png",
@@ -68,7 +68,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           id: 8,
-          artist: "Artist 8",
+          artist_id: 8,
           title: "Album 8",
           slug: "artist-8-album-8",
           filename: "example.png",
@@ -77,7 +77,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           id: 9,
-          artist: "Artist 9",
+          artist_id: 9,
           title: "Album 9",
           slug: "artist-9-album-9",
           filename: "example.png",
@@ -86,7 +86,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           id: 10,
-          artist: "Artist 10",
+          artist_id: 10,
           title: "Album 10",
           slug: "artist-10-album-10",
           filename: "example.png",
@@ -95,7 +95,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           id: 11,
-          artist: "Artist 11",
+          artist_id: 11,
           title: "Album 11",
           slug: "artist-11-album-11",
           filename: "example.png",

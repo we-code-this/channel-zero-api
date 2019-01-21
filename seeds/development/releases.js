@@ -5,7 +5,7 @@ exports.seed = function(knex, Promise) {
       return knex("releases").insert([
         {
           id: 1,
-          artist: "Chuck D aka Mistachuck",
+          artist_id: 1,
           title: "Celebration of Ignorance",
           slug: "chuck-d-mistachuck-celebration-ignorance",
           filename: "mistachuck.png",
@@ -14,7 +14,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           id: 2,
-          artist: "DJ Lord",
+          artist_id: 2,
           title: "Afterburn",
           slug: "dj-lord-afterburn",
           filename: "dj-lord.jpg",
@@ -23,7 +23,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           id: 3,
-          artist: "Anime Oscen & Hive",
+          artist_id: 3,
           title: "North Country",
           slug: "anime-oscen-hive-north-country",
           filename: "anime-oscen.jpg",
