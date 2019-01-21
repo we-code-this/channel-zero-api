@@ -27,14 +27,14 @@ async function get(params = {}) {
 
   const res = await knex
     .select(
-      "releases.*",
+      `${tablename}.*`,
       "artists.name as artist_name",
       "artists.slug as artist_slug",
       "artists.created_at as artist_created_at",
       "artists.updated_at as artist_updated_at"
     )
     .from(tablename)
-    .leftJoin("artists", "releases.artist_id", "artists.id")
+    .leftJoin("artists", `${tablename}.artist_id`, "artists.id")
     .where("published", true)
     .limit(limit)
     .orderBy("created_at", order);
@@ -47,15 +47,15 @@ async function get(params = {}) {
 async function findBySlug(slug) {
   const res = await knex
     .select(
-      "releases.*",
+      `${tablename}.*`,
       "artists.name as artist_name",
       "artists.slug as artist_slug",
       "artists.created_at as artist_created_at",
       "artists.updated_at as artist_updated_at"
     )
     .from(tablename)
-    .leftJoin("artists", "releases.artist_id", "artists.id")
-    .where("releases.slug", slug);
+    .leftJoin("artists", `${tablename}.artist_id`, "artists.id")
+    .where(`${tablename}.slug`, slug);
 
   return buildRelease(res[0]);
 }

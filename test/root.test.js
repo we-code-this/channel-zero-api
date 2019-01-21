@@ -15,11 +15,7 @@ describe("/", function() {
   });
 
   it("should return a 404", async function() {
-    try {
-      const response = await app.inject({ method: "GET", url: "/" });
-      expect(response.statusCode).to.equal(404);
-    } catch (err) {
-      console.error(err);
-    }
+    const response = await app.inject({ method: "GET", url: "/" });
+    expect(response.statusCode).to.equal(404);
   });
 });

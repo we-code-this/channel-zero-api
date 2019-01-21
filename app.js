@@ -2,12 +2,19 @@ import Fastify from "fastify";
 import cors from "fastify-cors";
 import { default as Ad } from "./models/Ad";
 import { default as Article } from "./models/Article";
+import { default as Feature } from "./models/Feature";
 import { default as Promo } from "./models/Promo";
 import { default as Release } from "./models/Release";
+import pino from "pino";
+
+const logging = "silent";
+const log = pino({
+  level: logging,
+  prettyPrint: { colorize: true }
+});
 
 function buildApp() {
-  const logging = false;
-  const fastify = Fastify({ logger: logging });
+  const fastify = Fastify({ logger: log });
 
   fastify.register(cors, { origin: process.env.CLIENT_ORIGIN });
 
@@ -73,6 +80,29 @@ function buildApp() {
   fastify.get("/release/:slug", async function(req, reply) {
     const release = await Release.findBySlug(req.params.slug);
     reply.send(release);
+  });
+
+  fastify.get("/features/:limit/:order", async function(req, reply) {
+    const features = await Feature.get({
+      limit: req.params.limit,
+      order: req.params.order
+    });
+    reply.send(features);
+  });
+
+  fastify.get("/features/:limit", async function(req, reply) {
+    const features = await Feature.get({ limit: req.params.limit });
+    reply.send(features);
+  });
+
+  fastify.get("/features", async function(req, reply) {
+    const features = await Feature.get();
+    reply.send(features);
+  });
+
+  fastify.get("/feature", async function(req, reply) {
+    const feature = await Feature.current();
+    reply.send(feature);
   });
 
   return fastify;
