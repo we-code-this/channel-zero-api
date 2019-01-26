@@ -64,6 +64,7 @@ describe("/features", function() {
         method: "GET",
         url: "/feature"
       });
+
       expect(JSON.parse(response.payload).id).to.equal(11);
     });
 

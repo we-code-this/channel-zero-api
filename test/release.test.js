@@ -82,5 +82,29 @@ describe("/releases", function() {
       });
       expect(JSON.parse(response.payload).artist).to.be.an.instanceof(Object);
     });
+
+    it("should return the release with a vendors property", async function() {
+      const response = await app.inject({
+        method: "GET",
+        url: "/release/artist-9-album-9"
+      });
+      expect(JSON.parse(response.payload)).to.have.property("vendors");
+    });
+
+    it("should return the release with a vendors property that's an array", async function() {
+      const response = await app.inject({
+        method: "GET",
+        url: "/release/artist-9-album-9"
+      });
+      expect(JSON.parse(response.payload).vendors).to.be.an.instanceOf(Array);
+    });
+
+    it("should return the release with 3 vendors", async function() {
+      const response = await app.inject({
+        method: "GET",
+        url: "/release/artist-9-album-9"
+      });
+      expect(JSON.parse(response.payload).vendors.length).to.equal(3);
+    });
   });
 });

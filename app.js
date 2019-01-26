@@ -1,10 +1,11 @@
 import Fastify from "fastify";
 import cors from "fastify-cors";
-import { default as Ad } from "./models/Ad";
-import { default as Article } from "./models/Article";
-import { default as Feature } from "./models/Feature";
-import { default as Promo } from "./models/Promo";
-import { default as Release } from "./models/Release";
+import Ad from "./models/Ad";
+import ArticleCollection from "./models/ArticleCollection";
+import FeatureCollection from "./models/FeatureCollection";
+import PromoCollection from "./models/PromoCollection";
+import ReleaseCollection from "./models/ReleaseCollection";
+import VendorCollection from "./models/VendorCollection";
 import pino from "pino";
 
 const logging = "silent";
@@ -19,12 +20,12 @@ function buildApp() {
   fastify.register(cors, { origin: process.env.CLIENT_ORIGIN });
 
   fastify.get("/a", async function(req, reply) {
-    const ads = await Ad.get();
+    const ads = await new Ad().random();
     reply.send(ads);
   });
 
   fastify.get("/articles/:limit/:order", async function(req, reply) {
-    const articles = await Article.get({
+    const articles = await new ArticleCollection().get({
       limit: req.params.limit,
       order: req.params.order
     });
@@ -32,17 +33,19 @@ function buildApp() {
   });
 
   fastify.get("/articles/:limit", async function(req, reply) {
-    const articles = await Article.get({ limit: req.params.limit });
+    const articles = await new ArticleCollection().get({
+      limit: req.params.limit
+    });
     reply.send(articles);
   });
 
   fastify.get("/articles", async function(req, reply) {
-    const articles = await Article.get();
+    const articles = await new ArticleCollection().get();
     reply.send(articles);
   });
 
   fastify.get("/promos/:location/:limit", async function(req, reply) {
-    const promos = await Promo.get({
+    const promos = await new PromoCollection().get({
       location: req.params.location,
       limit: req.params.limit
     });
@@ -50,40 +53,45 @@ function buildApp() {
   });
 
   fastify.get("/promos/:location", async function(req, reply) {
-    const promos = await Promo.get({ location: req.params.location });
+    const promos = await new PromoCollection().get({
+      location: req.params.location
+    });
     reply.send(promos);
   });
 
   fastify.get("/promos", async function(req, reply) {
-    const promos = await Promo.get();
+    const promos = await new PromoCollection().get();
     reply.send(promos);
   });
 
   fastify.get("/releases/:limit/:order", async function(req, reply) {
-    const releases = await Release.get({
+    const releases = await new ReleaseCollection().get({
       limit: req.params.limit,
       order: req.params.order
     });
+
     reply.send(releases);
   });
 
   fastify.get("/releases/:limit", async function(req, reply) {
-    const releases = await Release.get({ limit: req.params.limit });
+    const releases = await new ReleaseCollection().get({
+      limit: req.params.limit
+    });
     reply.send(releases);
   });
 
   fastify.get("/releases", async function(req, reply) {
-    const releases = await Release.get();
+    const releases = await new ReleaseCollection().get();
     reply.send(releases);
   });
 
   fastify.get("/release/:slug", async function(req, reply) {
-    const release = await Release.findBySlug(req.params.slug);
+    const release = await new ReleaseCollection().findBySlug(req.params.slug);
     reply.send(release);
   });
 
   fastify.get("/features/:limit/:order", async function(req, reply) {
-    const features = await Feature.get({
+    const features = await new FeatureCollection().get({
       limit: req.params.limit,
       order: req.params.order
     });
@@ -91,18 +99,25 @@ function buildApp() {
   });
 
   fastify.get("/features/:limit", async function(req, reply) {
-    const features = await Feature.get({ limit: req.params.limit });
+    const features = await new FeatureCollection().get({
+      limit: req.params.limit
+    });
     reply.send(features);
   });
 
   fastify.get("/features", async function(req, reply) {
-    const features = await Feature.get();
+    const features = await new FeatureCollection().get();
     reply.send(features);
   });
 
   fastify.get("/feature", async function(req, reply) {
-    const feature = await Feature.current();
+    const feature = await new FeatureCollection().current();
     reply.send(feature);
+  });
+
+  fastify.get("/vendors", async function(req, reply) {
+    const vendors = await new VendorCollection().all();
+    reply.send(vendors);
   });
 
   return fastify;

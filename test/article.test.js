@@ -1,5 +1,6 @@
 import chai from "chai";
-import { default as buildApp } from "../app";
+import Article from "../models/Article";
+import buildApp from "../app";
 
 const expect = chai.expect;
 
@@ -55,6 +56,14 @@ describe("/articles", function() {
         url: "/articles/1/asc"
       });
       expect(JSON.parse(response.payload)[0].id).to.equal(1);
+    });
+
+    it("should return Object", async function() {
+      const response = await app.inject({
+        method: "GET",
+        url: "/articles/1"
+      });
+      expect(JSON.parse(response.payload)[0]).to.be.an.instanceOf(Object);
     });
   });
 });
