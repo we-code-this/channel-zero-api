@@ -21,6 +21,7 @@ class Release extends Model {
   async withVendors() {
     const results = await knex
       .select(
+        `release_vendors.id`,
         `release_vendors.url`,
         "vendors.name as name",
         "vendors.icon_class as icon_class"
