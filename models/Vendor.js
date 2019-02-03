@@ -1,5 +1,5 @@
-import Model from "./Model";
+import Model from './Model'
 
 class Vendor extends Model {}
 
-export default Vendor;
+export default Vendor

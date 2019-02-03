@@ -1,9 +1,9 @@
 class Model {
-  constructor(data) {
+  constructor (data) {
     if (data) {
-      Object.assign(this, data);
+      Object.assign(this, data)
     }
   }
 }
 
-export default Model;
+export default Model
