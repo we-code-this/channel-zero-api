@@ -1,27 +1,27 @@
-import knex from '../lib/connection'
-import Vendor from './Vendor'
+import knex from "../lib/connection";
+import Vendor from "./Vendor";
 
 class VendorCollection {
-  constructor () {
-    this.tablename = 'vendors'
-    this.items = null
+  constructor() {
+    this.tablename = "vendors";
+    this.items = null;
   }
-  async all (order = 'ASC') {
+  async all(order = "ASC") {
     if (this.items) {
-      return this.items
+      return this.items;
     }
 
     const results = await knex
-      .select('*')
+      .select("*")
       .from(this.tablename)
-      .orderBy('name', order)
+      .orderBy("name", order);
 
-    this.items = results.map(function (record) {
-      return new Vendor(record)
-    })
+    this.items = results.map(function(record) {
+      return new Vendor(record);
+    });
 
-    return this.items
+    return this.items;
   }
 }
 
-export default VendorCollection
+export default VendorCollection;
