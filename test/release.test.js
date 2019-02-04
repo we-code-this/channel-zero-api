@@ -131,5 +131,31 @@ describe("/releases", function() {
       });
       expect(JSON.parse(response.payload).credits.length).to.equal(10);
     });
+
+    it("should return the release with a endorsements property", async function() {
+      const response = await app.inject({
+        method: "GET",
+        url: "/release/artist-1-album-1"
+      });
+      expect(JSON.parse(response.payload)).to.have.property("endorsements");
+    });
+
+    it("should return the release with a endorsements property that's an array", async function() {
+      const response = await app.inject({
+        method: "GET",
+        url: "/release/artist-1-album-1"
+      });
+      expect(JSON.parse(response.payload).endorsements).to.be.an.instanceOf(
+        Array
+      );
+    });
+
+    it("should return the release with 2 endorsements", async function() {
+      const response = await app.inject({
+        method: "GET",
+        url: "/release/artist-1-album-1"
+      });
+      expect(JSON.parse(response.payload).endorsements.length).to.equal(2);
+    });
   });
 });

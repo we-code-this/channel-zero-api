@@ -1,0 +1,22 @@
+exports.seed = function(knex, Promise) {
+  return knex("endorsements")
+    .del()
+    .then(function() {
+      return knex("endorsements").insert([
+        {
+          id: 1,
+          review: "Incredible album… not to be missed!",
+          reviewer: "Someone",
+          url: null,
+          created_at: "2019-02-03 12:01:00"
+        },
+        {
+          id: 2,
+          review: "Among my favorite albums of the year!",
+          reviewer: "Another Person",
+          url: "#",
+          created_at: "2019-02-03 12:02:00"
+        }
+      ]);
+    });
+};

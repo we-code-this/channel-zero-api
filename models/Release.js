@@ -1,5 +1,6 @@
 import knex from "../lib/connection";
 import Artist from "./Artist";
+import Endorsement from "./Endorsement";
 import Model from "./Model";
 import Vendor from "./Vendor";
 import ReleaseCredit from "./ReleaseCredit";
@@ -18,11 +19,13 @@ class Release extends Model {
 
     this.vendors = undefined;
     this.credits = undefined;
+    this.endorsements = undefined;
   }
 
   async withRelated() {
     await this.withVendors();
     await this.withCredits();
+    await this.withEndorsements();
 
     return this;
   }
@@ -56,6 +59,20 @@ class Release extends Model {
 
     this.credits = results.map(function(record) {
       return new ReleaseCredit(record);
+    });
+
+    return this;
+  }
+
+  async withEndorsements() {
+    const results = await knex
+      .select("*")
+      .from("release_endorsements")
+      .where("release_endorsements.release_id", this.id)
+      .orderBy("release_endorsements.id", "ASC");
+
+    this.endorsements = results.map(function(record) {
+      return new Endorsement(record);
     });
 
     return this;

@@ -1,6 +1,7 @@
 .idea/
 node_modules/
 .nyc_output/
+.vscode/
 coverage
 test/test.sqlite3
 .env
