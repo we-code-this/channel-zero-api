@@ -60,7 +60,7 @@ exports.seed = function(knex, Promise) {
         {
           id: 7,
           name: "Spitslam",
-          url: "#",
+          url: "https://slamjamz.com",
           filename: "spitslam.svg",
           location: "vertical",
           published: true,
@@ -78,7 +78,7 @@ exports.seed = function(knex, Promise) {
         {
           id: 9,
           name: "DigTheDig",
-          url: "#",
+          url: "/dig",
           filename: "dig-the-dig.svg",
           location: "vertical",
           published: true,
