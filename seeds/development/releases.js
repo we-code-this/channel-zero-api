@@ -6,6 +6,7 @@ exports.seed = function(knex, Promise) {
         {
           id: 1,
           artist_id: 1,
+          label_id: 1,
           title: "Celebration of Ignorance",
           slug: "chuck-d-mistachuck-celebration-ignorance",
           filename: "mistachuck.png",
@@ -20,6 +21,7 @@ Public Enemy's albums remain among the most critically acclaimed works in the ge
         {
           id: 2,
           artist_id: 2,
+          label_id: 1,
           title: "Afterburn",
           slug: "dj-lord-afterburn",
           filename: "dj-lord.jpg",
@@ -34,6 +36,7 @@ Lord has spent nearly 20 years behind the decks for Public Enemy and the past tw
         {
           id: 3,
           artist_id: 3,
+          label_id: 1,
           title: "North Country",
           slug: "anime-oscen-hive-north-country",
           description: `Comprised of longtime friends and performers, Leslie Allin, Eric Papky and Michael Brown; **Anime Oscen and Hive aka AO&H**, bring 17 years of chemistry to their music. The collaboration with Hive studios assisted Anime in producing songs which gained the attention of rap icon Chuck D. who mentored their message into politically charged country songs. These reflections underpin the artful and traditionally folk styles of Anime’s songwriting. The Hamilton, Ontario trio AO&H has recently compiled a 4-Track album release of North Country dubbed NewFolk C&W. The single and video for “Everyone’s Got Won” is a defense attack on gun abuse in the world at large, but specifically the USA. Just an example of the powerhouse music on release.
@@ -62,6 +65,7 @@ A woman’s heart, the casualty.
         {
           id: 4,
           artist_id: 4,
+          label_id: 2,
           title: "Shootin Like A Beatbox featuring SG EP",
           slug: "professor-daddy-o-shootin-like-beatbox-featuring-sg-ep",
           description: `SLBB a musical essay that visits the answer to gun violence in our community from one of Hip Hop's most prominent rap voices, Stetsasonic Frontman Professor  Daddy-O. The accompanying short film is an eerie examination of the deadly consequences of ignoring said violence. The energetic, Played Out "...hookah lounges, Bravo, Andy, and Mona Scott..." is a grown folk water cooler conversation about today's surreality. A hilarious interlude taps on, "Are you grown and still living with your moms, Dude?" followed by Shinin, a hardcore Brooklyn anthem that'll make everybody dance.-...GG`,
@@ -72,6 +76,7 @@ A woman’s heart, the casualty.
         {
           id: 5,
           artist_id: 5,
+          label_id: 3,
           title: "Booty And Hair",
           slug: "memphis-jelks-booty-hair",
           description: `Memphis Jelks delivers a humor tinted song where the desire of enhancement in the daytime is the social club prelude to the club at night. Everybody wants to wonder what on the other side. Jelks also encourages people to be thankful for what they got, but sharing goals can be a social cultural exchange in the 21 C while spending money for it.`,
@@ -82,6 +87,7 @@ A woman’s heart, the casualty.
         {
           id: 6,
           artist_id: 6,
+          label_id: 3,
           title: "Bringin 88 Back",
           slug: "rukus-music-bringin-88-back",
           description: `The 5 track debut album of MEGAFORCE 911 co founders Ced Rat and Mainy Main has entered again the strength of DETROIT HIPHOP.`,
@@ -92,6 +98,7 @@ A woman’s heart, the casualty.
         {
           id: 7,
           artist_id: 7,
+          label_id: 1,
           title: "Nation Builder",
           slug: "jahi-pe20-nation-builder",
           description: `Nation Builder to send an alternative vibration out that counters the current crisis in leadership in America.The album was originally called 40+  tapped into A track by Pain 1.made Jahiplzay track for some of his students and they said that beat was hard to rhyme over. It really describes the thinking and feeling of Jahi around the present and future with music.
@@ -131,6 +138,7 @@ Im an introspective person at heart. Night time is always where I work out life.
         {
           id: 8,
           artist_id: 8,
+          label_id: 4,
           title: "East Duel West",
           slug: "east-duel-west-east-duel-west",
           description: `This new album by East Duel West is off the hook! Sammy and Charlie’s new instrumental project is extremely well produced. Each song is Powerful, full of emotion and Sammy and Charlie’s beats are EPIC!!! Music is great to paly when your doing work, dancing, cruising and is also great chill music. Can’t wait for their next project. Definitely pick this one up!`,
@@ -141,6 +149,7 @@ Im an introspective person at heart. Night time is always where I work out life.
         {
           id: 9,
           artist_id: 9,
+          label_id: 5,
           title: "The Familiar Stranger",
           slug: "antwon-king-familiar-stranger",
           description: `The Familiar Stranger" is a very personal album but at the same time it's very relatable . The title is referring to people who may have never met me but listening to this album they will feel like they know me, hopefully . I want this album to inspire people to go hard for what they believe in and be proud of who they are. This is a soundtrack to our REAL life.`,
@@ -151,6 +160,7 @@ Im an introspective person at heart. Night time is always where I work out life.
         {
           id: 10,
           artist_id: 10,
+          label_id: 6,
           title: "Live in Liverpool",
           slug: "obeah-live-liverpool",
           description: `Recorded December 2 2015 during the off date of historic Public Enemy Tour 104 of UK and Europe with The Prodigy. MC OBEAH gets his indoctrination of planet rap performance while working with DJ LORD. On non arena dates OBEAH hit the stage opening with a solid 12 minute set featuring 2 songs recorded on DJ LORDs EAT THE RAT album Massdistractionville and World Citizen. World Citizen was predicted in song and video and new cuts Riots and Bloody were no doubt setting the stage in upcoming studio recordings by this Georgia MC.`,
@@ -161,6 +171,7 @@ Im an introspective person at heart. Night time is always where I work out life.
         {
           id: 11,
           artist_id: 11,
+          label_id: 7,
           title: "The Devils You Know",
           slug: "impossebulls-devils-you-know",
           description: `**Download this release for free in multiple digital formats (FLAC, MP3 & OGG) at [blocSonic](https://blocsonic.com/releases/bsog0057)**
@@ -181,6 +192,7 @@ Of course, thanks once again to you for downloading & listening. We always striv
         {
           id: 12,
           artist_id: 12,
+          label_id: 7,
           title: "Come Back",
           slug: "jelani-malik-come-back",
           description: `Many times I get stuck in the struggles of trying to shape my future because I've pushed away memories of the past instead of facing them head on, letting go, and moving toward my future. The journey isn't the easiest but I make the best of it as I go. Come Back is the introduction to me.`,

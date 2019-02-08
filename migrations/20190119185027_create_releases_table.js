@@ -5,6 +5,10 @@ exports.up = function(knex, Promise) {
       .integer("artist_id")
       .unsigned()
       .notNullable();
+    table
+      .integer("label_id")
+      .unsigned()
+      .notNullable();
     table.string("title").notNullable();
     table.string("slug").notNullable();
     table.text("description");

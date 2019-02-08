@@ -1,6 +1,7 @@
 import knex from "../lib/connection";
 import Artist from "./Artist";
 import Endorsement from "./Endorsement";
+import Label from "./Label";
 import Model from "./Model";
 import Vendor from "./Vendor";
 import ReleaseCredit from "./ReleaseCredit";
@@ -15,6 +16,14 @@ class Release extends Model {
       slug: data.artist_slug,
       created_at: data.created_at,
       updated_at: data.updated_at
+    });
+
+    this.label = new Label({
+      id: data.label_id,
+      name: data.label_name,
+      slug: data.label_slug,
+      created_at: data.label_created_at,
+      updated_at: data.label_updated_at
     });
 
     this.vendors = undefined;

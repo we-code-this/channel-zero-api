@@ -7,20 +7,29 @@ class ReleaseCollection {
     this.items = undefined;
   }
 
-  async get(params = {}) {
-    const limit = params.limit ? params.limit : 10;
-    const order = params.order ? params.order.toUpperCase() : "DESC";
-
-    const res = await knex
+  select() {
+    return knex
       .select(
         `${this.tablename}.*`,
         "artists.name as artist_name",
         "artists.slug as artist_slug",
         "artists.created_at as artist_created_at",
-        "artists.updated_at as artist_updated_at"
+        "artists.updated_at as artist_updated_at",
+        "labels.name as label_name",
+        "labels.slug as label_slug",
+        "labels.created_at as label_created_at",
+        "labels.updated_at as label_updated_at"
       )
       .from(this.tablename)
       .leftJoin("artists", `${this.tablename}.artist_id`, "artists.id")
+      .leftJoin("labels", `${this.tablename}.label_id`, "labels.id");
+  }
+
+  async get(params = {}) {
+    const limit = params.limit ? params.limit : 10;
+    const order = params.order ? params.order.toUpperCase() : "DESC";
+
+    const res = await this.select()
       .where(`${this.tablename}.published`, true)
       .limit(limit)
       .orderBy("created_at", order);
@@ -33,17 +42,7 @@ class ReleaseCollection {
   }
 
   async findBySlug(slug) {
-    const res = await knex
-      .select(
-        `${this.tablename}.*`,
-        "artists.name as artist_name",
-        "artists.slug as artist_slug",
-        "artists.created_at as artist_created_at",
-        "artists.updated_at as artist_updated_at"
-      )
-      .from(this.tablename)
-      .leftJoin("artists", `${this.tablename}.artist_id`, "artists.id")
-      .where(`${this.tablename}.slug`, slug);
+    const res = await this.select().where(`${this.tablename}.slug`, slug);
 
     return new Release(res[0]).withRelated();
   }
