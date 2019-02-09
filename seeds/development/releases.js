@@ -192,7 +192,7 @@ Of course, thanks once again to you for downloading & listening. We always striv
         {
           id: 12,
           artist_id: 12,
-          label_id: 7,
+          label_id: 8,
           title: "Come Back",
           slug: "jelani-malik-come-back",
           description: `Many times I get stuck in the struggles of trying to shape my future because I've pushed away memories of the past instead of facing them head on, letting go, and moving toward my future. The journey isn't the easiest but I make the best of it as I go. Come Back is the introduction to me.`,
