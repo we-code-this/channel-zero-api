@@ -6,4 +6,4 @@ Developed utilizing [fastify](https://www.fastify.io)
 
 More details to come.
 
-_(Work in progress. Heavily under development.)_
+_(Work in progress. Heavily in development.)_
