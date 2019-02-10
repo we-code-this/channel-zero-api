@@ -33,6 +33,11 @@ function buildApp() {
     reply.send(artists);
   });
 
+  fastify.get("/artists/count", async function(req, reply) {
+    const count = await new ArtistCollection().count();
+    reply.send(count);
+  });
+
   fastify.get("/artists/:limit", async function(req, reply) {
     const artists = await new ArtistCollection().get({
       limit: req.params.limit

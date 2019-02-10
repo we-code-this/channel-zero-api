@@ -27,6 +27,10 @@ class ArtistCollection {
 
     return this.items;
   }
+
+  async count() {
+    return await knex.count("* as count").from(this.tablename);
+  }
 }
 
 export default ArtistCollection;

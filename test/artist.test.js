@@ -57,4 +57,15 @@ describe("/artists", function() {
       expect(JSON.parse(response.payload)[0].id).to.equal(1);
     });
   });
+
+  describe("/artists/count", function() {
+    it("should return count of 11", async function() {
+      const response = await app.inject({
+        method: "GET",
+        url: "/artists/count"
+      });
+
+      expect(JSON.parse(response.payload)[0].count).to.equal(11);
+    });
+  });
 });
