@@ -2,6 +2,7 @@ import Fastify from "fastify";
 import cors from "fastify-cors";
 import Ad from "./models/Ad";
 import ArticleCollection from "./models/ArticleCollection";
+import ArtistCollection from "./models/ArtistCollection";
 import FeatureCollection from "./models/FeatureCollection";
 import PromoCollection from "./models/PromoCollection";
 import ReleaseCollection from "./models/ReleaseCollection";
@@ -22,6 +23,26 @@ function buildApp() {
   fastify.get("/a", async function(req, reply) {
     const ads = await new Ad().random();
     reply.send(ads);
+  });
+
+  fastify.get("/artists/:limit/:order", async function(req, reply) {
+    const artists = await new ArtistCollection().get({
+      limit: req.params.limit,
+      order: req.params.order
+    });
+    reply.send(artists);
+  });
+
+  fastify.get("/artists/:limit", async function(req, reply) {
+    const artists = await new ArtistCollection().get({
+      limit: req.params.limit
+    });
+    reply.send(artists);
+  });
+
+  fastify.get("/artists", async function(req, reply) {
+    const artists = await new ArtistCollection().get();
+    reply.send(artists);
   });
 
   fastify.get("/articles/:limit/:order", async function(req, reply) {
