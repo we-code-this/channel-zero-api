@@ -9,7 +9,7 @@ import ReleaseCollection from "./models/ReleaseCollection";
 import VendorCollection from "./models/VendorCollection";
 import pino from "pino";
 
-const logging = "info";
+const logging = "silent";
 const log = pino({
   level: logging,
   prettyPrint: { colorize: true }
