@@ -8,7 +8,7 @@ class ArticleCollection {
   }
 
   async get(params = {}) {
-    const limit = params.limit ? params.limit : 10;
+    const limit = params.limit ? parseInt(params.limit) : 10;
     const order = params.order ? params.order.toUpperCase() : "DESC";
 
     if (this.items) {

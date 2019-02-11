@@ -58,6 +58,20 @@ describe("/artists", function() {
     });
   });
 
+  describe("/artists/range/:offset/:limit/:order", function() {
+    it("should return artist with id of 11 with offset 1, limit 10 and order 'asc'", async function() {
+      const response = await app.inject({
+        method: "GET",
+        url: "/artists/range/1/10/asc"
+      });
+
+      const results = JSON.parse(response.payload);
+
+      expect(results[0].id).to.equal(2);
+      expect(results[results.length - 1].id).to.equal(11);
+    });
+  });
+
   describe("/artists/count", function() {
     it("should return count of 11", async function() {
       const response = await app.inject({

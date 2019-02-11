@@ -12,7 +12,7 @@ class FeatureCollection {
       return items;
     }
 
-    const limit = params.limit ? params.limit : 10;
+    const limit = params.limit ? parseInt(params.limit) : 10;
     const order = params.order ? params.order.toUpperCase() : "DESC";
 
     const results = await knex

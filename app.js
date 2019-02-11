@@ -9,7 +9,7 @@ import ReleaseCollection from "./models/ReleaseCollection";
 import VendorCollection from "./models/VendorCollection";
 import pino from "pino";
 
-const logging = "silent";
+const logging = "info";
 const log = pino({
   level: logging,
   prettyPrint: { colorize: true }
@@ -23,6 +23,18 @@ function buildApp() {
   fastify.get("/a", async function(req, reply) {
     const ads = await new Ad().random();
     reply.send(ads);
+  });
+
+  fastify.get("/artists/range/:offset/:limit/:order", async function(
+    req,
+    reply
+  ) {
+    const artists = await new ArtistCollection().get({
+      offset: req.params.offset,
+      limit: req.params.limit,
+      order: req.params.order
+    });
+    reply.send(artists);
   });
 
   fastify.get("/artists/:limit/:order", async function(req, reply) {

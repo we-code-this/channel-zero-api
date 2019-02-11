@@ -8,7 +8,8 @@ class ArtistCollection {
   }
 
   async get(params = {}) {
-    const limit = params.limit ? params.limit : 10;
+    const offset = params.offset ? parseInt(params.offset) : 0;
+    const limit = params.limit ? parseInt(params.limit) : 10;
     const order = params.order ? params.order.toUpperCase() : "DESC";
 
     if (this.items) {
@@ -19,6 +20,7 @@ class ArtistCollection {
       .select("*")
       .from(this.tablename)
       .limit(limit)
+      .offset(offset)
       .orderBy("created_at", order);
 
     this.items = results.map(function(record) {
