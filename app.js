@@ -25,6 +25,11 @@ function buildApp() {
     reply.send(ads);
   });
 
+  fastify.get("/artist/:slug", async function(req, reply) {
+    const artist = await new ArtistCollection().findBySlug(req.params.slug);
+    reply.send(artist);
+  });
+
   fastify.get("/artists/range/:offset/:limit/:order", async function(
     req,
     reply

@@ -33,6 +33,18 @@ class ArtistCollection {
   async count() {
     return await knex.count("* as count").from(this.tablename);
   }
+
+  async findBySlug(slug) {
+    const result = await knex
+      .select("*")
+      .from(this.tablename)
+      .where("slug", slug)
+      .limit(1);
+
+    this.items = result;
+
+    return this.items;
+  }
 }
 
 export default ArtistCollection;
