@@ -41,7 +41,7 @@ class ArtistCollection {
       .where("slug", slug)
       .limit(1);
 
-    this.items = result;
+    this.items = result[0];
 
     return this.items;
   }

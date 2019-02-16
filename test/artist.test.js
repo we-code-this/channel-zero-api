@@ -23,7 +23,7 @@ describe("artist", function() {
       expect(response.headers["content-type"]).to.equal(
         "application/json; charset=utf-8"
       );
-      expect(JSON.parse(response.payload).length).to.equal(1);
+      expect(JSON.parse(response.payload).slug).to.equal("artist-1");
     });
   });
 
