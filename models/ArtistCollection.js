@@ -1,3 +1,4 @@
+import moment from "moment";
 import knex from "../lib/connection";
 import Artist from "./Artist";
 
@@ -44,6 +45,26 @@ class ArtistCollection {
     this.items = result[0];
 
     return this.items;
+  }
+
+  async updateBySlug(slug, updatedFields) {
+    const data = {
+      ...updatedFields,
+      updated_at: moment().format("YYYY-MM-DD HH:mm:ss")
+    };
+
+    await knex(this.tablename)
+      .where("slug", slug)
+      .update(data, [
+        "id",
+        "name",
+        "slug",
+        "description",
+        "created_at",
+        "updated_at"
+      ]);
+
+    return await this.findBySlug(slug);
   }
 }
 

@@ -14,7 +14,7 @@ describe("artist", function() {
     app.close();
   });
 
-  describe("/artist/:slug", function() {
+  describe("GET /artist/:slug", function() {
     it("should return the artist with a 'artist-1' slug", async function() {
       const response = await app.inject({
         method: "GET",
@@ -27,7 +27,32 @@ describe("artist", function() {
     });
   });
 
-  describe("/artists", function() {
+  describe("POST /artist/:slug", function() {
+    it("should update artist database record", async function() {
+      const getResponse = await app.inject({
+        method: "GET",
+        url: "/artist/artist-1"
+      });
+
+      const artist = JSON.parse(getResponse.payload);
+
+      expect(artist.description).to.equal("artist description");
+
+      const newDescription = "new artist description";
+
+      const response = await app.inject({
+        method: "POST",
+        url: "/artist/artist-1",
+        payload: {
+          description: newDescription
+        }
+      });
+
+      expect(JSON.parse(response.payload).description).to.equal(newDescription);
+    });
+  });
+
+  describe("GET /artists", function() {
     it("should return 10 artists", async function() {
       const response = await app.inject({ method: "GET", url: "/artists" });
       expect(response.headers["content-type"]).to.equal(
@@ -36,7 +61,7 @@ describe("artist", function() {
       expect(JSON.parse(response.payload).length).to.equal(10);
     });
 
-    describe("/artists/:limit", function() {
+    describe("GET /artists/:limit", function() {
       it("should return 11 artists if :limit is 11", async function() {
         const response = await app.inject({
           method: "GET",
@@ -54,7 +79,7 @@ describe("artist", function() {
       });
     });
 
-    describe("/artists/:limit/:order", function() {
+    describe("GET /artists/:limit/:order", function() {
       it("should return artist with id of 11 when :order is 'desc'", async function() {
         const response = await app.inject({
           method: "GET",
@@ -72,7 +97,7 @@ describe("artist", function() {
       });
     });
 
-    describe("/artists/range/:offset/:limit/:order", function() {
+    describe("GET /artists/range/:offset/:limit/:order", function() {
       it("should return artist with id of 11 with offset 1, limit 10 and order 'asc'", async function() {
         const response = await app.inject({
           method: "GET",
@@ -86,7 +111,7 @@ describe("artist", function() {
       });
     });
 
-    describe("/artists/count", function() {
+    describe("GET /artists/count", function() {
       it("should return count of 11", async function() {
         const response = await app.inject({
           method: "GET",
