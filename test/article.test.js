@@ -4,7 +4,7 @@ import buildApp from "../app";
 
 const expect = chai.expect;
 
-describe("/articles", function() {
+describe("GET /articles", function() {
   let app;
 
   before(function() {
@@ -23,7 +23,7 @@ describe("/articles", function() {
     expect(JSON.parse(response.payload).length).to.equal(10);
   });
 
-  describe("/articles/:limit", function() {
+  describe("GET /articles/:limit", function() {
     it("should return 11 articles if :limit is 11", async function() {
       const response = await app.inject({
         method: "GET",
@@ -41,7 +41,7 @@ describe("/articles", function() {
     });
   });
 
-  describe("/articles/:limit/:order", function() {
+  describe("GET /articles/:limit/:order", function() {
     it("should return article with id of 11 when :order is 'desc'", async function() {
       const response = await app.inject({
         method: "GET",

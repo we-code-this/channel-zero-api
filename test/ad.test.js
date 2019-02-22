@@ -3,7 +3,7 @@ import { default as buildApp } from "../app";
 
 const expect = chai.expect;
 
-describe("/a", function() {
+describe("GET /a", function() {
   let app;
 
   before(function() {

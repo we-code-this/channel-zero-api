@@ -7,7 +7,7 @@ const expect = chai.expect;
 
 chai.use(dateString);
 
-describe("/releases", function() {
+describe("GET /releases", function() {
   let app;
 
   before(function() {
@@ -26,7 +26,7 @@ describe("/releases", function() {
     expect(JSON.parse(response.payload).length).to.equal(10);
   });
 
-  describe("/releases/:limit", function() {
+  describe("GET /releases/:limit", function() {
     it("should return 11 releases if :limit is 11", async function() {
       const response = await app.inject({
         method: "GET",
@@ -44,7 +44,7 @@ describe("/releases", function() {
     });
   });
 
-  describe("/releases/:limit/:order", function() {
+  describe("GET /releases/:limit/:order", function() {
     it("should return release with id of 11 when :order is 'desc'", async function() {
       const response = await app.inject({
         method: "GET",
@@ -62,7 +62,7 @@ describe("/releases", function() {
     });
   });
 
-  describe("/release/:slug", function() {
+  describe("GET /release/:slug", function() {
     it("should return the release that has the :slug supplied", async function() {
       const response = await app.inject({
         method: "GET",

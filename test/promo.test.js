@@ -3,7 +3,7 @@ import { default as buildApp } from "../app";
 
 const expect = chai.expect;
 
-describe("/promos", function() {
+describe("GET /promos", function() {
   let app;
 
   before(function() {
@@ -22,7 +22,7 @@ describe("/promos", function() {
     expect(JSON.parse(response.payload).length).to.equal(9);
   });
 
-  describe("/promos/:location", function() {
+  describe("GET /promos/:location", function() {
     it("should return 5 promos when 'horizontal' is supplied to :location", async function() {
       const response = await app.inject({
         method: "GET",
@@ -40,7 +40,7 @@ describe("/promos", function() {
     });
   });
 
-  describe("/promos/:location/:limit", function() {
+  describe("GET /promos/:location/:limit", function() {
     it("should return 2 promos when :limit is 2", async function() {
       const response = await app.inject({
         method: "GET",

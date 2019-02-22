@@ -3,7 +3,7 @@ import { default as buildApp } from "../app";
 
 const expect = chai.expect;
 
-describe("/features", function() {
+describe("GET /features", function() {
   let app;
 
   before(function() {
@@ -22,7 +22,7 @@ describe("/features", function() {
     expect(JSON.parse(response.payload).length).to.equal(10);
   });
 
-  describe("/features/:limit", function() {
+  describe("GET /features/:limit", function() {
     it("should return 11 features if :limit is 11", async function() {
       const response = await app.inject({
         method: "GET",
@@ -40,7 +40,7 @@ describe("/features", function() {
     });
   });
 
-  describe("/features/:limit/:order", function() {
+  describe("GET /features/:limit/:order", function() {
     it("should return feature with id of 11 when :order is 'desc'", async function() {
       const response = await app.inject({
         method: "GET",
@@ -58,7 +58,7 @@ describe("/features", function() {
     });
   });
 
-  describe("/feature", function() {
+  describe("GET /feature", function() {
     it("should return most recent feature", async function() {
       const response = await app.inject({
         method: "GET",

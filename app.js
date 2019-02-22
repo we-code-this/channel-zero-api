@@ -30,6 +30,14 @@ function buildApp() {
     reply.send(artist);
   });
 
+  fastify.post("/artist/:slug", async function(req, reply) {
+    const updatedArtist = await new ArtistCollection().updateBySlug(
+      req.params.slug,
+      req.body
+    );
+    reply.send(updatedArtist);
+  });
+
   fastify.get("/artists/range/:offset/:limit/:order", async function(
     req,
     reply
