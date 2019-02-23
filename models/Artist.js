@@ -1,11 +1,12 @@
 import Model from "./Model";
 import validator from "validator";
+import { sanitize } from "../lib/strings";
 
 class Artist extends Model {
   constructor(data) {
     super(data);
 
-    this.description = validator.escape(this.description);
+    this.description = sanitize(this.description);
     this.errors = [];
   }
 

@@ -50,6 +50,37 @@ describe("artist", function() {
 
       expect(JSON.parse(response.payload).description).to.equal(newDescription);
     });
+
+    it("should sanitize description", async function() {
+      const response = await app.inject({
+        method: "POST",
+        url: "/artist/artist-1",
+        payload: {
+          description:
+            "new <script>console.log('yo')</script> artist description"
+        }
+      });
+
+      expect(JSON.parse(response.payload).description).to.equal(
+        "new artist description"
+      );
+    });
+
+    it("should return name field error of 'Invalid length'", async function() {
+      const response = await app.inject({
+        method: "POST",
+        url: "/artist/artist-1",
+        payload: {
+          name: ""
+        }
+      });
+
+      expect(JSON.parse(response.payload)).to.have.property("errors");
+      expect(JSON.parse(response.payload).errors[0].field).to.equal("name");
+      expect(JSON.parse(response.payload).errors[0].message).to.equal(
+        "Invalid length"
+      );
+    });
   });
 
   describe("GET /artists", function() {

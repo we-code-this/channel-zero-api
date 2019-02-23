@@ -62,7 +62,11 @@ class ArtistCollection {
     if (isValid) {
       await knex(this.tablename)
         .where("slug", slug)
-        .update(data);
+        .update({
+          name: artist.name,
+          description: artist.description,
+          updated_at: artist.updated_at
+        });
 
       return await this.findBySlug(slug);
     } else {
