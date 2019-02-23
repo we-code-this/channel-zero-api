@@ -13,6 +13,7 @@ class ReleaseCollection {
         `${this.tablename}.*`,
         "artists.name as artist_name",
         "artists.slug as artist_slug",
+        "artists.description as artist_description",
         "artists.created_at as artist_created_at",
         "artists.updated_at as artist_updated_at",
         "labels.name as label_name",

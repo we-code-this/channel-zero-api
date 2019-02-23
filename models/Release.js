@@ -14,6 +14,7 @@ class Release extends Model {
       id: data.artist_id,
       name: data.artist_name,
       slug: data.artist_slug,
+      description: data.artist_description,
       created_at: data.created_at,
       updated_at: data.updated_at
     });

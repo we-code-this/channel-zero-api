@@ -48,23 +48,26 @@ class ArtistCollection {
   }
 
   async updateBySlug(slug, updatedFields) {
+    const oldArtist = await this.findBySlug(slug);
     const data = {
+      ...oldArtist,
       ...updatedFields,
       updated_at: moment().format("YYYY-MM-DD HH:mm:ss")
     };
 
-    await knex(this.tablename)
-      .where("slug", slug)
-      .update(data, [
-        "id",
-        "name",
-        "slug",
-        "description",
-        "created_at",
-        "updated_at"
-      ]);
+    const artist = new Artist(data);
 
-    return await this.findBySlug(slug);
+    const isValid = artist.valid();
+
+    if (isValid) {
+      await knex(this.tablename)
+        .where("slug", slug)
+        .update(data);
+
+      return await this.findBySlug(slug);
+    } else {
+      return { errors: artist.validationErrors() };
+    }
   }
 }
 
