@@ -18,12 +18,6 @@ Chuck D has led the musical and social movement as national spokesperson for Roc
           id: 2,
           name: "DJ Lord",
           slug: "dj-lord",
-          created_at: "2019-01-20 12:01:00"
-        },
-        {
-          id: 3,
-          name: "Anime Oscen & Hive",
-          slug: "anime-oscen-hive",
           description: `DJ Lord is an Earthizen DJ and turntablist. 
 
 In 1999, DJ Lord joined the hip hop group Public Enemy on its 40th World Tour replacing Terminator X. Soon after, DJ Lord had his own performance segment within the Public Enemy show. While hip hop has been at the foundation of his career, he also works in the drum and bass arena. His career and the art of turntablism is documented in the DVD, DJ Lord - The Turntablist Chronicles, released in 2004.
@@ -31,6 +25,15 @@ In 1999, DJ Lord joined the hip hop group Public Enemy on its 40th World Tour re
 In addition to working with Public Enemy, DJ Lord tours solo as well as with Flavor Flav in his solo effort as well as with art exhibition Arts, Beats + Lyrics. He has also performed with rock band Confrontation Camp and TrillBass.
 
 In December 2014 he released his first solo album with 2MP (2 Much Posse) entitled “Eat The Rat” on Spit Digital.`,
+          created_at: "2019-01-20 12:01:00"
+        },
+        {
+          id: 3,
+          name: "Anime Oscen & Hive",
+          slug: "anime-oscen-hive",
+          description: `Comprised of longtime friends and performers, Leslie Allin, Eric Papky and Michael Brown; Anime Oscen and Hive aka AO&H, bring 17 years of chemistry to their music. The collaboration with Hive studios assisted Anime in producing songs which gained the attention of rap icon Chuck D. who mentored their message into politically charged country songs. These reflections underpin the artful and traditionally folk styles of Anime’s songwriting. The Hamilton, Ontario trio AO&H has recently compiled a 4-Track album release of North Country dubbed NewFolk C&W. The single and video for “Everyone’s Got Won” is a defense attack on gun abuse in the world at large, but specifically the USA. Just an example of the powerhouse music on release.
+
+The trio performed four of their songs live at the Georgia Many Rivers To Cross Festival on October 1st 2016. The road trip to the festival and their performance there is part of an introspective documentary on the group. With two music videos released, their songs are making way to a fan base seeking more cerebral country music sounds.`,
           created_at: "2019-01-20 12:02:00"
         },
         {

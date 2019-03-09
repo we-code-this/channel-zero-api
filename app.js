@@ -27,7 +27,12 @@ function buildApp() {
 
   fastify.get("/artist/:slug", async function(req, reply) {
     const artist = await new ArtistCollection().findBySlug(req.params.slug);
-    reply.send(artist);
+
+    if (artist) {
+      reply.send(artist);
+    } else {
+      reply.status(404).send();
+    }
   });
 
   fastify.post("/artist/:slug", async function(req, reply) {
@@ -36,6 +41,26 @@ function buildApp() {
       req.body
     );
     reply.send(updatedArtist);
+  });
+
+  fastify.delete("/artist", async function(req, reply) {
+    const deleted = await new ArtistCollection().delete(req.body.id);
+
+    if (deleted) {
+      reply.send(deleted);
+    } else {
+      reply.status(404).send();
+    }
+  });
+
+  fastify.post("/artist", async function(req, reply) {
+    const artist = await new ArtistCollection().create(req.body);
+
+    if (artist) {
+      reply.send(artist);
+    } else {
+      reply.status(500).send();
+    }
   });
 
   fastify.get("/artists/range/:offset/:limit/:order", async function(

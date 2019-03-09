@@ -25,6 +25,15 @@ describe("artist", function() {
       );
       expect(JSON.parse(response.payload).slug).to.equal("artist-1");
     });
+
+    it("should return 404 if artist record doesn't exist in database", async function() {
+      const response = await app.inject({
+        method: "GET",
+        url: "/artist/nonexistent-artist"
+      });
+
+      expect(response.statusCode).to.equal(404);
+    });
   });
 
   describe("POST /artist/:slug", function() {
@@ -151,6 +160,97 @@ describe("artist", function() {
 
         expect(JSON.parse(response.payload)[0].count).to.equal(11);
       });
+    });
+  });
+
+  describe("DELETE /artist", function() {
+    it("should delete artist database record", async function() {
+      const slug = "artist-1";
+
+      const beforeResponse = await app.inject({
+        method: "GET",
+        url: `/artist/${slug}`
+      });
+
+      expect(JSON.parse(beforeResponse.payload).id).to.equal(1);
+
+      await app.inject({
+        method: "DELETE",
+        url: "/artist",
+        payload: {
+          id: 1
+        }
+      });
+
+      const afterResponse = await app.inject({
+        method: "GET",
+        url: `/artist/${slug}`
+      });
+
+      expect(afterResponse.statusCode).to.equal(404);
+    });
+
+    it("should return 404 when trying to delete artist that doesn’t exist", async function() {
+      const response = await app.inject({
+        method: "DELETE",
+        url: "/artist",
+        payload: {
+          id: 12
+        }
+      });
+
+      expect(response.statusCode).to.equal(404);
+    });
+  });
+
+  describe("POST /artist", function() {
+    it("should add artist record to database", async function() {
+      const slug = "artist-1000";
+
+      const beforeResponse = await app.inject({
+        method: "GET",
+        url: `/artist/${slug}`
+      });
+
+      expect(beforeResponse.statusCode).to.equal(404);
+
+      const artist = await app.inject({
+        method: "POST",
+        url: "/artist",
+        payload: {
+          name: "Artist 1000",
+          description: "Test description"
+        }
+      });
+
+      expect(JSON.parse(artist.payload).slug).to.equal(slug);
+    });
+
+    it("should increment artist slug when name is same as another artist", async function() {
+      const name = "Artist 1001";
+      const slug = "artist-1001";
+
+      const firstArtist = await app.inject({
+        method: "POST",
+        url: "/artist",
+        payload: {
+          name: name,
+          description: "Test description"
+        }
+      });
+
+      expect(JSON.parse(firstArtist.payload).slug).to.equal(slug);
+
+      const secondArtist = await app.inject({
+        method: "POST",
+        url: "/artist",
+        payload: {
+          name: name,
+          description: "Test description"
+        }
+      });
+
+      expect(JSON.parse(secondArtist.payload).slug).to.equal(`${slug}-1`);
     });
   });
 });

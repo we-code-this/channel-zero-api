@@ -1,4 +1,5 @@
 import moment from "moment";
+import slug from "slug";
 import knex from "../lib/connection";
 import Artist from "./Artist";
 
@@ -72,6 +73,38 @@ class ArtistCollection {
     } else {
       return { errors: artist.validationErrors() };
     }
+  }
+
+  async delete(id) {
+    return await knex(this.tablename)
+      .where("id", id)
+      .del();
+  }
+
+  async create(data) {
+    const artist = { ...data };
+
+    const result = await knex
+      .count("name as count")
+      .from(this.tablename)
+      .where("name", artist.name)
+      .limit(1);
+
+    const count = result[0].count;
+
+    if (count > 0) {
+      artist.slug = slug(`${artist.name} ${count}`, { lower: true });
+    } else {
+      artist.slug = slug(artist.name, { lower: true });
+    }
+
+    const id = await knex(this.tablename).insert(artist, ["id"]);
+
+    const returnedArtist = await knex(this.tablename)
+      .where("id", id[0])
+      .limit(1);
+
+    return await this.findBySlug(returnedArtist[0].slug);
   }
 }
 
