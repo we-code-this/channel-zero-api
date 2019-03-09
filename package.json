@@ -34,8 +34,8 @@
     "moment": "^2.24.0",
     "mysql2": "^1.6.4",
     "slug": "^1.0.0",
-    "string": "^3.3.3",
     "strip-js": "^1.2.0",
+    "striptags": "^3.1.1",
     "validator": "^10.11.0"
   },
   "devDependencies": {

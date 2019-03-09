@@ -82,29 +82,30 @@ class ArtistCollection {
   }
 
   async create(data) {
-    const artist = { ...data };
+    const artistData = { ...data };
 
-    const result = await knex
-      .count("name as count")
-      .from(this.tablename)
-      .where("name", artist.name)
-      .limit(1);
+    const artist = new Artist(artistData, true);
+    const isValid = artist.valid();
+    await artist.generateSlug();
 
-    const count = result[0].count;
+    if (isValid) {
+      const id = await knex(this.tablename).insert(
+        {
+          name: artist.name,
+          slug: artist.slug,
+          description: artist.description
+        },
+        ["id"]
+      );
 
-    if (count > 0) {
-      artist.slug = slug(`${artist.name} ${count}`, { lower: true });
+      const returnedArtist = await knex(this.tablename)
+        .where("id", id[0])
+        .limit(1);
+
+      return await this.findBySlug(returnedArtist[0].slug);
     } else {
-      artist.slug = slug(artist.name, { lower: true });
+      return { errors: artist.validationErrors() };
     }
-
-    const id = await knex(this.tablename).insert(artist, ["id"]);
-
-    const returnedArtist = await knex(this.tablename)
-      .where("id", id[0])
-      .limit(1);
-
-    return await this.findBySlug(returnedArtist[0].slug);
   }
 }
 

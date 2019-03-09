@@ -1,11 +1,12 @@
 import Model from "./Model";
 import validator from "validator";
-import { sanitize } from "../lib/strings";
+import { sanitize, slugify } from "../lib/strings";
 
 class Artist extends Model {
-  constructor(data) {
+  constructor(data, create = false) {
     super(data);
 
+    this.create = create;
     this.description = sanitize(this.description);
     this.errors = [];
   }
@@ -20,6 +21,12 @@ class Artist extends Model {
     }
 
     return valid;
+  }
+
+  async generateSlug() {
+    if (this.create) {
+      this.slug = await slugify(this.name, "artists", "name");
+    }
   }
 
   validationErrors() {

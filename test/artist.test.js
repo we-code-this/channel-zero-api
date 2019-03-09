@@ -252,5 +252,20 @@ describe("artist", function() {
 
       expect(JSON.parse(secondArtist.payload).slug).to.equal(`${slug}-1`);
     });
+
+    it("should sanitize description", async function() {
+      const response = await app.inject({
+        method: "POST",
+        url: "/artist",
+        payload: {
+          name: "Artist 1002",
+          description: "<script>console.log('yo')</script> artist description"
+        }
+      });
+
+      expect(JSON.parse(response.payload).description).to.equal(
+        "artist description"
+      );
+    });
   });
 });
