@@ -12,7 +12,8 @@ class ArtistImageQuery {
   async create(data) {
     const imageData = { ...data };
     const artistImage = new ArtistImage(imageData, true);
-    if (artistImage.valid() && artistImage.saveFile()) {
+    const isValid = artistImage.valid();
+    if (isValid && artistImage.saveFile()) {
       const id = await knex(this.tablename).insert(
         {
           artist_id: artistImage.artist_id,
@@ -24,6 +25,8 @@ class ArtistImageQuery {
       return (await knex(this.tablename)
         .where("id", id[0])
         .limit(1))[0];
+    } else {
+      return { errors: artistImage.validationErrors() };
     }
   }
 }

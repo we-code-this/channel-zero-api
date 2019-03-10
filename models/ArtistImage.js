@@ -28,6 +28,11 @@ class ArtistImage extends Model {
     try {
       type = fileType(this.image.data);
     } catch (e) {
+      this.errors.push({
+        field: "image",
+        message: "Invalid image file. Accepted: jpg, jpeg, png"
+      });
+
       return false;
     }
     this.extension = type.ext;

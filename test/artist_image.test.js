@@ -43,5 +43,22 @@ describe("artist_image", function() {
 
       expect(fs.existsSync(destPath)).to.be.true;
     });
+
+    it("should return error without an image", async function() {
+      let form = new FormData();
+      form.append("artist_id", 1);
+
+      let opts = {
+        url: "/artist/image",
+        method: "POST",
+        payload: form,
+        headers: form.getHeaders()
+      };
+
+      const response = await app.inject(opts);
+
+      expect(JSON.parse(response.payload)).to.have.property("errors");
+      expect(JSON.parse(response.payload).errors[0].field).to.equal("image");
+    });
   });
 });

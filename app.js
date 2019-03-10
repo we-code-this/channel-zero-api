@@ -11,7 +11,7 @@ import VendorQuery from "./models/VendorQuery";
 import ArtistImageQuery from "./models/ArtistImageQuery";
 import pino from "pino";
 
-const logging = "silent";
+const logging = "info";
 const log = pino({
   level: logging,
   prettyPrint: { colorize: true }
@@ -33,12 +33,22 @@ function buildApp() {
 
   fastify.post("/artist/image", async function(req, reply) {
     const files = await req.raw.files;
-    const image = await new ArtistImageQuery().create({
-      image: files.image,
+    let image;
+
+    if (files) {
+      image = files.image;
+    }
+
+    const resultImage = await new ArtistImageQuery().create({
+      image: image,
       artist_id: req.raw.body.artist_id
     });
 
-    reply.send(image);
+    if (resultImage) {
+      reply.send(resultImage);
+    } else {
+      reply.status(500).send();
+    }
   });
 
   fastify.get("/artist/:slug", async function(req, reply) {
