@@ -1,6 +1,6 @@
 import chai from "chai";
 import path from "path";
-import fs from "fs";
+import fs from "fs-extra";
 import rimraf from "rimraf";
 import FormData from "form-data";
 import { default as buildApp } from "../app";
