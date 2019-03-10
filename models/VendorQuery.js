@@ -1,7 +1,7 @@
 import knex from "../lib/connection";
 import Vendor from "./Vendor";
 
-class VendorCollection {
+class VendorQuery {
   constructor() {
     this.tablename = "vendors";
     this.items = null;
@@ -24,4 +24,4 @@ class VendorCollection {
   }
 }
 
-export default VendorCollection;
+export default VendorQuery;

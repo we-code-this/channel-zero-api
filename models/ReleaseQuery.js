@@ -1,7 +1,7 @@
 import knex from "../lib/connection";
 import Release from "./Release";
 
-class ReleaseCollection {
+class ReleaseQuery {
   constructor() {
     this.tablename = "releases";
     this.items = undefined;
@@ -49,4 +49,4 @@ class ReleaseCollection {
   }
 }
 
-export default ReleaseCollection;
+export default ReleaseQuery;

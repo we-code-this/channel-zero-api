@@ -1,7 +1,7 @@
 import knex from "../lib/connection";
 import Article from "./Article";
 
-class ArticleCollection {
+class ArticleQuery {
   constructor() {
     this.tablename = "articles";
     this.items = undefined;
@@ -30,4 +30,4 @@ class ArticleCollection {
   }
 }
 
-export default ArticleCollection;
+export default ArticleQuery;

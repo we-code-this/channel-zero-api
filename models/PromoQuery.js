@@ -1,7 +1,7 @@
 import knex from "../lib/connection";
 import Promo from "./Promo";
 
-class PromoCollection {
+class PromoQuery {
   constructor() {
     this.tablename = "promos";
     this.items = undefined;
@@ -30,4 +30,4 @@ class PromoCollection {
   }
 }
 
-export default PromoCollection;
+export default PromoQuery;

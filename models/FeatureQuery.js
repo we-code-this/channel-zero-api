@@ -1,7 +1,7 @@
 import knex from "../lib/connection";
 import Feature from "./Feature";
 
-class FeatureCollection {
+class FeatureQuery {
   constructor() {
     this.tablename = "features";
     this.items = undefined;
@@ -51,4 +51,4 @@ class FeatureCollection {
   }
 }
 
-export default FeatureCollection;
+export default FeatureQuery;

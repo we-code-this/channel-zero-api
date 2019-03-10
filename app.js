@@ -1,12 +1,14 @@
 import Fastify from "fastify";
+import fileUpload from "fastify-file-upload";
 import cors from "fastify-cors";
 import Ad from "./models/Ad";
-import ArticleCollection from "./models/ArticleCollection";
-import ArtistCollection from "./models/ArtistCollection";
-import FeatureCollection from "./models/FeatureCollection";
-import PromoCollection from "./models/PromoCollection";
-import ReleaseCollection from "./models/ReleaseCollection";
-import VendorCollection from "./models/VendorCollection";
+import ArticleQuery from "./models/ArticleQuery";
+import ArtistQuery from "./models/ArtistQuery";
+import FeatureQuery from "./models/FeatureQuery";
+import PromoQuery from "./models/PromoQuery";
+import ReleaseQuery from "./models/ReleaseQuery";
+import VendorQuery from "./models/VendorQuery";
+import ArtistImageQuery from "./models/ArtistImageQuery";
 import pino from "pino";
 
 const logging = "silent";
@@ -19,14 +21,28 @@ function buildApp() {
   const fastify = Fastify({ logger: log });
 
   fastify.register(cors, { origin: process.env.CLIENT_ORIGIN });
+  fastify.register(fileUpload, {
+    useTempFiles: true,
+    tempFileDir: "/tmp/"
+  });
 
   fastify.get("/a", async function(req, reply) {
     const ads = await new Ad().random();
     reply.send(ads);
   });
 
+  fastify.post("/artist/image", async function(req, reply) {
+    const files = await req.raw.files;
+    const image = await new ArtistImageQuery().create({
+      image: files.image,
+      artist_id: req.raw.body.artist_id
+    });
+
+    reply.send(image);
+  });
+
   fastify.get("/artist/:slug", async function(req, reply) {
-    const artist = await new ArtistCollection().findBySlug(req.params.slug);
+    const artist = await new ArtistQuery().findBySlug(req.params.slug);
 
     if (artist) {
       reply.send(artist);
@@ -36,7 +52,7 @@ function buildApp() {
   });
 
   fastify.post("/artist/:slug", async function(req, reply) {
-    const updatedArtist = await new ArtistCollection().updateBySlug(
+    const updatedArtist = await new ArtistQuery().updateBySlug(
       req.params.slug,
       req.body
     );
@@ -44,7 +60,7 @@ function buildApp() {
   });
 
   fastify.delete("/artist", async function(req, reply) {
-    const deleted = await new ArtistCollection().delete(req.body.id);
+    const deleted = await new ArtistQuery().delete(req.body.id);
 
     if (deleted) {
       reply.send(deleted);
@@ -54,7 +70,7 @@ function buildApp() {
   });
 
   fastify.post("/artist", async function(req, reply) {
-    const artist = await new ArtistCollection().create(req.body);
+    const artist = await new ArtistQuery().create(req.body);
 
     if (artist) {
       reply.send(artist);
@@ -67,7 +83,7 @@ function buildApp() {
     req,
     reply
   ) {
-    const artists = await new ArtistCollection().get({
+    const artists = await new ArtistQuery().get({
       offset: req.params.offset,
       limit: req.params.limit,
       order: req.params.order
@@ -76,7 +92,7 @@ function buildApp() {
   });
 
   fastify.get("/artists/:limit/:order", async function(req, reply) {
-    const artists = await new ArtistCollection().get({
+    const artists = await new ArtistQuery().get({
       limit: req.params.limit,
       order: req.params.order
     });
@@ -84,24 +100,24 @@ function buildApp() {
   });
 
   fastify.get("/artists/count", async function(req, reply) {
-    const count = await new ArtistCollection().count();
+    const count = await new ArtistQuery().count();
     reply.send(count);
   });
 
   fastify.get("/artists/:limit", async function(req, reply) {
-    const artists = await new ArtistCollection().get({
+    const artists = await new ArtistQuery().get({
       limit: req.params.limit
     });
     reply.send(artists);
   });
 
   fastify.get("/artists", async function(req, reply) {
-    const artists = await new ArtistCollection().get();
+    const artists = await new ArtistQuery().get();
     reply.send(artists);
   });
 
   fastify.get("/articles/:limit/:order", async function(req, reply) {
-    const articles = await new ArticleCollection().get({
+    const articles = await new ArticleQuery().get({
       limit: req.params.limit,
       order: req.params.order
     });
@@ -109,19 +125,19 @@ function buildApp() {
   });
 
   fastify.get("/articles/:limit", async function(req, reply) {
-    const articles = await new ArticleCollection().get({
+    const articles = await new ArticleQuery().get({
       limit: req.params.limit
     });
     reply.send(articles);
   });
 
   fastify.get("/articles", async function(req, reply) {
-    const articles = await new ArticleCollection().get();
+    const articles = await new ArticleQuery().get();
     reply.send(articles);
   });
 
   fastify.get("/promos/:location/:limit", async function(req, reply) {
-    const promos = await new PromoCollection().get({
+    const promos = await new PromoQuery().get({
       location: req.params.location,
       limit: req.params.limit
     });
@@ -129,19 +145,19 @@ function buildApp() {
   });
 
   fastify.get("/promos/:location", async function(req, reply) {
-    const promos = await new PromoCollection().get({
+    const promos = await new PromoQuery().get({
       location: req.params.location
     });
     reply.send(promos);
   });
 
   fastify.get("/promos", async function(req, reply) {
-    const promos = await new PromoCollection().get();
+    const promos = await new PromoQuery().get();
     reply.send(promos);
   });
 
   fastify.get("/releases/:limit/:order", async function(req, reply) {
-    const releases = await new ReleaseCollection().get({
+    const releases = await new ReleaseQuery().get({
       limit: req.params.limit,
       order: req.params.order
     });
@@ -150,24 +166,24 @@ function buildApp() {
   });
 
   fastify.get("/releases/:limit", async function(req, reply) {
-    const releases = await new ReleaseCollection().get({
+    const releases = await new ReleaseQuery().get({
       limit: req.params.limit
     });
     reply.send(releases);
   });
 
   fastify.get("/releases", async function(req, reply) {
-    const releases = await new ReleaseCollection().get();
+    const releases = await new ReleaseQuery().get();
     reply.send(releases);
   });
 
   fastify.get("/release/:slug", async function(req, reply) {
-    const release = await new ReleaseCollection().findBySlug(req.params.slug);
+    const release = await new ReleaseQuery().findBySlug(req.params.slug);
     reply.send(release);
   });
 
   fastify.get("/features/:limit/:order", async function(req, reply) {
-    const features = await new FeatureCollection().get({
+    const features = await new FeatureQuery().get({
       limit: req.params.limit,
       order: req.params.order
     });
@@ -175,24 +191,24 @@ function buildApp() {
   });
 
   fastify.get("/features/:limit", async function(req, reply) {
-    const features = await new FeatureCollection().get({
+    const features = await new FeatureQuery().get({
       limit: req.params.limit
     });
     reply.send(features);
   });
 
   fastify.get("/features", async function(req, reply) {
-    const features = await new FeatureCollection().get();
+    const features = await new FeatureQuery().get();
     reply.send(features);
   });
 
   fastify.get("/feature", async function(req, reply) {
-    const feature = await new FeatureCollection().current();
+    const feature = await new FeatureQuery().current();
     reply.send(feature);
   });
 
   fastify.get("/vendors", async function(req, reply) {
-    const vendors = await new VendorCollection().all();
+    const vendors = await new VendorQuery().all();
     reply.send(vendors);
   });
 

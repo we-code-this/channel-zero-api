@@ -3,12 +3,10 @@ import validator from "validator";
 import { sanitize, slugify } from "../lib/strings";
 
 class Artist extends Model {
-  constructor(data, create = false) {
-    super(data);
+  constructor(data, create) {
+    super(data, create);
 
-    this.create = create;
     this.description = sanitize(this.description);
-    this.errors = [];
   }
 
   valid() {

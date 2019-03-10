@@ -1,9 +1,8 @@
 import moment from "moment";
-import slug from "slug";
 import knex from "../lib/connection";
 import Artist from "./Artist";
 
-class ArtistCollection {
+class ArtistQuery {
   constructor() {
     this.tablename = "artists";
     this.items = undefined;
@@ -109,4 +108,4 @@ class ArtistCollection {
   }
 }
 
-export default ArtistCollection;
+export default ArtistQuery;
