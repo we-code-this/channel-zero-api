@@ -45,7 +45,11 @@ class ReleaseQuery {
   async findBySlug(slug) {
     const res = await this.select().where(`${this.tablename}.slug`, slug);
 
-    return new Release(res[0]).withRelated();
+    if (res.length > 0) {
+      return new Release(res[0]).withRelated();
+    } else {
+      return undefined;
+    }
   }
 }
 

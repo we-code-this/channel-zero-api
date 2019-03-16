@@ -1,5 +1,6 @@
 import Model from "./Model";
 import validator from "validator";
+import ArtistImages from "./ArtistImageQuery";
 import { sanitize, slugify } from "../lib/strings";
 
 class Artist extends Model {
@@ -7,6 +8,19 @@ class Artist extends Model {
     super(data, create);
 
     this.description = sanitize(this.description);
+    this.images = undefined;
+  }
+
+  async withRelated() {
+    await this.withImages();
+
+    return this;
+  }
+
+  async withImages() {
+    this.images = await new ArtistImages().findByArtist(this.id);
+
+    return this;
   }
 
   valid() {

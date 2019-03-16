@@ -1,7 +1,11 @@
 import chai from "chai";
+import path from "path";
+import fs from "fs-extra";
+import FormData from "form-data";
 import { default as buildApp } from "../app";
 
 const expect = chai.expect;
+const filePath = path.join(__dirname, "test.png");
 
 describe("artist", function() {
   let app;
@@ -33,6 +37,49 @@ describe("artist", function() {
       });
 
       expect(response.statusCode).to.equal(404);
+    });
+
+    describe("artist image relationship", function() {
+      it("should return the artist with images property", async function() {
+        const response = await app.inject({
+          method: "GET",
+          url: "/artist/artist-1"
+        });
+
+        expect(JSON.parse(response.payload)).to.have.property("images");
+      });
+
+      it("should return the artist with an images property that's an array", async function() {
+        const response = await app.inject({
+          method: "GET",
+          url: "/artist/artist-1"
+        });
+
+        expect(JSON.parse(response.payload).images).to.be.an.instanceof(Array);
+      });
+
+      it("should return the artist with 1 image", async function() {
+        let form = new FormData();
+        let rs = fs.createReadStream(filePath);
+        form.append("image", rs);
+        form.append("artist_id", 1);
+
+        let opts = {
+          url: "/artist/image",
+          method: "POST",
+          payload: form,
+          headers: form.getHeaders()
+        };
+
+        await app.inject(opts);
+
+        const response = await app.inject({
+          method: "GET",
+          url: "/artist/artist-1"
+        });
+
+        expect(JSON.parse(response.payload).images.length).to.equal(1);
+      });
     });
   });
 
@@ -125,6 +172,7 @@ describe("artist", function() {
           method: "GET",
           url: "/artists/1/desc"
         });
+
         expect(JSON.parse(response.payload)[0].id).to.equal(11);
       });
 

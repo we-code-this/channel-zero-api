@@ -24,9 +24,11 @@ class ArtistQuery {
       .offset(offset)
       .orderBy("created_at", order);
 
-    this.items = results.map(function(record) {
-      return new Artist(record);
-    });
+    this.items = await Promise.all(
+      results.map(async function(record) {
+        return await new Artist(record).withRelated();
+      })
+    );
 
     return this.items;
   }
@@ -42,9 +44,11 @@ class ArtistQuery {
       .where("slug", slug)
       .limit(1);
 
-    this.items = result[0];
-
-    return this.items;
+    if (result.length > 0) {
+      return await new Artist(result[0]).withRelated();
+    } else {
+      return undefined;
+    }
   }
 
   async updateBySlug(slug, updatedFields) {

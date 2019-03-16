@@ -29,6 +29,12 @@ class ArtistImageQuery {
       return { errors: artistImage.validationErrors() };
     }
   }
+
+  async findByArtist(id) {
+    return (await knex(this.tablename).where("artist_id", id)).map(image => {
+      return new ArtistImage(image);
+    });
+  }
 }
 
 export default ArtistImageQuery;
