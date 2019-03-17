@@ -13,6 +13,10 @@ class ArtistImage extends Model {
     this.extension = undefined;
   }
 
+  setImage(image) {
+    this.image = image;
+  }
+
   valid() {
     let valid = false;
 

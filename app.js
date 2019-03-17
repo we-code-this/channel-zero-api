@@ -51,6 +51,26 @@ function buildApp() {
     }
   });
 
+  fastify.patch("/artist/image", async function(req, reply) {
+    const files = await req.raw.files;
+    let image;
+
+    if (files) {
+      image = files.image;
+    }
+
+    const resultImage = await new ArtistImageQuery().update({
+      image: image,
+      id: req.raw.body.id
+    });
+
+    if (resultImage) {
+      reply.send(resultImage);
+    } else {
+      reply.status(500).send();
+    }
+  });
+
   fastify.get("/artist/:slug", async function(req, reply) {
     const artist = await new ArtistQuery().findBySlug(req.params.slug);
 

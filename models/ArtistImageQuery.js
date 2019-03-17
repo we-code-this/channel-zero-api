@@ -30,6 +30,26 @@ class ArtistImageQuery {
     }
   }
 
+  async update(data) {
+    const imageData = { ...data };
+
+    const artistImage = await this.findById(imageData.id);
+    artistImage.setImage(imageData.image);
+    const isValid = artistImage.valid();
+
+    if (isValid && artistImage.saveFile()) {
+      return (await knex(this.tablename)
+        .where("id", imageData.id)
+        .limit(1))[0];
+    } else {
+      return { errors: artistImage.validationErrors() };
+    }
+  }
+
+  async findById(id) {
+    return new ArtistImage((await knex(this.tablename).where("id", id))[0]);
+  }
+
   async findByArtist(id) {
     return (await knex(this.tablename).where("artist_id", id)).map(image => {
       return new ArtistImage(image);
