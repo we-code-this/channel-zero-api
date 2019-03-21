@@ -46,8 +46,26 @@ class ArtistImageQuery {
     }
   }
 
+  async delete(id) {
+    const image = await this.findById(id);
+
+    if (image.deleteFile()) {
+      return await knex(this.tablename)
+        .where("id", id)
+        .del();
+    } else {
+      return false;
+    }
+  }
+
   async findById(id) {
-    return new ArtistImage((await knex(this.tablename).where("id", id))[0]);
+    const result = await knex(this.tablename).where("id", id);
+
+    if (result.length > 0) {
+      return await new ArtistImage(result[0]);
+    } else {
+      return undefined;
+    }
   }
 
   async findByArtist(id) {

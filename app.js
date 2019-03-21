@@ -71,6 +71,26 @@ function buildApp() {
     }
   });
 
+  fastify.delete("/artist/image", async function(req, reply) {
+    const deleted = await new ArtistImageQuery().delete(req.body.id);
+
+    if (deleted) {
+      reply.send(deleted);
+    } else {
+      reply.status(404).send();
+    }
+  });
+
+  fastify.get("/artist/image/:id", async function(req, reply) {
+    const image = await new ArtistImageQuery().findById(req.params.id);
+
+    if (image) {
+      reply.send(image);
+    } else {
+      reply.status(404).send();
+    }
+  });
+
   fastify.get("/artist/:slug", async function(req, reply) {
     const artist = await new ArtistQuery().findBySlug(req.params.slug);
 

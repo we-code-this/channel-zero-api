@@ -107,4 +107,72 @@ describe("artist_image", function() {
       expect(new_file).to.not.deep.equal(original_file);
     });
   });
+
+  describe("DELETE /artist/image", function() {
+    it("should delete an artist image", async function() {
+      let rs = fs.createReadStream(filePath);
+      let original_form = new FormData();
+      original_form.append("image", rs);
+      original_form.append("artist_id", 3);
+
+      let original_opts = {
+        url: "/artist/image",
+        method: "POST",
+        payload: original_form,
+        headers: original_form.getHeaders()
+      };
+
+      const original_result = await app.inject(original_opts);
+      const original_image = JSON.parse(original_result.payload);
+      const filename = original_image.filename;
+      const destPath = path.join(artistsDir, filename);
+
+      expect(fs.existsSync(destPath)).to.be.true;
+
+      await app.inject({
+        method: "DELETE",
+        url: "/artist/image",
+        payload: {
+          id: original_image.id
+        }
+      });
+
+      expect(fs.existsSync(destPath)).to.not.be.true;
+
+      const afterResponse = await app.inject({
+        method: "GET",
+        url: `/artist/image/${original_image.id}`
+      });
+
+      expect(afterResponse.statusCode).to.equal(404);
+    });
+  });
+
+  describe("GET /artist/image/:id", function() {
+    it("should retrieve image from db", async function() {
+      let form = new FormData();
+      let rs = fs.createReadStream(filePath);
+      form.append("image", rs);
+      form.append("artist_id", 1);
+
+      let opts = {
+        url: "/artist/image",
+        method: "POST",
+        payload: form,
+        headers: form.getHeaders()
+      };
+
+      const image_result = await app.inject(opts);
+      const image = JSON.parse(image_result.payload);
+      const response = await app.inject({
+        method: "GET",
+        url: `/artist/image/${image.id}`
+      });
+
+      const result = JSON.parse(response.payload);
+
+      expect(result).to.have.property("id");
+      expect(result).to.have.property("filename");
+    });
+  });
 });

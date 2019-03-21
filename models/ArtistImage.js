@@ -2,7 +2,7 @@ import fs from "fs-extra";
 import path from "path";
 import fileType from "file-type";
 import crypto from "crypto";
-import { fileRoot, assetDirectories, saveFile } from "../lib/files";
+import { fileRoot, assetDirectories, saveFile, deleteFile } from "../lib/files";
 import Model from "./Model";
 
 class ArtistImage extends Model {
@@ -86,6 +86,10 @@ class ArtistImage extends Model {
     }
 
     return true;
+  }
+
+  deleteFile() {
+    return deleteFile("artists", this.filename);
   }
 }
 
