@@ -69,7 +69,7 @@ describe("GET /labels", function() {
     });
   });
 
-  describe.only("GET /labels/count", function() {
+  describe("GET /labels/count", function() {
     it("should return count of 11", async function() {
       const response = await app.inject({
         method: "GET",
