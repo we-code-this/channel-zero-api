@@ -37,6 +37,20 @@ class ArtistQuery {
     return await knex.count("* as count").from(this.tablename);
   }
 
+  async findById(id) {
+    const result = await knex
+      .select("*")
+      .from(this.tablename)
+      .where("id", id)
+      .limit(1);
+
+    if (result.length > 0) {
+      return await new Artist(result[0]).withRelated();
+    } else {
+      return undefined;
+    }
+  }
+
   async findBySlug(slug) {
     const result = await knex
       .select("*")
@@ -101,11 +115,7 @@ class ArtistQuery {
         ["id"]
       );
 
-      const returnedArtist = await knex(this.tablename)
-        .where("id", id[0])
-        .limit(1);
-
-      return await this.findBySlug(returnedArtist[0].slug);
+      return await this.findById(id[0]);
     } else {
       return { errors: artist.validationErrors() };
     }

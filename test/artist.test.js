@@ -315,5 +315,17 @@ describe("artist", function() {
         "artist description"
       );
     });
+
+    it("should sanitize name", async function() {
+      const response = await app.inject({
+        method: "POST",
+        url: "/artist",
+        payload: {
+          name: "<script>console.log('yo')</script> Artist 1002"
+        }
+      });
+
+      expect(JSON.parse(response.payload).name).to.equal("Artist 1002");
+    });
   });
 });

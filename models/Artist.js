@@ -7,6 +7,7 @@ class Artist extends Model {
   constructor(data, create) {
     super(data, create);
 
+    this.name = sanitize(this.name);
     this.description = sanitize(this.description);
     this.images = undefined;
   }

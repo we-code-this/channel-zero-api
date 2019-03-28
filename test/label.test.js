@@ -132,11 +132,11 @@ describe("GET /labels", function() {
         method: "POST",
         url: "/label",
         payload: {
-          name: "<script>console.log('yo')</script> Artist 1002"
+          name: "<script>console.log('yo')</script> Label 1002"
         }
       });
 
-      expect(JSON.parse(response.payload).name).to.equal("Artist 1002");
+      expect(JSON.parse(response.payload).name).to.equal("Label 1002");
     });
   });
 });
