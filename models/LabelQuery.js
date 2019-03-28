@@ -29,6 +29,56 @@ class LabelQuery {
   async count() {
     return await knex.count("* as count").from(this.tablename);
   }
+
+  async create(data) {
+    const labelData = { ...data };
+
+    const label = new Label(labelData, true);
+    const isValid = label.valid();
+    await label.generateSlug();
+
+    if (isValid) {
+      const id = await knex(this.tablename).insert(
+        {
+          name: label.name,
+          slug: label.slug
+        },
+        ["id"]
+      );
+
+      return await this.findById(id[0]);
+    } else {
+      return { errors: label.validationErrors() };
+    }
+  }
+
+  async findById(id) {
+    const result = await knex
+      .select("*")
+      .from(this.tablename)
+      .where("id", id)
+      .limit(1);
+
+    if (result.length > 0) {
+      return new Label(result[0]);
+    } else {
+      return undefined;
+    }
+  }
+
+  async findBySlug(slug) {
+    const result = await knex
+      .select("*")
+      .from(this.tablename)
+      .where("slug", slug)
+      .limit(1);
+
+    if (result.length > 0) {
+      return new Label(result[0]);
+    } else {
+      return undefined;
+    }
+  }
 }
 
 export default LabelQuery;

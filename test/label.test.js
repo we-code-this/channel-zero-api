@@ -79,4 +79,64 @@ describe("GET /labels", function() {
       expect(JSON.parse(response.payload)[0].count).to.equal(11);
     });
   });
+
+  describe("POST /label", function() {
+    it("should add label record to database", async function() {
+      const slug = "label-1000";
+
+      const beforeResponse = await app.inject({
+        method: "GET",
+        url: `/label/${slug}`
+      });
+
+      expect(beforeResponse.statusCode).to.equal(404);
+
+      const artist = await app.inject({
+        method: "POST",
+        url: "/label",
+        payload: {
+          name: "Label 1000"
+        }
+      });
+
+      expect(JSON.parse(artist.payload).slug).to.equal(slug);
+    });
+
+    it("should increment label slug when name is same as another label", async function() {
+      const name = "Label 1001";
+      const slug = "label-1001";
+
+      const firstLabel = await app.inject({
+        method: "POST",
+        url: "/label",
+        payload: {
+          name: name
+        }
+      });
+
+      expect(JSON.parse(firstLabel.payload).slug).to.equal(slug);
+
+      const secondLabel = await app.inject({
+        method: "POST",
+        url: "/label",
+        payload: {
+          name: name
+        }
+      });
+
+      expect(JSON.parse(secondLabel.payload).slug).to.equal(`${slug}-1`);
+    });
+
+    it("should sanitize name", async function() {
+      const response = await app.inject({
+        method: "POST",
+        url: "/label",
+        payload: {
+          name: "<script>console.log('yo')</script> Artist 1002"
+        }
+      });
+
+      expect(JSON.parse(response.payload).name).to.equal("Artist 1002");
+    });
+  });
 });

@@ -37,6 +37,16 @@ const routes = fastify => {
     const labels = await new LabelQuery().get();
     reply.send(labels);
   });
+
+  fastify.post("/label", async function(req, reply) {
+    const label = await new LabelQuery().create(req.body);
+
+    if (label) {
+      reply.send(label);
+    } else {
+      reply.status(500).send();
+    }
+  });
 };
 
 export default routes;
