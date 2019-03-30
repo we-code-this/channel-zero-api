@@ -11,7 +11,7 @@ const routes = fastify => {
     }
   });
 
-  fastify.post("/artist/:slug", async function(req, reply) {
+  fastify.patch("/artist/:slug", async function(req, reply) {
     const updatedArtist = await new ArtistQuery().updateBySlug(
       req.params.slug,
       req.body

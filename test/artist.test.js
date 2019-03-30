@@ -83,7 +83,7 @@ describe("artist", function() {
     });
   });
 
-  describe("POST /artist/:slug", function() {
+  describe.only("PATCH /artist/:slug", function() {
     it("should update artist database record", async function() {
       const getResponse = await app.inject({
         method: "GET",
@@ -97,7 +97,7 @@ describe("artist", function() {
       const newDescription = "new artist description";
 
       const response = await app.inject({
-        method: "POST",
+        method: "PATCH",
         url: "/artist/artist-1",
         payload: {
           description: newDescription
@@ -109,7 +109,7 @@ describe("artist", function() {
 
     it("should sanitize description", async function() {
       const response = await app.inject({
-        method: "POST",
+        method: "PATCH",
         url: "/artist/artist-1",
         payload: {
           description:
@@ -124,7 +124,7 @@ describe("artist", function() {
 
     it("should return name field error of 'Invalid length'", async function() {
       const response = await app.inject({
-        method: "POST",
+        method: "PATCH",
         url: "/artist/artist-1",
         payload: {
           name: ""
