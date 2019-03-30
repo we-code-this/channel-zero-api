@@ -38,6 +38,24 @@ const routes = fastify => {
     reply.send(labels);
   });
 
+  fastify.get("/label/:slug", async function(req, reply) {
+    const label = await new LabelQuery().findBySlug(req.params.slug);
+
+    if (label) {
+      reply.send(label);
+    } else {
+      reply.status(404).send();
+    }
+  });
+
+  fastify.patch("/label/:slug", async function(req, reply) {
+    const updatedLabel = await new LabelQuery().updateBySlug(
+      req.params.slug,
+      req.body
+    );
+    reply.send(updatedLabel);
+  });
+
   fastify.post("/label", async function(req, reply) {
     const label = await new LabelQuery().create(req.body);
 

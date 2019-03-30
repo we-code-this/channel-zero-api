@@ -83,7 +83,7 @@ describe("artist", function() {
     });
   });
 
-  describe.only("PATCH /artist/:slug", function() {
+  describe("PATCH /artist/:slug", function() {
     it("should update artist database record", async function() {
       const getResponse = await app.inject({
         method: "GET",

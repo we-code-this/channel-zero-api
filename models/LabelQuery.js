@@ -1,3 +1,4 @@
+import moment from "moment";
 import knex from "../lib/connection";
 import Label from "./Label";
 
@@ -77,6 +78,32 @@ class LabelQuery {
       return new Label(result[0]);
     } else {
       return undefined;
+    }
+  }
+
+  async updateBySlug(slug, updatedFields) {
+    const oldLabel = await this.findBySlug(slug);
+    const data = {
+      ...oldLabel,
+      ...updatedFields,
+      updated_at: moment().format("YYYY-MM-DD HH:mm:ss")
+    };
+
+    const label = new Label(data);
+
+    const isValid = label.valid();
+
+    if (isValid) {
+      await knex(this.tablename)
+        .where("slug", slug)
+        .update({
+          name: label.name,
+          updated_at: label.updated_at
+        });
+
+      return await this.findBySlug(slug);
+    } else {
+      return { errors: label.validationErrors() };
     }
   }
 }

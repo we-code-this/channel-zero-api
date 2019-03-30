@@ -80,6 +80,25 @@ describe("GET /labels", function() {
     });
   });
 
+  describe("GET /label/:slug", function() {
+    it("should return the label with a 'label-1' slug", async function() {
+      const response = await app.inject({
+        method: "GET",
+        url: "/label/label-1"
+      });
+      expect(JSON.parse(response.payload).slug).to.equal("label-1");
+    });
+
+    it("should return 404 if label record doesn't exist in database", async function() {
+      const response = await app.inject({
+        method: "GET",
+        url: "/label/nonexistent-label"
+      });
+
+      expect(response.statusCode).to.equal(404);
+    });
+  });
+
   describe("POST /label", function() {
     it("should add label record to database", async function() {
       const slug = "label-1000";
@@ -137,6 +156,59 @@ describe("GET /labels", function() {
       });
 
       expect(JSON.parse(response.payload).name).to.equal("Label 1002");
+    });
+  });
+
+  describe.only("PATCH /label/:slug", function() {
+    it("should update label database record", async function() {
+      const getResponse = await app.inject({
+        method: "GET",
+        url: "/label/label-11"
+      });
+
+      const label = JSON.parse(getResponse.payload);
+
+      expect(label.name).to.equal("Label 11");
+
+      const newName = "Updated Label Name";
+
+      const response = await app.inject({
+        method: "PATCH",
+        url: "/label/label-11",
+        payload: {
+          name: newName
+        }
+      });
+
+      expect(JSON.parse(response.payload).name).to.equal(newName);
+    });
+
+    it("should sanitize name", async function() {
+      const response = await app.inject({
+        method: "PATCH",
+        url: "/label/label-11",
+        payload: {
+          name: "<script>console.log('yo')</script> label name"
+        }
+      });
+
+      expect(JSON.parse(response.payload).name).to.equal("label name");
+    });
+
+    it("should return name field error of 'Invalid length'", async function() {
+      const response = await app.inject({
+        method: "PATCH",
+        url: "/label/label-11",
+        payload: {
+          name: ""
+        }
+      });
+
+      expect(JSON.parse(response.payload)).to.have.property("errors");
+      expect(JSON.parse(response.payload).errors[0].field).to.equal("name");
+      expect(JSON.parse(response.payload).errors[0].message).to.equal(
+        "Invalid length"
+      );
     });
   });
 });
