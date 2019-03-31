@@ -1,5 +1,5 @@
-import Model from "./Model";
 import validator from "validator";
+import Model from "./Model";
 import ArtistImages from "./ArtistImageQuery";
 import { sanitize, slugify } from "../lib/strings";
 

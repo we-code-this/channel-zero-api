@@ -24,7 +24,32 @@ const routes = fastify => {
 
   fastify.get("/release/:slug", async function(req, reply) {
     const release = await new ReleaseQuery().findBySlug(req.params.slug);
-    reply.send(release);
+
+    if (release) {
+      reply.send(release);
+    } else {
+      reply.status(404).send();
+    }
+  });
+
+  fastify.post("/release", async function(req, reply) {
+    const files = await req.raw.files;
+    let image;
+
+    if (files) {
+      image = files.image;
+    }
+
+    const release = await new ReleaseQuery().create({
+      ...req.raw.body,
+      image: image
+    });
+
+    if (release) {
+      reply.send(release);
+    } else {
+      reply.status(500).send();
+    }
   });
 };
 

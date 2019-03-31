@@ -26,6 +26,35 @@ class ReleaseQuery {
       .leftJoin("labels", `${this.tablename}.label_id`, "labels.id");
   }
 
+  async create(data) {
+    const releaseData = { ...data };
+    const release = new Release(releaseData, true);
+    const isValid = release.valid();
+    await release.generateSlug();
+
+    if (isValid && release.saveFile()) {
+      const id = await knex(this.tablename).insert(
+        {
+          artist_id: release.artist_id,
+          label_id: release.label_id,
+          title: release.title,
+          slug: release.slug,
+          description: release.description,
+          filename: release.filename
+        },
+        ["id"]
+      );
+
+      const res = (await this.select()
+        .where(`${this.tablename}.id`, id[0])
+        .limit(1))[0];
+
+      return new Release(res).withRelated();
+    } else {
+      return { errors: release.validationErrors() };
+    }
+  }
+
   async get(params = {}) {
     const limit = params.limit ? parseInt(params.limit) : 10;
     const order = params.order ? params.order.toUpperCase() : "DESC";

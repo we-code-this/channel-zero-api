@@ -82,14 +82,14 @@ class ArtistImage extends Model {
 
   saveFile() {
     if (this.image) {
-      return saveFile("artists", this.filename, this.image.data);
+      return saveFile(assetDirectories.artists, this.filename, this.image.data);
     }
 
     return true;
   }
 
   deleteFile() {
-    return deleteFile("artists", this.filename);
+    return deleteFile(assetDirectories.artists, this.filename);
   }
 }
 
