@@ -106,6 +106,12 @@ class LabelQuery {
       return { errors: label.validationErrors() };
     }
   }
+
+  async delete(id) {
+    return await knex(this.tablename)
+      .where("id", id)
+      .del();
+  }
 }
 
 export default LabelQuery;

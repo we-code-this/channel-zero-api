@@ -159,7 +159,7 @@ describe("GET /labels", function() {
     });
   });
 
-  describe.only("PATCH /label/:slug", function() {
+  describe("PATCH /label/:slug", function() {
     it("should update label database record", async function() {
       const getResponse = await app.inject({
         method: "GET",
@@ -209,6 +209,46 @@ describe("GET /labels", function() {
       expect(JSON.parse(response.payload).errors[0].message).to.equal(
         "Invalid length"
       );
+    });
+  });
+
+  describe("DELETE /label", function() {
+    it("should delete label database record", async function() {
+      const slug = "label-11";
+
+      const beforeResponse = await app.inject({
+        method: "GET",
+        url: `/label/${slug}`
+      });
+
+      expect(JSON.parse(beforeResponse.payload).id).to.equal(11);
+
+      await app.inject({
+        method: "DELETE",
+        url: "/label",
+        payload: {
+          id: 11
+        }
+      });
+
+      const afterResponse = await app.inject({
+        method: "GET",
+        url: `/label/${slug}`
+      });
+
+      expect(afterResponse.statusCode).to.equal(404);
+    });
+
+    it("should return 404 when trying to delete label that doesn’t exist", async function() {
+      const response = await app.inject({
+        method: "DELETE",
+        url: "/label",
+        payload: {
+          id: 1000
+        }
+      });
+
+      expect(response.statusCode).to.equal(404);
     });
   });
 });

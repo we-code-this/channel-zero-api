@@ -56,6 +56,16 @@ const routes = fastify => {
     reply.send(updatedLabel);
   });
 
+  fastify.delete("/label", async function(req, reply) {
+    const deleted = await new LabelQuery().delete(req.body.id);
+
+    if (deleted) {
+      reply.send(deleted);
+    } else {
+      reply.status(404).send();
+    }
+  });
+
   fastify.post("/label", async function(req, reply) {
     const label = await new LabelQuery().create(req.body);
 
