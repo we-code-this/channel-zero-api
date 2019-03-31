@@ -339,6 +339,50 @@ describe("releases", function() {
       expect(JSON.parse(release.payload).slug).to.equal(slug);
     });
 
+    it("should increment release slug when same slug already exists", async function() {
+      let firstRs = fs.createReadStream(filePath);
+      const title = "Release 1002";
+      const slug = "artist-2-release-1002";
+
+      let firstForm = new FormData();
+
+      firstForm.append("image", firstRs);
+      firstForm.append("artist_id", 2);
+      firstForm.append("label_id", 1);
+      firstForm.append("title", title);
+      firstForm.append("description", "Test description");
+
+      let firstOpts = {
+        url: "/release",
+        method: "POST",
+        payload: firstForm,
+        headers: firstForm.getHeaders()
+      };
+
+      const firstRelease = await app.inject(firstOpts);
+
+      expect(JSON.parse(firstRelease.payload).slug).to.equal(slug);
+
+      let secondRs = fs.createReadStream(filePath);
+      let secondForm = new FormData();
+      secondForm.append("image", secondRs);
+      secondForm.append("artist_id", 2);
+      secondForm.append("label_id", 1);
+      secondForm.append("title", title);
+      secondForm.append("description", "Test description");
+
+      let secondOpts = {
+        url: "/release",
+        method: "POST",
+        payload: secondForm,
+        headers: secondForm.getHeaders()
+      };
+
+      const secondRelease = await app.inject(secondOpts);
+
+      expect(JSON.parse(secondRelease.payload).slug).to.equal(`${slug}-1`);
+    });
+
     it("should return error without an image", async function() {
       let form = new FormData();
       form.append("artist_id", 2);
