@@ -55,6 +55,10 @@ class ReleaseQuery {
     }
   }
 
+  async count() {
+    return await knex.count("* as count").from(this.tablename);
+  }
+
   async get(params = {}) {
     const limit = params.limit ? parseInt(params.limit) : 10;
     const order = params.order ? params.order.toUpperCase() : "DESC";

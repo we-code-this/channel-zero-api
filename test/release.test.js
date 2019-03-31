@@ -303,6 +303,17 @@ describe("releases", function() {
         });
       });
     });
+
+    describe.only("GET /releases/count", function() {
+      it("should return count of 11", async function() {
+        const response = await app.inject({
+          method: "GET",
+          url: "/releases/count"
+        });
+
+        expect(JSON.parse(response.payload)[0].count).to.equal(11);
+      });
+    });
   });
 
   describe("POST /release", function() {

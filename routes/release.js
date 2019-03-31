@@ -10,6 +10,11 @@ const routes = fastify => {
     reply.send(releases);
   });
 
+  fastify.get("/releases/count", async function(req, reply) {
+    const count = await new ReleaseQuery().count();
+    reply.send(count);
+  });
+
   fastify.get("/releases/:limit", async function(req, reply) {
     const releases = await new ReleaseQuery().get({
       limit: req.params.limit
