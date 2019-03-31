@@ -1,6 +1,18 @@
 import ReleaseQuery from "../models/ReleaseQuery";
 
 const routes = fastify => {
+  fastify.get("/releases/range/:offset/:limit/:order", async function(
+    req,
+    reply
+  ) {
+    const releases = await new ReleaseQuery().get({
+      offset: req.params.offset,
+      limit: req.params.limit,
+      order: req.params.order
+    });
+    reply.send(releases);
+  });
+
   fastify.get("/releases/:limit/:order", async function(req, reply) {
     const releases = await new ReleaseQuery().get({
       limit: req.params.limit,

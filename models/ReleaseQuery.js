@@ -60,12 +60,14 @@ class ReleaseQuery {
   }
 
   async get(params = {}) {
+    const offset = params.offset ? parseInt(params.offset) : 0;
     const limit = params.limit ? parseInt(params.limit) : 10;
     const order = params.order ? params.order.toUpperCase() : "DESC";
 
     const res = await this.select()
       .where(`${this.tablename}.published`, true)
       .limit(limit)
+      .offset(offset)
       .orderBy("created_at", order);
 
     return Promise.all(
