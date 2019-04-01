@@ -13,6 +13,11 @@ const routes = fastify => {
     reply.send(labels);
   });
 
+  fastify.get("/labels/by/name", async function(req, reply) {
+    const labels = await new LabelQuery().getByName();
+    reply.send(labels);
+  });
+
   fastify.get("/labels/:limit/:order", async function(req, reply) {
     const labels = await new LabelQuery().get({
       limit: req.params.limit,

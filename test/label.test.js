@@ -69,6 +69,21 @@ describe("GET /labels", function() {
     });
   });
 
+  describe("GET /labels/by/name", function() {
+    it("should return all labels sorted by name", async function() {
+      const response = await app.inject({
+        method: "GET",
+        url: "/labels/by/name"
+      });
+
+      const results = JSON.parse(response.payload);
+
+      expect(results[0].name).to.equal("Label 1");
+      expect(results[1].name).to.equal("Label 10");
+      expect(results[2].name).to.equal("Label 11");
+    });
+  });
+
   describe("GET /labels/count", function() {
     it("should return count of 11", async function() {
       const response = await app.inject({
