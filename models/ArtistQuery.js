@@ -33,6 +33,25 @@ class ArtistQuery {
     return this.items;
   }
 
+  async getByName() {
+    if (this.items) {
+      return items;
+    }
+
+    const results = await knex
+      .select("*")
+      .from(this.tablename)
+      .orderBy("name", "ASC");
+
+    this.items = await Promise.all(
+      results.map(async function(record) {
+        return await new Artist(record).withRelated();
+      })
+    );
+
+    return this.items;
+  }
+
   async count() {
     return await knex.count("* as count").from(this.tablename);
   }

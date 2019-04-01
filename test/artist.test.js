@@ -199,6 +199,21 @@ describe("artist", function() {
       });
     });
 
+    describe("GET /artists/by/name", function() {
+      it("should return all artists sorted by name", async function() {
+        const response = await app.inject({
+          method: "GET",
+          url: "/artists/by/name"
+        });
+
+        const results = JSON.parse(response.payload);
+
+        expect(results[0].name).to.equal("Artist 1");
+        expect(results[1].name).to.equal("Artist 10");
+        expect(results[2].name).to.equal("Artist 11");
+      });
+    });
+
     describe("GET /artists/count", function() {
       it("should return count of 11", async function() {
         const response = await app.inject({

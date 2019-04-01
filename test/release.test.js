@@ -304,7 +304,7 @@ describe("releases", function() {
       });
     });
 
-    describe.only("GET /releases/range/:offset/:limit/:order", function() {
+    describe("GET /releases/range/:offset/:limit/:order", function() {
       it("should return release with id of 11 with offset 1, limit 10 and order 'asc'", async function() {
         const response = await app.inject({
           method: "GET",

@@ -51,6 +51,11 @@ const routes = fastify => {
     reply.send(artists);
   });
 
+  fastify.get("/artists/by/name", async function(req, reply) {
+    const artists = await new ArtistQuery().getByName();
+    reply.send(artists);
+  });
+
   fastify.get("/artists/:limit/:order", async function(req, reply) {
     const artists = await new ArtistQuery().get({
       limit: req.params.limit,
