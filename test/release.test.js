@@ -304,6 +304,20 @@ describe("releases", function() {
       });
     });
 
+    describe("GET /releases/unpublished/:offset/:limit/:order", function() {
+      it("should return releases with IDs in range of 12 to 3 with offset 0, limit 10 and order 'desc'", async function() {
+        const response = await app.inject({
+          method: "GET",
+          url: "/releases/unpublished/0/10/desc"
+        });
+
+        const results = JSON.parse(response.payload);
+
+        expect(results[0].id).to.equal(12);
+        expect(results[results.length - 1].id).to.equal(3);
+      });
+    });
+
     describe("GET /releases/range/:offset/:limit/:order", function() {
       it("should return release with id of 11 with offset 1, limit 10 and order 'asc'", async function() {
         const response = await app.inject({
@@ -319,13 +333,13 @@ describe("releases", function() {
     });
 
     describe("GET /releases/count", function() {
-      it("should return count of 11", async function() {
+      it("should return count of 12", async function() {
         const response = await app.inject({
           method: "GET",
           url: "/releases/count"
         });
 
-        expect(JSON.parse(response.payload)[0].count).to.equal(11);
+        expect(JSON.parse(response.payload)[0].count).to.equal(12);
       });
     });
   });

@@ -123,6 +123,17 @@ exports.seed = function(knex, Promise) {
           description: "album description",
           published: true,
           created_at: "2019-01-19 12:10:00"
+        },
+        {
+          id: 12,
+          artist_id: 11,
+          label_id: 1,
+          title: "Album 12",
+          slug: "artist-11-album-12",
+          filename: "example.png",
+          description: "album description",
+          published: false,
+          created_at: "2019-01-19 12:11:00"
         }
       ]);
     });

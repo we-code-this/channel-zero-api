@@ -59,16 +59,25 @@ class ReleaseQuery {
     return await knex.count("* as count").from(this.tablename);
   }
 
-  async get(params = {}) {
+  async get(params = {}, unpublished = false) {
     const offset = params.offset ? parseInt(params.offset) : 0;
     const limit = params.limit ? parseInt(params.limit) : 10;
     const order = params.order ? params.order.toUpperCase() : "DESC";
 
-    const res = await this.select()
-      .where(`${this.tablename}.published`, true)
-      .limit(limit)
-      .offset(offset)
-      .orderBy("created_at", order);
+    let res;
+
+    if (unpublished) {
+      res = await this.select()
+        .limit(limit)
+        .offset(offset)
+        .orderBy("created_at", order);
+    } else {
+      res = await this.select()
+        .where(`${this.tablename}.published`, true)
+        .limit(limit)
+        .offset(offset)
+        .orderBy("created_at", order);
+    }
 
     return Promise.all(
       res.map(async function(record) {
