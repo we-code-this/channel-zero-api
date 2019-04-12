@@ -1,3 +1,4 @@
+import moment from "moment";
 import knex from "../lib/connection";
 import Release from "./Release";
 
@@ -93,6 +94,47 @@ class ReleaseQuery {
       return new Release(res[0]).withRelated();
     } else {
       return undefined;
+    }
+  }
+
+  async find(id) {
+    const res = await this.select().where(`${this.tablename}.id`, id);
+
+    if (res.length > 0) {
+      return new Release(res[0]).withRelated();
+    } else {
+      return undefined;
+    }
+  }
+
+  async update(updatedFields) {
+    const { id, ...remainingUpdatedFields } = updatedFields;
+    const oldRelease = await this.find(id);
+
+    const data = {
+      ...oldRelease,
+      ...remainingUpdatedFields,
+      updated_at: moment().format("YYYY-MM-DD HH:mm:ss")
+    };
+
+    const release = new Release(data);
+
+    const isValid = release.valid();
+
+    if (isValid && release.saveFile()) {
+      await knex(this.tablename)
+        .where("id", id)
+        .update({
+          artist_id: release.artist_id,
+          label_id: release.label_id,
+          title: release.title,
+          description: release.description,
+          updated_at: release.updated_at
+        });
+
+      return await this.find(id);
+    } else {
+      return { errors: release.validationErrors() };
     }
   }
 }

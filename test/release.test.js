@@ -514,4 +514,97 @@ describe("releases", function() {
       expect(JSON.parse(response.payload).title).to.equal("release title");
     });
   });
+
+  describe("PATCH /release", function() {
+    it("should update release record in database", async function() {
+      const getResponse = await app.inject({
+        method: "GET",
+        url: "/release/artist-1-album-1"
+      });
+
+      const release = JSON.parse(getResponse.payload);
+
+      expect(release.id).to.equal(1);
+      expect(release.description).to.equal("album description");
+
+      const newDescription = "new album description";
+
+      let form = new FormData();
+      form.append("id", 1);
+      form.append("description", newDescription);
+
+      const response = await app.inject({
+        method: "PATCH",
+        url: "/release",
+        payload: form,
+        headers: form.getHeaders()
+      });
+
+      expect(JSON.parse(response.payload).description).to.equal(newDescription);
+    });
+
+    it("should replace image with new one", async function() {
+      let original_form = new FormData();
+      let rs = fs.createReadStream(filePath);
+      original_form.append("image", rs);
+      original_form.append("artist_id", 2);
+      original_form.append("label_id", 2);
+      original_form.append("title", "Test Album");
+      original_form.append("description", "Test album description");
+
+      let original_opts = {
+        url: "/release",
+        method: "POST",
+        payload: original_form,
+        headers: original_form.getHeaders()
+      };
+
+      const original_result = await app.inject(original_opts);
+      const original_release = JSON.parse(original_result.payload);
+      const filename = original_release.filename;
+      const destPath = path.join(releasesDir, filename);
+
+      expect(fs.existsSync(destPath)).to.be.true;
+
+      const original_file = fs.readFileSync(destPath);
+
+      let new_form = new FormData();
+      let new_rs = fs.createReadStream(altFilePath);
+      new_form.append("image", new_rs);
+      new_form.append("id", original_release.id);
+
+      let new_opts = {
+        method: "PATCH",
+        url: "/release",
+        payload: new_form,
+        headers: new_form.getHeaders()
+      };
+
+      await app.inject(new_opts);
+
+      const new_source = fs.readFileSync(altFilePath);
+      const new_file = fs.readFileSync(destPath);
+
+      expect(new_file).to.deep.equal(new_source);
+      expect(new_file).to.not.deep.equal(original_file);
+    });
+
+    it("should return error with invalid title", async function() {
+      let form = new FormData();
+      form.append("id", 1);
+      form.append("title", "");
+
+      let opts = {
+        url: "/release",
+        method: "PATCH",
+        payload: form,
+        headers: form.getHeaders()
+      };
+
+      const response = await app.inject(opts);
+
+      expect(JSON.parse(response.payload)).to.have.property("errors");
+      expect(JSON.parse(response.payload).errors[0].field).to.equal("title");
+    });
+  });
 });

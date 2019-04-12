@@ -115,8 +115,12 @@ class Release extends Model {
   valid() {
     let valid = false;
 
-    valid = this.validImage();
-    valid = valid && this.validTitle();
+    if (this.create || this.image) {
+      valid = this.validImage();
+      valid = valid && this.validTitle();
+    } else {
+      valid = this.validTitle();
+    }
 
     return valid;
   }

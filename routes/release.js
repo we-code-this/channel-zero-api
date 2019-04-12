@@ -83,6 +83,22 @@ const routes = fastify => {
       reply.status(500).send();
     }
   });
+
+  fastify.patch("/release", async function(req, reply) {
+    const files = await req.raw.files;
+    let image;
+
+    if (files) {
+      image = files.image;
+    }
+
+    const updatedRelease = await new ReleaseQuery().update({
+      image: image,
+      ...req.raw.body
+    });
+
+    reply.send(updatedRelease);
+  });
 };
 
 export default routes;
