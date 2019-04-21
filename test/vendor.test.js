@@ -23,6 +23,20 @@ describe("vendors", function() {
       expect(JSON.parse(response.payload).length).to.equal(10);
     });
 
+    describe("GET /vendors/range/:offset/:limit/:order", function() {
+      it("should return vendor with id of 6 with offset 1, limit 5 and order 'asc'", async function() {
+        const response = await app.inject({
+          method: "GET",
+          url: "/vendors/range/1/5/asc"
+        });
+
+        const results = JSON.parse(response.payload);
+
+        expect(results[0].id).to.equal(2);
+        expect(results[results.length - 1].id).to.equal(6);
+      });
+    });
+
     describe("GET /vendors/count", function() {
       it("should return the count of all vendors", async function() {
         const response = await app.inject({
