@@ -61,6 +61,18 @@ class ReleaseQuery {
     return await knex.count("* as count").from(this.tablename);
   }
 
+  async delete(id) {
+    const release = await this.find(id);
+
+    if (release && release.deleteFile()) {
+      return await knex(this.tablename)
+        .where("id", id)
+        .del();
+    } else {
+      return false;
+    }
+  }
+
   async get(params = {}, unpublished = false) {
     const offset = params.offset ? parseInt(params.offset) : 0;
     const limit = params.limit ? parseInt(params.limit) : 10;

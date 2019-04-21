@@ -49,7 +49,7 @@ class ArtistImageQuery {
   async delete(id) {
     const image = await this.findById(id);
 
-    if (image.deleteFile()) {
+    if (image && image.deleteFile()) {
       return await knex(this.tablename)
         .where("id", id)
         .del();

@@ -111,6 +111,16 @@ const routes = fastify => {
 
     reply.send(unpublishedRelease);
   });
+
+  fastify.delete("/release", async function(req, reply) {
+    const deleted = await new ReleaseQuery().delete(req.body.id);
+
+    if (deleted) {
+      reply.send(deleted);
+    } else {
+      reply.status(404).send();
+    }
+  });
 };
 
 export default routes;

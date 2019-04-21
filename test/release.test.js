@@ -685,4 +685,60 @@ describe("releases", function() {
       expect(unpublishedRelease.published).to.be.false;
     });
   });
+
+  describe("DELETE /release", function() {
+    it("should delete release database record and image file", async function() {
+      let form = new FormData();
+      let rs = fs.createReadStream(filePath);
+
+      form.append("image", rs);
+      form.append("artist_id", 2);
+      form.append("label_id", 1);
+      form.append("title", "Album 1003");
+      form.append("published", "true");
+      form.append("description", "Test description");
+
+      let opts = {
+        url: "/release",
+        method: "POST",
+        payload: form,
+        headers: form.getHeaders()
+      };
+
+      const res = await app.inject(opts);
+      const release = JSON.parse(res.payload);
+      const filename = release.filename;
+      const destPath = path.join(releasesDir, filename);
+
+      expect(fs.existsSync(destPath)).to.be.true;
+
+      await app.inject({
+        method: "DELETE",
+        url: "/release",
+        payload: {
+          id: release.id
+        }
+      });
+
+      const afterResponse = await app.inject({
+        method: "GET",
+        url: `/release/${release.slug}`
+      });
+
+      expect(afterResponse.statusCode).to.equal(404);
+      expect(fs.existsSync(destPath)).to.be.false;
+    });
+
+    it("should return 404 when trying to delete release that doesn’t exist", async function() {
+      const response = await app.inject({
+        method: "DELETE",
+        url: "/release",
+        payload: {
+          id: 2000
+        }
+      });
+
+      expect(response.statusCode).to.equal(404);
+    });
+  });
 });
