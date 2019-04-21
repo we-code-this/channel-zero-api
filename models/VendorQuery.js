@@ -6,6 +6,7 @@ class VendorQuery {
     this.tablename = "vendors";
     this.items = null;
   }
+
   async all(order = "ASC") {
     if (this.items) {
       return this.items;
@@ -21,6 +22,10 @@ class VendorQuery {
     });
 
     return this.items;
+  }
+
+  async count() {
+    return await knex.count("* as count").from(this.tablename);
   }
 }
 
