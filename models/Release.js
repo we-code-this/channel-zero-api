@@ -22,6 +22,14 @@ class Release extends Model {
     this.title = sanitize(this.title);
     this.description = sanitize(this.description);
 
+    this.published =
+      this.published &&
+      (this.published === "true" ||
+        this.published === true ||
+        this.published === 1)
+        ? true
+        : false;
+
     if (this.create) {
       this.artist = undefined;
     } else {

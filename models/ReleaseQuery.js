@@ -41,7 +41,8 @@ class ReleaseQuery {
           title: release.title,
           slug: release.slug,
           description: release.description,
-          filename: release.filename
+          filename: release.filename,
+          published: release.published
         },
         ["id"]
       );
@@ -136,6 +137,22 @@ class ReleaseQuery {
     } else {
       return { errors: release.validationErrors() };
     }
+  }
+
+  async publish(id) {
+    const response = await knex(this.tablename)
+      .where("id", id)
+      .update({ published: 1 });
+
+    return response === 1 ? await this.find(id) : undefined;
+  }
+
+  async unpublish(id) {
+    const response = await knex(this.tablename)
+      .where("id", id)
+      .update({ published: 0 });
+
+    return response === 1 ? await this.find(id) : undefined;
   }
 }
 

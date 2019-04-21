@@ -99,6 +99,18 @@ const routes = fastify => {
 
     reply.send(updatedRelease);
   });
+
+  fastify.patch("/release/publish", async function(req, reply) {
+    const publishedRelease = await new ReleaseQuery().publish(req.body.id);
+
+    reply.send(publishedRelease);
+  });
+
+  fastify.patch("/release/unpublish", async function(req, reply) {
+    const unpublishedRelease = await new ReleaseQuery().unpublish(req.body.id);
+
+    reply.send(unpublishedRelease);
+  });
 };
 
 export default routes;

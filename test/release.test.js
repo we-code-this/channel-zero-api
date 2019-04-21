@@ -607,4 +607,82 @@ describe("releases", function() {
       expect(JSON.parse(response.payload).errors[0].field).to.equal("title");
     });
   });
+
+  describe("PATCH /release/publish", function() {
+    it("should publish an unpublished release", async function() {
+      let form = new FormData();
+      let rs = fs.createReadStream(filePath);
+
+      form.append("image", rs);
+      form.append("artist_id", 2);
+      form.append("label_id", 1);
+      form.append("title", "Album 1001");
+      form.append("published", "false");
+      form.append("description", "Test description");
+
+      let opts = {
+        url: "/release",
+        method: "POST",
+        payload: form,
+        headers: form.getHeaders()
+      };
+
+      const res = await app.inject(opts);
+      const release = JSON.parse(res.payload);
+      const published = Boolean(release.published);
+
+      expect(published).to.be.false;
+
+      const publishRes = await app.inject({
+        url: "/release/publish",
+        method: "PATCH",
+        body: {
+          id: release.id
+        }
+      });
+
+      const publishedRelease = JSON.parse(publishRes.payload);
+
+      expect(publishedRelease.published).to.be.true;
+    });
+  });
+
+  describe("PATCH /release/unpublish", function() {
+    it("should unpublish an published release", async function() {
+      let form = new FormData();
+      let rs = fs.createReadStream(filePath);
+
+      form.append("image", rs);
+      form.append("artist_id", 2);
+      form.append("label_id", 1);
+      form.append("title", "Album 1002");
+      form.append("published", "true");
+      form.append("description", "Test description");
+
+      let opts = {
+        url: "/release",
+        method: "POST",
+        payload: form,
+        headers: form.getHeaders()
+      };
+
+      const res = await app.inject(opts);
+      const release = JSON.parse(res.payload);
+      const published = Boolean(release.published);
+
+      expect(published).to.be.true;
+
+      const unpublishRes = await app.inject({
+        url: "/release/unpublish",
+        method: "PATCH",
+        body: {
+          id: release.id
+        }
+      });
+
+      const unpublishedRelease = JSON.parse(unpublishRes.payload);
+
+      expect(unpublishedRelease.published).to.be.false;
+    });
+  });
 });
