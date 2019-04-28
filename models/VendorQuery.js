@@ -1,3 +1,4 @@
+import moment from "moment";
 import knex from "../lib/connection";
 import Vendor from "./Vendor";
 
@@ -83,6 +84,33 @@ class VendorQuery {
       );
 
       return await this.findById(id[0]);
+    } else {
+      return { errors: vendor.validationErrors() };
+    }
+  }
+
+  async update(id, updatedFields) {
+    const oldVendor = await this.findById(id);
+    const data = {
+      ...oldVendor,
+      ...updatedFields,
+      updated_at: moment().format("YYYY-MM-DD HH:mm:ss")
+    };
+
+    const vendor = new Vendor(data);
+
+    const isValid = vendor.valid();
+
+    if (isValid) {
+      await knex(this.tablename)
+        .where("id", id)
+        .update({
+          name: vendor.name,
+          icon_class: vendor.icon_class,
+          updated_at: vendor.updated_at
+        });
+
+      return await this.findById(id);
     } else {
       return { errors: vendor.validationErrors() };
     }

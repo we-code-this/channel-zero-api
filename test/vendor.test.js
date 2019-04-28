@@ -36,6 +36,59 @@ describe("vendors", function() {
     });
   });
 
+  describe("PATCH /vendor/:id", function() {
+    it("should update vendor database record", async function() {
+      const getResponse = await app.inject({
+        method: "GET",
+        url: "/vendor/10"
+      });
+
+      const vendor = JSON.parse(getResponse.payload);
+
+      expect(vendor.name).to.equal("Vendor 10");
+
+      const newName = "Vendor 10 Updated";
+
+      const response = await app.inject({
+        method: "PATCH",
+        url: "/vendor/1",
+        payload: {
+          name: newName
+        }
+      });
+
+      expect(JSON.parse(response.payload).name).to.equal(newName);
+    });
+
+    it("should sanitize name", async function() {
+      const response = await app.inject({
+        method: "PATCH",
+        url: "/vendor/10",
+        payload: {
+          name: "new <script>console.log('yo')</script> vendor name"
+        }
+      });
+
+      expect(JSON.parse(response.payload).name).to.equal("new vendor name");
+    });
+
+    it("should return name field error of 'Invalid length'", async function() {
+      const response = await app.inject({
+        method: "PATCH",
+        url: "/vendor/1",
+        payload: {
+          name: ""
+        }
+      });
+
+      expect(JSON.parse(response.payload)).to.have.property("errors");
+      expect(JSON.parse(response.payload).errors[0].field).to.equal("name");
+      expect(JSON.parse(response.payload).errors[0].message).to.equal(
+        "Invalid length"
+      );
+    });
+  });
+
   describe("GET /vendors", function() {
     it("should return 10 vendors", async function() {
       const response = await app.inject({ method: "GET", url: "/vendors" });
