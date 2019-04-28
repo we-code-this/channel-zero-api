@@ -14,7 +14,7 @@ class Vendor extends Model {
     let valid = false;
 
     valid = this.validName();
-    valid = valid && this.validIconClass();
+    valid = this.validIconClass() && valid;
 
     return valid;
   }

@@ -1,6 +1,16 @@
 import VendorQuery from "../models/VendorQuery";
 
 const routes = fastify => {
+  fastify.get("/vendor/:id", async function(req, reply) {
+    const vendor = await new VendorQuery().findById(req.params.id);
+
+    if (vendor) {
+      reply.send(vendor);
+    } else {
+      reply.status(404).send();
+    }
+  });
+
   fastify.post("/vendor", async function(req, reply) {
     const vendor = await new VendorQuery().create(req.body);
 

@@ -14,6 +14,28 @@ describe("vendors", function() {
     app.close();
   });
 
+  describe("GET /vendor/:id", function() {
+    it("should return the vendor with a id 1", async function() {
+      const response = await app.inject({
+        method: "GET",
+        url: "/vendor/1"
+      });
+      expect(response.headers["content-type"]).to.equal(
+        "application/json; charset=utf-8"
+      );
+      expect(JSON.parse(response.payload).name).to.equal("Vendor 1");
+    });
+
+    it("should return 404 if vendor record doesn't exist in database", async function() {
+      const response = await app.inject({
+        method: "GET",
+        url: "/vendor/2000"
+      });
+
+      expect(response.statusCode).to.equal(404);
+    });
+  });
+
   describe("GET /vendors", function() {
     it("should return 10 vendors", async function() {
       const response = await app.inject({ method: "GET", url: "/vendors" });
