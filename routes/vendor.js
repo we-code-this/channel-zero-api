@@ -1,6 +1,16 @@
 import VendorQuery from "../models/VendorQuery";
 
 const routes = fastify => {
+  fastify.post("/vendor", async function(req, reply) {
+    const vendor = await new VendorQuery().create(req.body);
+
+    if (vendor) {
+      reply.send(vendor);
+    } else {
+      reply.status(500).send();
+    }
+  });
+
   fastify.get("/vendors/range/:offset/:limit/:order", async function(
     req,
     reply

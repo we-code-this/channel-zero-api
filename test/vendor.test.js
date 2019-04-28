@@ -48,4 +48,48 @@ describe("vendors", function() {
       });
     });
   });
+
+  describe("POST /vendor", function() {
+    it("should add vendor record to database", async function() {
+      const name = "Vendor 10001";
+      const response = await app.inject({
+        url: "/vendor",
+        method: "POST",
+        body: {
+          name,
+          icon_class: "test-icon"
+        }
+      });
+
+      const vendor = JSON.parse(response.payload);
+
+      expect(vendor.name).to.equal(name);
+    });
+
+    it("should sanitize name", async function() {
+      const response = await app.inject({
+        method: "POST",
+        url: "/vendor",
+        body: {
+          name: "<script>console.log('yo')</script> vendor name",
+          icon_class: "test-icon"
+        }
+      });
+
+      expect(JSON.parse(response.payload).name).to.equal("vendor name");
+    });
+
+    it("should sanitize icon_class", async function() {
+      const response = await app.inject({
+        method: "POST",
+        url: "/vendor",
+        body: {
+          name: "Vendor 1002",
+          icon_class: "<script>console.log('yo')</script> test-icon"
+        }
+      });
+
+      expect(JSON.parse(response.payload).icon_class).to.equal("test-icon");
+    });
+  });
 });
