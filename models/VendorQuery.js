@@ -95,11 +95,12 @@ class VendorQuery {
     }
   }
 
-  async update(id, updatedFields) {
+  async update(updatedFields) {
+    const { id, ...remainingUpdatedFields } = updatedFields;
     const oldVendor = await this.findById(id);
     const data = {
       ...oldVendor,
-      ...updatedFields,
+      ...remainingUpdatedFields,
       updated_at: moment().format("YYYY-MM-DD HH:mm:ss")
     };
 

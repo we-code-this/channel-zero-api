@@ -11,11 +11,8 @@ const routes = fastify => {
     }
   });
 
-  fastify.patch("/vendor/:id", async function(req, reply) {
-    const updatedVendor = await new VendorQuery().update(
-      req.params.id,
-      req.body
-    );
+  fastify.patch("/vendor", async function(req, reply) {
+    const updatedVendor = await new VendorQuery().update(req.body);
     reply.send(updatedVendor);
   });
 

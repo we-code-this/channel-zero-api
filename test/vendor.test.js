@@ -36,7 +36,7 @@ describe("vendors", function() {
     });
   });
 
-  describe("PATCH /vendor/:id", function() {
+  describe("PATCH /vendor", function() {
     it("should update vendor database record", async function() {
       const getResponse = await app.inject({
         method: "GET",
@@ -51,8 +51,9 @@ describe("vendors", function() {
 
       const response = await app.inject({
         method: "PATCH",
-        url: "/vendor/1",
+        url: "/vendor",
         payload: {
+          id: 10,
           name: newName
         }
       });
@@ -63,8 +64,9 @@ describe("vendors", function() {
     it("should sanitize name", async function() {
       const response = await app.inject({
         method: "PATCH",
-        url: "/vendor/10",
+        url: "/vendor",
         payload: {
+          id: 10,
           name: "new <script>console.log('yo')</script> vendor name"
         }
       });
@@ -75,8 +77,9 @@ describe("vendors", function() {
     it("should return name field error of 'Invalid length'", async function() {
       const response = await app.inject({
         method: "PATCH",
-        url: "/vendor/1",
+        url: "/vendor",
         payload: {
+          id: 10,
           name: ""
         }
       });
