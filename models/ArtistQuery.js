@@ -84,11 +84,12 @@ class ArtistQuery {
     }
   }
 
-  async updateBySlug(slug, updatedFields) {
+  async update(updatedFields) {
+    const { slug, ...remainingUpdatedFields } = updatedFields;
     const oldArtist = await this.findBySlug(slug);
     const data = {
       ...oldArtist,
-      ...updatedFields,
+      ...remainingUpdatedFields,
       updated_at: moment().format("YYYY-MM-DD HH:mm:ss")
     };
 

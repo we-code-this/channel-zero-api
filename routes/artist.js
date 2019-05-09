@@ -11,11 +11,8 @@ const routes = fastify => {
     }
   });
 
-  fastify.patch("/artist/:slug", async function(req, reply) {
-    const updatedArtist = await new ArtistQuery().updateBySlug(
-      req.params.slug,
-      req.body
-    );
+  fastify.patch("/artist", async function(req, reply) {
+    const updatedArtist = await new ArtistQuery().update(req.body);
     reply.send(updatedArtist);
   });
 

@@ -83,7 +83,7 @@ describe("artist", function() {
     });
   });
 
-  describe("PATCH /artist/:slug", function() {
+  describe("PATCH /artist", function() {
     it("should update artist database record", async function() {
       const getResponse = await app.inject({
         method: "GET",
@@ -98,8 +98,9 @@ describe("artist", function() {
 
       const response = await app.inject({
         method: "PATCH",
-        url: "/artist/artist-1",
+        url: "/artist",
         payload: {
+          slug: "artist-1",
           description: newDescription
         }
       });
@@ -110,8 +111,9 @@ describe("artist", function() {
     it("should sanitize description", async function() {
       const response = await app.inject({
         method: "PATCH",
-        url: "/artist/artist-1",
+        url: "/artist",
         payload: {
+          slug: "artist-1",
           description:
             "new <script>console.log('yo')</script> artist description"
         }
@@ -125,8 +127,9 @@ describe("artist", function() {
     it("should return name field error of 'Invalid length'", async function() {
       const response = await app.inject({
         method: "PATCH",
-        url: "/artist/artist-1",
+        url: "/artist",
         payload: {
+          slug: "artist-1",
           name: ""
         }
       });

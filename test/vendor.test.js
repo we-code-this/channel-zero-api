@@ -168,7 +168,7 @@ describe("vendors", function() {
     });
   });
 
-  describe.only("DELETE /vendor", function() {
+  describe("DELETE /vendor", function() {
     it("should delete vendor database record", async function() {
       const beforeResponse = await app.inject({
         method: "GET",
@@ -198,7 +198,7 @@ describe("vendors", function() {
         method: "DELETE",
         url: "/vendor",
         payload: {
-          id: 12
+          id: 1000
         }
       });
 
