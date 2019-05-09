@@ -167,4 +167,42 @@ describe("vendors", function() {
       expect(JSON.parse(response.payload).icon_class).to.equal("test-icon");
     });
   });
+
+  describe.only("DELETE /vendor", function() {
+    it("should delete vendor database record", async function() {
+      const beforeResponse = await app.inject({
+        method: "GET",
+        url: `/vendor/1`
+      });
+
+      expect(JSON.parse(beforeResponse.payload).id).to.equal(1);
+
+      await app.inject({
+        method: "DELETE",
+        url: "/vendor",
+        payload: {
+          id: 1
+        }
+      });
+
+      const afterResponse = await app.inject({
+        method: "GET",
+        url: `/vendor/1`
+      });
+
+      expect(afterResponse.statusCode).to.equal(404);
+    });
+
+    it("should return 404 when trying to delete vendor that doesn’t exist", async function() {
+      const response = await app.inject({
+        method: "DELETE",
+        url: "/vendor",
+        payload: {
+          id: 12
+        }
+      });
+
+      expect(response.statusCode).to.equal(404);
+    });
+  });
 });

@@ -19,6 +19,16 @@ const routes = fastify => {
     reply.send(updatedVendor);
   });
 
+  fastify.delete("/vendor", async function(req, reply) {
+    const deleted = await new VendorQuery().delete(req.body.id);
+
+    if (deleted) {
+      reply.send(deleted);
+    } else {
+      reply.status(404).send();
+    }
+  });
+
   fastify.post("/vendor", async function(req, reply) {
     const vendor = await new VendorQuery().create(req.body);
 

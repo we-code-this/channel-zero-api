@@ -25,6 +25,12 @@ class VendorQuery {
     return this.items;
   }
 
+  async delete(id) {
+    return await knex(this.tablename)
+      .where("id", id)
+      .del();
+  }
+
   async findById(id) {
     const result = await knex
       .select("*")
