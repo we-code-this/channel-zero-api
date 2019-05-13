@@ -1,7 +1,9 @@
 import validator from "validator";
 import Model from "./Model";
 import ArtistImages from "./ArtistImageQuery";
+import Releases from "./ReleaseQuery";
 import { sanitize, slugify } from "../lib/strings";
+import Release from "./Release";
 
 class Artist extends Model {
   constructor(data, create) {
@@ -10,16 +12,24 @@ class Artist extends Model {
     this.name = sanitize(this.name);
     this.description = sanitize(this.description);
     this.images = undefined;
+    this.releases = undefined;
   }
 
   async withRelated() {
     await this.withImages();
+    await this.withReleases();
 
     return this;
   }
 
   async withImages() {
     this.images = await new ArtistImages().findByArtist(this.id);
+
+    return this;
+  }
+
+  async withReleases() {
+    this.releases = await new Releases().findByArtist(this.id);
 
     return this;
   }

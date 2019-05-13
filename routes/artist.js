@@ -17,10 +17,12 @@ const routes = fastify => {
   });
 
   fastify.delete("/artist", async function(req, reply) {
-    const deleted = await new ArtistQuery().delete(req.body.id);
+    const response = await new ArtistQuery().delete(req.body.id);
 
-    if (deleted) {
-      reply.send(deleted);
+    if (response === 1) {
+      reply.send(1);
+    } else if (response.error) {
+      reply.send(response);
     } else {
       reply.status(404).send();
     }

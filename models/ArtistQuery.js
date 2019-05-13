@@ -113,9 +113,17 @@ class ArtistQuery {
   }
 
   async delete(id) {
-    return await knex(this.tablename)
-      .where("id", id)
-      .del();
+    const artist = await this.findById(id);
+
+    if (artist && artist.releases && artist.releases.length > 0) {
+      return {
+        error: "Unable to delete artist with releases"
+      };
+    } else {
+      return await knex(this.tablename)
+        .where("id", id)
+        .del();
+    }
   }
 
   async create(data) {

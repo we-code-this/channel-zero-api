@@ -100,6 +100,12 @@ class ReleaseQuery {
     );
   }
 
+  async findByArtist(id) {
+    return (await knex(this.tablename).where("artist_id", id)).map(release => {
+      return new Release(release);
+    });
+  }
+
   async findBySlug(slug) {
     const res = await this.select().where(`${this.tablename}.slug`, slug);
 

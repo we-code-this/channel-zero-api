@@ -79,6 +79,13 @@ exports.seed = function(knex, Promise) {
           slug: "artist-11",
           description: "artist description",
           created_at: "2019-01-20 12:10:00"
+        },
+        {
+          id: 12,
+          name: "Artist 12",
+          slug: "artist-12",
+          description: "artist description",
+          created_at: "2019-01-20 12:11:00"
         }
       ]);
     });

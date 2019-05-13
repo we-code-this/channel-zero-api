@@ -170,13 +170,13 @@ describe("artist", function() {
     });
 
     describe("GET /artists/:limit/:order", function() {
-      it("should return artist with id of 11 when :order is 'desc'", async function() {
+      it("should return artist with id of 12 when :order is 'desc'", async function() {
         const response = await app.inject({
           method: "GET",
           url: "/artists/1/desc"
         });
 
-        expect(JSON.parse(response.payload)[0].id).to.equal(11);
+        expect(JSON.parse(response.payload)[0].id).to.equal(12);
       });
 
       it("should return artist with id of 1 when :order is 'asc'", async function() {
@@ -218,33 +218,33 @@ describe("artist", function() {
     });
 
     describe("GET /artists/count", function() {
-      it("should return count of 11", async function() {
+      it("should return count of 12", async function() {
         const response = await app.inject({
           method: "GET",
           url: "/artists/count"
         });
 
-        expect(JSON.parse(response.payload)[0].count).to.equal(11);
+        expect(JSON.parse(response.payload)[0].count).to.equal(12);
       });
     });
   });
 
   describe("DELETE /artist", function() {
     it("should delete artist database record", async function() {
-      const slug = "artist-1";
+      const slug = "artist-12";
 
       const beforeResponse = await app.inject({
         method: "GET",
         url: `/artist/${slug}`
       });
 
-      expect(JSON.parse(beforeResponse.payload).id).to.equal(1);
+      expect(JSON.parse(beforeResponse.payload).id).to.equal(12);
 
       await app.inject({
         method: "DELETE",
         url: "/artist",
         payload: {
-          id: 1
+          id: 12
         }
       });
 
@@ -256,12 +256,34 @@ describe("artist", function() {
       expect(afterResponse.statusCode).to.equal(404);
     });
 
+    it("shoould fail to delete artist when it has a release", async function() {
+      const beforeResponse = await app.inject({
+        method: "DELETE",
+        url: "/artist",
+        payload: {
+          id: 1
+        }
+      });
+
+      expect(JSON.parse(beforeResponse.payload).error).to.exist;
+      expect(JSON.parse(beforeResponse.payload).error).to.equal(
+        "Unable to delete artist with releases"
+      );
+
+      const afterResponse = await app.inject({
+        method: "GET",
+        url: `/artist/artist-1`
+      });
+
+      expect(JSON.parse(afterResponse.payload).id).to.equal(1);
+    });
+
     it("should return 404 when trying to delete artist that doesn’t exist", async function() {
       const response = await app.inject({
         method: "DELETE",
         url: "/artist",
         payload: {
-          id: 12
+          id: 2000
         }
       });
 
