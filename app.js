@@ -4,7 +4,7 @@ import cors from "fastify-cors";
 import pino from "pino";
 import routes from "./routes";
 
-const logging = "info";
+const logging = "silent";
 const log = pino({
   level: logging,
   prettyPrint: { colorize: true }
