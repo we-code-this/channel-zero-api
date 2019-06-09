@@ -39,6 +39,7 @@ class ArtistImage extends Model {
 
       return false;
     }
+
     this.extension = type.ext;
 
     valid = this.validExtension();

@@ -4,7 +4,7 @@ import cors from "fastify-cors";
 import pino from "pino";
 import routes from "./routes";
 
-const logging = "silent";
+const logging = "info";
 const log = pino({
   level: logging,
   prettyPrint: { colorize: true }
@@ -13,7 +13,7 @@ const log = pino({
 function buildApp() {
   const fastify = Fastify({ logger: log });
 
-  fastify.register(cors, { origin: process.env.CLIENT_ORIGIN });
+  fastify.register(cors, { origin: [process.env.ADMIN_ORIGIN, process.env.PUBLIC_ORIGIN] });
   fastify.register(fileUpload, {
     useTempFiles: true,
     tempFileDir: "/tmp/"

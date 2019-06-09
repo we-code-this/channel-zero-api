@@ -1,12 +1,15 @@
+import fs from 'fs-extra'
 import ArtistImageQuery from "../models/ArtistImageQuery";
 
 const routes = fastify => {
   fastify.post("/artist/image", async function(req, reply) {
-    const files = await req.raw.files;
+    const files = req.raw.files;
     let image;
 
     if (files) {
       image = files.image;
+      await fs.readFile(files.image.tempFilePath);
+      image.data = await fs.readFile(files.image.tempFilePath);
     }
 
     const resultImage = await new ArtistImageQuery().create({
@@ -27,6 +30,8 @@ const routes = fastify => {
 
     if (files) {
       image = files.image;
+      await fs.readFile(files.image.tempFilePath);
+      image.data = await fs.readFile(files.image.tempFilePath);
     }
 
     const resultImage = await new ArtistImageQuery().update({

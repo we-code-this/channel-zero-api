@@ -31,6 +31,7 @@ class ReleaseQuery {
     const releaseData = { ...data };
     const release = new Release(releaseData, true);
     const isValid = release.valid();
+
     await release.generateSlug();
 
     if (isValid && release.saveFile()) {
@@ -137,7 +138,6 @@ class ReleaseQuery {
     };
 
     const release = new Release(data);
-
     const isValid = release.valid();
 
     if (isValid && release.saveFile()) {

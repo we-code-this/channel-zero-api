@@ -544,8 +544,8 @@ describe("releases", function() {
     });
 
     it("should replace image with new one", async function() {
-      let original_form = new FormData();
       let rs = fs.createReadStream(filePath);
+      let original_form = new FormData();
       original_form.append("image", rs);
       original_form.append("artist_id", 2);
       original_form.append("label_id", 2);
@@ -568,8 +568,8 @@ describe("releases", function() {
 
       const original_file = fs.readFileSync(destPath);
 
-      let new_form = new FormData();
       let new_rs = fs.createReadStream(altFilePath);
+      let new_form = new FormData();
       new_form.append("image", new_rs);
       new_form.append("id", original_release.id);
 
@@ -582,8 +582,8 @@ describe("releases", function() {
 
       await app.inject(new_opts);
 
-      const new_source = fs.readFileSync(altFilePath);
-      const new_file = fs.readFileSync(destPath);
+      const new_source = await fs.readFileSync(altFilePath);
+      const new_file = await fs.readFileSync(destPath);
 
       expect(new_file).to.deep.equal(new_source);
       expect(new_file).to.not.deep.equal(original_file);

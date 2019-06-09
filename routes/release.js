@@ -1,3 +1,4 @@
+import fs from 'fs-extra'
 import ReleaseQuery from "../models/ReleaseQuery";
 
 const routes = fastify => {
@@ -70,6 +71,8 @@ const routes = fastify => {
 
     if (files) {
       image = files.image;
+      await fs.readFile(files.image.tempFilePath);
+      image.data = await fs.readFile(files.image.tempFilePath);
     }
 
     const release = await new ReleaseQuery().create({
@@ -90,6 +93,8 @@ const routes = fastify => {
 
     if (files) {
       image = files.image;
+      await fs.readFile(files.image.tempFilePath);
+      image.data = await fs.readFile(files.image.tempFilePath);
     }
 
     const updatedRelease = await new ReleaseQuery().update({
