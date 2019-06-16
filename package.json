@@ -24,6 +24,7 @@
     "instrument": false
   },
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "chai-date-string": "^0.1.0",
     "dotenv": "^6.2.0",
     "esm": "^3.1.0",
