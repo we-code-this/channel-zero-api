@@ -34,6 +34,7 @@
     "file-type": "^10.9.0",
     "form-data": "^2.3.3",
     "fs-extra": "^8.0.1",
+    "jsonwebtoken": "^8.5.1",
     "knex": "^0.16.3",
     "moment": "^2.24.0",
     "mysql2": "^1.6.4",
@@ -44,15 +45,18 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^5.12.1",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^5.0.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.15.0",
     "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
     "mocha": "^5.2.0",
     "nyc": "^14.1.1",
     "pino-pretty": "^2.5.0",
+    "prettier": "^1.18.2",
     "rimraf": "^2.6.3",
     "sqlite3": "^4.0.6"
   }
