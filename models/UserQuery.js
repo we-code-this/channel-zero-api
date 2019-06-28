@@ -3,6 +3,8 @@ import knex from '../lib/connection';
 import User from './User';
 import { compare } from '../lib/passwords';
 
+import { USER_NOT_FOUND_ERROR, AUTHENTICATION_ERROR } from '../lib/constants';
+
 class UserQuery {
   constructor() {
     this.tablename = 'users';
@@ -51,7 +53,7 @@ class UserQuery {
     let res;
     if (login) {
       res = await knex
-        .select('id', 'password')
+        .select('email', 'password')
         .from(this.tablename)
         .where(`${this.tablename}.email`, email);
     } else {
@@ -68,7 +70,13 @@ class UserQuery {
   async login(email, password) {
     const user = await this.findByEmail(email, true);
 
-    return compare(password, user.password) ? { user: user.id } : undefined;
+    if (user) {
+      return compare(password, user.password)
+        ? { user: user.email }
+        : { error: AUTHENTICATION_ERROR };
+    } else {
+      return { error: USER_NOT_FOUND_ERROR };
+    }
   }
 }
 

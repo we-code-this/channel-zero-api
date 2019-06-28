@@ -1,16 +1,40 @@
 import jwt from 'jsonwebtoken';
 import UserQuery from '../models/UserQuery';
 
+import { AUTHENTICATION_ERROR } from '../lib/constants';
+
 const routes = fastify => {
   fastify.post('/login', async function(req, reply) {
-    const user = await new UserQuery().login(req.body.email, req.body.password);
+    let result = {};
+    let status = 200;
 
-    if (user) {
-      const token = jwt.sign(user, process.env.AUTH_SECRET);
-      reply.header('Authorization', `Bearer ${token}`).send({ success: true });
+    const loginResult = await new UserQuery().login(
+      req.body.email,
+      req.body.password
+    );
+
+    if (loginResult.user) {
+      const payload = { user: loginResult.user.email };
+      const token = jwt.sign(payload, process.env.AUTH_SECRET, {
+        expiresIn: '1d',
+        issuer: 'https://localhost'
+      });
+      result.token = token;
+      result.status = status;
+      result.result = loginResult.user;
     } else {
-      reply.code(401).send({ error: 'Invalid email or password supplied.' });
+      if (loginResult.error === AUTHENTICATION_ERROR) {
+        status = 401;
+        result.status = status;
+        result.error = 'Authentication error';
+      } else {
+        status = 404;
+        result.status = status;
+        result.error = 'User not found';
+      }
     }
+
+    reply.code(status).send(result);
   });
 
   fastify.post('/register', async function(req, reply) {
