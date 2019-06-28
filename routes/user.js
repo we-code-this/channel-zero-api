@@ -17,7 +17,7 @@ const routes = fastify => {
       const payload = { user: loginResult.user.email };
       const token = jwt.sign(payload, process.env.AUTH_SECRET, {
         expiresIn: '1d',
-        issuer: 'https://localhost'
+        issuer: process.env.JWT_ISSUER
       });
       result.token = token;
       result.status = status;
