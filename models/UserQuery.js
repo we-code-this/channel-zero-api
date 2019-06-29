@@ -53,7 +53,7 @@ class UserQuery {
     let res;
     if (login) {
       res = await knex
-        .select('email', 'password')
+        .select('id', 'email', 'password')
         .from(this.tablename)
         .where(`${this.tablename}.email`, email);
     } else {
@@ -64,6 +64,30 @@ class UserQuery {
       return new User(res[0]);
     } else {
       return undefined;
+    }
+  }
+
+  async isInGroup(groupSlug, email) {
+    const user = await this.findByEmail(email, true);
+    const group = await knex
+      .select('id')
+      .from('groups')
+      .where('slug', groupSlug)
+      .first();
+
+    if (user && group) {
+      const res = await knex
+        .count('* as count')
+        .from('group_users')
+        .where({
+          group_id: group.id,
+          user_id: user.id
+        })
+        .first();
+
+      return res.count === 1;
+    } else {
+      return false;
     }
   }
 

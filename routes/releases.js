@@ -1,5 +1,6 @@
 import releases from '../controllers/releases';
 import { validate } from '../lib/tokens';
+import { isAdmin } from '../lib/auth';
 
 const routes = fastify => {
   fastify.get('/releases/range/:offset/:limit/:order', releases.getRange);
@@ -13,19 +14,31 @@ const routes = fastify => {
   fastify.get('/releases', releases.get);
   fastify.get('/release/:slug', releases.getOneBySlug);
 
-  fastify.post('/release', { beforeHandler: [validate] }, releases.create);
-  fastify.patch('/release', { beforeHandler: [validate] }, releases.update);
+  fastify.post(
+    '/release',
+    { beforeHandler: [validate, isAdmin] },
+    releases.create
+  );
+  fastify.patch(
+    '/release',
+    { beforeHandler: [validate, isAdmin] },
+    releases.update
+  );
   fastify.patch(
     '/release/publish',
-    { beforeHandler: [validate] },
+    { beforeHandler: [validate, isAdmin] },
     releases.publish
   );
   fastify.patch(
     '/release/unpublish',
-    { beforeHandler: [validate] },
+    { beforeHandler: [validate, isAdmin] },
     releases.unpublish
   );
-  fastify.delete('/release', { beforeHandler: [validate] }, releases.del);
+  fastify.delete(
+    '/release',
+    { beforeHandler: [validate, isAdmin] },
+    releases.del
+  );
 };
 
 export default routes;

@@ -1,5 +1,6 @@
 import artists from '../controllers/artists';
 import { validate } from '../lib/tokens';
+import { isAdmin } from '../lib/auth';
 
 const routes = fastify => {
   fastify.get('/artist/:slug', artists.getOneBySlug);
@@ -10,9 +11,21 @@ const routes = fastify => {
   fastify.get('/artists/:limit', artists.getWithLimit);
   fastify.get('/artists', artists.get);
 
-  fastify.post('/artist', { beforeHandler: [validate] }, artists.create);
-  fastify.patch('/artist', { beforeHandler: [validate] }, artists.update);
-  fastify.delete('/artist', { beforeHandler: [validate] }, artists.del);
+  fastify.post(
+    '/artist',
+    { beforeHandler: [validate, isAdmin] },
+    artists.create
+  );
+  fastify.patch(
+    '/artist',
+    { beforeHandler: [validate, isAdmin] },
+    artists.update
+  );
+  fastify.delete(
+    '/artist',
+    { beforeHandler: [validate, isAdmin] },
+    artists.del
+  );
 };
 
 export default routes;
