@@ -1,84 +1,16 @@
-import ArtistQuery from "../models/ArtistQuery";
+import artists from '../controllers/artists';
 
 const routes = fastify => {
-  fastify.get("/artist/:slug", async function(req, reply) {
-    const artist = await new ArtistQuery().findBySlug(req.params.slug);
-
-    if (artist) {
-      reply.send(artist);
-    } else {
-      reply.status(404).send();
-    }
-  });
-
-  fastify.patch("/artist", async function(req, reply) {
-    const updatedArtist = await new ArtistQuery().update(req.body);
-    reply.send(updatedArtist);
-  });
-
-  fastify.delete("/artist", async function(req, reply) {
-    const response = await new ArtistQuery().delete(req.body.id);
-
-    if (response === 1) {
-      reply.send(1);
-    } else if (response.error) {
-      reply.send(response);
-    } else {
-      reply.status(404).send();
-    }
-  });
-
-  fastify.post("/artist", async function(req, reply) {
-    const artist = await new ArtistQuery().create(req.body);
-
-    if (artist) {
-      reply.send(artist);
-    } else {
-      reply.status(500).send();
-    }
-  });
-
-  fastify.get("/artists/range/:offset/:limit/:order", async function(
-    req,
-    reply
-  ) {
-    const artists = await new ArtistQuery().get({
-      offset: req.params.offset,
-      limit: req.params.limit,
-      order: req.params.order
-    });
-    reply.send(artists);
-  });
-
-  fastify.get("/artists/by/name", async function(req, reply) {
-    const artists = await new ArtistQuery().getByName();
-    reply.send(artists);
-  });
-
-  fastify.get("/artists/:limit/:order", async function(req, reply) {
-    const artists = await new ArtistQuery().get({
-      limit: req.params.limit,
-      order: req.params.order
-    });
-    reply.send(artists);
-  });
-
-  fastify.get("/artists/count", async function(req, reply) {
-    const count = await new ArtistQuery().count();
-    reply.send(count);
-  });
-
-  fastify.get("/artists/:limit", async function(req, reply) {
-    const artists = await new ArtistQuery().get({
-      limit: req.params.limit
-    });
-    reply.send(artists);
-  });
-
-  fastify.get("/artists", async function(req, reply) {
-    const artists = await new ArtistQuery().get();
-    reply.send(artists);
-  });
+  fastify.get('/artist/:slug', artists.getOneBySlug);
+  fastify.post('/artist', artists.create);
+  fastify.patch('/artist', artists.update);
+  fastify.delete('/artist', artists.del);
+  fastify.get('/artists/range/:offset/:limit/:order', artists.getRange);
+  fastify.get('/artists/by/name', artists.getByName);
+  fastify.get('/artists/:limit/:order', artists.getWithLimitAndOrder);
+  fastify.get('/artists/count', artists.count);
+  fastify.get('/artists/:limit', artists.getWithLimit);
+  fastify.get('/artists', artists.get);
 };
 
 export default routes;

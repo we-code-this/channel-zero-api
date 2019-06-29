@@ -1,25 +1,9 @@
-import PromoQuery from "../models/PromoQuery";
+import promos from '../controllers/promos';
 
 const routes = fastify => {
-  fastify.get("/promos/:location/:limit", async function(req, reply) {
-    const promos = await new PromoQuery().get({
-      location: req.params.location,
-      limit: req.params.limit
-    });
-    reply.send(promos);
-  });
-
-  fastify.get("/promos/:location", async function(req, reply) {
-    const promos = await new PromoQuery().get({
-      location: req.params.location
-    });
-    reply.send(promos);
-  });
-
-  fastify.get("/promos", async function(req, reply) {
-    const promos = await new PromoQuery().get();
-    reply.send(promos);
-  });
+  fastify.get('/promos/:location/:limit', promos.getWithLocationAndLimit);
+  fastify.get('/promos/:location', promos.getWithLocation);
+  fastify.get('/promos', promos.get);
 };
 
 export default routes;

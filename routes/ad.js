@@ -1,10 +1,7 @@
-import Ad from "../models/Ad";
+import ads from '../controllers/ads';
 
 const routes = fastify => {
-  fastify.get("/a", async function(req, reply) {
-    const ads = await new Ad().random();
-    reply.send(ads);
-  });
+  fastify.get('/a', ads.random);
 };
 
 export default routes;
