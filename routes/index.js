@@ -1,13 +1,13 @@
-import adRoutes from "./ad";
-import artistImageRoutes from "./artist_image";
-import artistRoutes from "./artist";
-import articleRoutes from "./article";
-import labelRoutes from "./label";
-import promoRoutes from "./promo";
-import releaseRoutes from "./release";
-import featureRoutes from "./feature";
-import vendorRoutes from "./vendor";
-import userRoutes from "./user";
+import adRoutes from './ads';
+import artistImageRoutes from './artist_images';
+import artistRoutes from './artists';
+import articleRoutes from './articles';
+import labelRoutes from './labels';
+import promoRoutes from './promos';
+import releaseRoutes from './releases';
+import featureRoutes from './features';
+import vendorRoutes from './vendors';
+import userRoutes from './users';
 
 const routes = fastify => {
   adRoutes(fastify);
