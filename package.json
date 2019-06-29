@@ -31,6 +31,7 @@
     "fastify": "^1.13.4",
     "fastify-cors": "^1.0.0",
     "fastify-file-upload": "^1.0.0",
+    "fastify-helmet": "^3.0.1",
     "file-type": "^10.9.0",
     "form-data": "^2.3.3",
     "fs-extra": "^8.0.1",
