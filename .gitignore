@@ -3,5 +3,8 @@ node_modules/
 .nyc_output/
 .vscode/
 coverage
+seeds/development/users.js
+seeds/development/groups.js
+seeds/development/group_users.js
 test/test.sqlite3
 .env
