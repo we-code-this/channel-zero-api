@@ -10,6 +10,14 @@ exports.seed = function(knex, Promise) {
           password:
             '$2b$10$CpiYkz1.Kiz9RNtW7ITioexGF7/lEoS2/bYVewLsjIO8wB.2oLzfm',
           created_at: '2019-02-07 12:00:00'
+        },
+        {
+          id: 2,
+          email: 'another@example.com',
+          username: 'another',
+          password:
+            '$2b$10$CpiYkz1.Kiz9RNtW7ITioexGF7/lEoS2/bYVewLsjIO8wB.2oLzfm',
+          created_at: '2019-02-07 12:01:00'
         }
       ]);
     });
