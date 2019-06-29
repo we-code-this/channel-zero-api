@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import UserQuery from '../models/UserQuery';
+import config from '../config';
 
 import { AUTHENTICATION_ERROR } from '../lib/constants';
 
@@ -14,11 +15,12 @@ export default {
     );
 
     if (loginResult.user) {
-      const payload = { user: loginResult.user.email };
-      const token = jwt.sign(payload, process.env.AUTH_SECRET, {
-        expiresIn: '1d',
-        issuer: process.env.JWT_ISSUER
-      });
+      const payload = { user: loginResult.user };
+      const token = jwt.sign(
+        payload,
+        process.env.JWT_SECRET,
+        config.jwtOptions
+      );
       result.token = token;
       result.status = status;
       result.result = loginResult.user;

@@ -1,4 +1,5 @@
 import releases from '../controllers/releases';
+import { validate } from '../lib/tokens';
 
 const routes = fastify => {
   fastify.get('/releases/range/:offset/:limit/:order', releases.getRange);
@@ -11,11 +12,20 @@ const routes = fastify => {
   fastify.get('/releases/:limit', releases.getWithLimit);
   fastify.get('/releases', releases.get);
   fastify.get('/release/:slug', releases.getOneBySlug);
-  fastify.post('/release', releases.create);
-  fastify.patch('/release', releases.update);
-  fastify.patch('/release/publish', releases.publish);
-  fastify.patch('/release/unpublish', releases.unpublish);
-  fastify.delete('/release', releases.del);
+
+  fastify.post('/release', { beforeHandler: [validate] }, releases.create);
+  fastify.patch('/release', { beforeHandler: [validate] }, releases.update);
+  fastify.patch(
+    '/release/publish',
+    { beforeHandler: [validate] },
+    releases.publish
+  );
+  fastify.patch(
+    '/release/unpublish',
+    { beforeHandler: [validate] },
+    releases.unpublish
+  );
+  fastify.delete('/release', { beforeHandler: [validate] }, releases.del);
 };
 
 export default routes;

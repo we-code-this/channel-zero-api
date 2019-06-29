@@ -1,4 +1,5 @@
 import labels from '../controllers/labels';
+import { validate } from '../lib/tokens';
 
 const routes = fastify => {
   fastify.get('/labels/range/:offset/:limit/:order', labels.getRange);
@@ -8,9 +9,10 @@ const routes = fastify => {
   fastify.get('/labels/:limit', labels.getWithLimit);
   fastify.get('/labels', labels.get);
   fastify.get('/label/:slug', labels.getOneBySlug);
-  fastify.patch('/label/:slug', labels.update);
-  fastify.delete('/label', labels.del);
-  fastify.post('/label', labels.create);
+
+  fastify.patch('/label/:slug', { beforeHandler: [validate] }, labels.update);
+  fastify.delete('/label', { beforeHandler: [validate] }, labels.del);
+  fastify.post('/label', { beforeHandler: [validate] }, labels.create);
 };
 
 export default routes;
