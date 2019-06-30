@@ -92,14 +92,18 @@ class UserQuery {
   }
 
   async login(email, password) {
-    const user = await this.findByEmail(email, true);
+    try {
+      const user = await this.findByEmail(email, true);
 
-    if (user) {
-      return compare(password, user.password)
-        ? { user: user.email }
-        : { error: AUTHENTICATION_ERROR };
-    } else {
-      return { error: USER_NOT_FOUND_ERROR };
+      if (user) {
+        return compare(password, user.password)
+          ? { user: user.email }
+          : { error: AUTHENTICATION_ERROR };
+      } else {
+        return { error: USER_NOT_FOUND_ERROR };
+      }
+    } catch (err) {
+      return { error: AUTHENTICATION_ERROR };
     }
   }
 }

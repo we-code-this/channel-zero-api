@@ -1,6 +1,10 @@
 import jwt from 'jsonwebtoken';
 import UserQuery from '../models/UserQuery';
 import config from '../config';
+import {
+  AUTHENTICATION_ERROR_MESSAGE,
+  USER_NOT_FOUND
+} from '../messages/errors';
 
 import { AUTHENTICATION_ERROR } from '../lib/constants';
 
@@ -28,11 +32,11 @@ export default {
       if (loginResult.error === AUTHENTICATION_ERROR) {
         status = 401;
         result.status = status;
-        result.error = 'Authentication error';
+        result.error = AUTHENTICATION_ERROR_MESSAGE;
       } else {
         status = 404;
         result.status = status;
-        result.error = 'User not found';
+        result.error = USER_NOT_FOUND;
       }
     }
 

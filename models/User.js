@@ -3,6 +3,13 @@ import Model from './Model';
 import knex from '../lib/connection';
 import { sanitize } from '../lib/strings';
 import { hash } from '../lib/passwords';
+import {
+  INVALID_LENGTH,
+  DUPLICATE_EMAIL,
+  PASSWORD_CONFIRMATION_MISMATCH,
+  PASSWORD_WRONG_LENGTH,
+  PASSWORD_REQUIRED
+} from '../messages/errors';
 
 class User extends Model {
   constructor(data, create) {
@@ -10,26 +17,12 @@ class User extends Model {
 
     this.username = sanitize(this.username);
     this.email = sanitize(this.email);
-    if (create) {
-      this.password = this.setPassword();
-    }
     this.first_name = undefined;
     this.last_name = undefined;
   }
 
   setPassword() {
-    if (this.password && this.password.length > 0) {
-      if (this.password === this.password_confirm) {
-        return hash(this.password);
-      } else {
-        this.errors.push({
-          field: 'password',
-          message: 'Password and password confirmation do not match'
-        });
-      }
-    }
-
-    return undefined;
+    return hash(this.password);
   }
 
   async valid() {
@@ -58,13 +51,13 @@ class User extends Model {
       if (emailExists) {
         this.errors.push({
           field: 'email',
-          message: 'A user with that email already exists'
+          message: DUPLICATE_EMAIL
         });
 
         valid = !emailExists;
       }
     } else {
-      this.errors.push({ field: 'email', message: 'Invalid email' });
+      this.errors.push({ field: 'email', message: INVALID_LENGTH });
     }
 
     return valid;
@@ -95,13 +88,29 @@ class User extends Model {
   }
 
   validPassword() {
-    let valid =
-      this.password && validator.isLength(this.password, { min: 1, max: 255 });
+    let valid = false;
 
-    if (!valid) {
+    if (this.password) {
+      if (validator.isLength(this.password, { min: 8, max: 255 })) {
+        if (this.password === this.password_confirm) {
+          this.password = this.setPassword();
+          valid = true;
+        } else {
+          this.errors.push({
+            field: 'password',
+            message: PASSWORD_CONFIRMATION_MISMATCH
+          });
+        }
+      } else {
+        this.errors.push({
+          field: 'password',
+          message: PASSWORD_WRONG_LENGTH
+        });
+      }
+    } else {
       this.errors.push({
         field: 'password',
-        message: 'A password is required'
+        message: PASSWORD_REQUIRED
       });
     }
 
