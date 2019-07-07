@@ -1,23 +1,27 @@
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable("features", function(table) {
+  return knex.schema.createTable('features', function(table) {
     table.increments();
     table
-      .integer("article_id")
+      .integer('user_id')
       .unsigned()
       .notNullable();
     table
-      .integer("video_id")
+      .integer('article_id')
       .unsigned()
       .notNullable();
     table
-      .boolean("published")
+      .integer('video_id')
+      .unsigned()
+      .notNullable();
+    table
+      .boolean('published')
       .notNullable()
       .defaultTo(false);
-    table.timestamp("created_at").defaultTo(knex.fn.now());
-    table.timestamp("updated_at").nullable();
+    table.timestamp('created_at').defaultTo(knex.fn.now());
+    table.timestamp('updated_at').nullable();
   });
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTableIfExists("features");
+  return knex.schema.dropTableIfExists('features');
 };

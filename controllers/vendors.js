@@ -1,4 +1,5 @@
 import VendorQuery from '../models/VendorQuery';
+import UserQuery from '../models/UserQuery';
 
 export default {
   count: async (req, reply) => {
@@ -6,7 +7,12 @@ export default {
     reply.send(count);
   },
   create: async (req, reply) => {
-    const vendor = await new VendorQuery().create(req.body);
+    const id = await new UserQuery().getIdByEmail(req.decoded.user);
+    let vendor;
+
+    if (id) {
+      vendor = await new VendorQuery().create({ ...req.body, user_id: id });
+    }
 
     if (vendor) {
       reply.send(vendor);

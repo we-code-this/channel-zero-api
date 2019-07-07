@@ -1,4 +1,5 @@
 import ArtistQuery from '../models/ArtistQuery';
+import UserQuery from '../models/UserQuery';
 
 export default {
   count: async (req, reply) => {
@@ -44,7 +45,15 @@ export default {
     reply.send(artists);
   },
   create: async (req, reply) => {
-    const artist = await new ArtistQuery().create(req.body);
+    const id = await new UserQuery().getIdByEmail(req.decoded.user);
+    let artist;
+
+    if (id) {
+      artist = await new ArtistQuery().create({
+        ...req.body,
+        user_id: id
+      });
+    }
 
     if (artist) {
       reply.send(artist);

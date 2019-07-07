@@ -1,5 +1,6 @@
 import fs from 'fs-extra';
 import ReleaseQuery from '../models/ReleaseQuery';
+import UserQuery from '../models/UserQuery';
 
 export default {
   count: async (req, reply) => {
@@ -7,19 +8,24 @@ export default {
     reply.send(count);
   },
   create: async (req, reply) => {
+    const id = await new UserQuery().getIdByEmail(req.decoded.user);
     const files = await req.raw.files;
     let image;
+    let release;
 
-    if (files) {
-      image = files.image;
-      await fs.readFile(files.image.tempFilePath);
-      image.data = await fs.readFile(files.image.tempFilePath);
+    if (id) {
+      if (files) {
+        image = files.image;
+        await fs.readFile(files.image.tempFilePath);
+        image.data = await fs.readFile(files.image.tempFilePath);
+      }
+
+      release = await new ReleaseQuery().create({
+        ...req.raw.body,
+        user_id: id,
+        image: image
+      });
     }
-
-    const release = await new ReleaseQuery().create({
-      ...req.raw.body,
-      image: image
-    });
 
     if (release) {
       reply.send(release);

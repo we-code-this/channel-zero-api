@@ -67,6 +67,19 @@ class UserQuery {
     }
   }
 
+  async getIdByEmail(email) {
+    const res = await knex
+      .select('id')
+      .from(this.tablename)
+      .where(`${this.tablename}.email`, email);
+
+    if (res.length > 0) {
+      return res[0].id;
+    } else {
+      return undefined;
+    }
+  }
+
   async isInGroup(groupSlug, email) {
     const user = await this.findByEmail(email, true);
     const group = await knex

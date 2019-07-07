@@ -1,10 +1,10 @@
-import moment from "moment";
-import knex from "../lib/connection";
-import Release from "./Release";
+import moment from 'moment';
+import knex from '../lib/connection';
+import Release from './Release';
 
 class ReleaseQuery {
   constructor() {
-    this.tablename = "releases";
+    this.tablename = 'releases';
     this.items = undefined;
   }
 
@@ -12,19 +12,19 @@ class ReleaseQuery {
     return knex
       .select(
         `${this.tablename}.*`,
-        "artists.name as artist_name",
-        "artists.slug as artist_slug",
-        "artists.description as artist_description",
-        "artists.created_at as artist_created_at",
-        "artists.updated_at as artist_updated_at",
-        "labels.name as label_name",
-        "labels.slug as label_slug",
-        "labels.created_at as label_created_at",
-        "labels.updated_at as label_updated_at"
+        'artists.name as artist_name',
+        'artists.slug as artist_slug',
+        'artists.description as artist_description',
+        'artists.created_at as artist_created_at',
+        'artists.updated_at as artist_updated_at',
+        'labels.name as label_name',
+        'labels.slug as label_slug',
+        'labels.created_at as label_created_at',
+        'labels.updated_at as label_updated_at'
       )
       .from(this.tablename)
-      .leftJoin("artists", `${this.tablename}.artist_id`, "artists.id")
-      .leftJoin("labels", `${this.tablename}.label_id`, "labels.id");
+      .leftJoin('artists', `${this.tablename}.artist_id`, 'artists.id')
+      .leftJoin('labels', `${this.tablename}.label_id`, 'labels.id');
   }
 
   async create(data) {
@@ -37,6 +37,7 @@ class ReleaseQuery {
     if (isValid && release.saveFile()) {
       const id = await knex(this.tablename).insert(
         {
+          user_id: release.user_id,
           artist_id: release.artist_id,
           label_id: release.label_id,
           title: release.title,
@@ -45,7 +46,7 @@ class ReleaseQuery {
           filename: release.filename,
           published: release.published
         },
-        ["id"]
+        ['id']
       );
 
       const res = (await this.select()
@@ -59,7 +60,7 @@ class ReleaseQuery {
   }
 
   async count() {
-    return await knex.count("* as count").from(this.tablename);
+    return await knex.count('* as count').from(this.tablename);
   }
 
   async delete(id) {
@@ -67,7 +68,7 @@ class ReleaseQuery {
 
     if (release && release.deleteFile()) {
       return await knex(this.tablename)
-        .where("id", id)
+        .where('id', id)
         .del();
     } else {
       return false;
@@ -77,7 +78,7 @@ class ReleaseQuery {
   async get(params = {}, unpublished = false) {
     const offset = params.offset ? parseInt(params.offset) : 0;
     const limit = params.limit ? parseInt(params.limit) : 10;
-    const order = params.order ? params.order.toUpperCase() : "DESC";
+    const order = params.order ? params.order.toUpperCase() : 'DESC';
 
     let res;
 
@@ -85,13 +86,13 @@ class ReleaseQuery {
       res = await this.select()
         .limit(limit)
         .offset(offset)
-        .orderBy("created_at", order);
+        .orderBy('created_at', order);
     } else {
       res = await this.select()
         .where(`${this.tablename}.published`, true)
         .limit(limit)
         .offset(offset)
-        .orderBy("created_at", order);
+        .orderBy('created_at', order);
     }
 
     return Promise.all(
@@ -102,7 +103,7 @@ class ReleaseQuery {
   }
 
   async findByArtist(id) {
-    return (await knex(this.tablename).where("artist_id", id)).map(release => {
+    return (await knex(this.tablename).where('artist_id', id)).map(release => {
       return new Release(release);
     });
   }
@@ -134,7 +135,7 @@ class ReleaseQuery {
     const data = {
       ...oldRelease,
       ...remainingUpdatedFields,
-      updated_at: moment().format("YYYY-MM-DD HH:mm:ss")
+      updated_at: moment().format('YYYY-MM-DD HH:mm:ss')
     };
 
     const release = new Release(data);
@@ -142,7 +143,7 @@ class ReleaseQuery {
 
     if (isValid && release.saveFile()) {
       await knex(this.tablename)
-        .where("id", id)
+        .where('id', id)
         .update({
           artist_id: release.artist_id,
           label_id: release.label_id,
@@ -159,7 +160,7 @@ class ReleaseQuery {
 
   async publish(id) {
     const response = await knex(this.tablename)
-      .where("id", id)
+      .where('id', id)
       .update({ published: 1 });
 
     return response === 1 ? await this.find(id) : undefined;
@@ -167,7 +168,7 @@ class ReleaseQuery {
 
   async unpublish(id) {
     const response = await knex(this.tablename)
-      .where("id", id)
+      .where('id', id)
       .update({ published: 0 });
 
     return response === 1 ? await this.find(id) : undefined;

@@ -1,27 +1,31 @@
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable("releases", function(table) {
+  return knex.schema.createTable('releases', function(table) {
     table.increments();
     table
-      .integer("artist_id")
+      .integer('user_id')
       .unsigned()
       .notNullable();
     table
-      .integer("label_id")
+      .integer('artist_id')
       .unsigned()
       .notNullable();
-    table.string("title").notNullable();
-    table.string("slug").notNullable();
-    table.text("description");
-    table.string("filename").notNullable();
     table
-      .boolean("published")
+      .integer('label_id')
+      .unsigned()
+      .notNullable();
+    table.string('title').notNullable();
+    table.string('slug').notNullable();
+    table.text('description');
+    table.string('filename').notNullable();
+    table
+      .boolean('published')
       .notNullable()
       .defaultTo(false);
-    table.timestamp("created_at").defaultTo(knex.fn.now());
-    table.timestamp("updated_at").nullable();
+    table.timestamp('created_at').defaultTo(knex.fn.now());
+    table.timestamp('updated_at').nullable();
   });
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTableIfExists("releases");
+  return knex.schema.dropTableIfExists('releases');
 };

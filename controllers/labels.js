@@ -1,4 +1,5 @@
 import LabelQuery from '../models/LabelQuery';
+import UserQuery from '../models/UserQuery';
 
 export default {
   count: async (req, reply) => {
@@ -6,7 +7,12 @@ export default {
     reply.send(count);
   },
   create: async (req, reply) => {
-    const label = await new LabelQuery().create(req.body);
+    const id = await new UserQuery().getIdByEmail(req.decoded.user);
+    let label;
+
+    if (id) {
+      label = await new LabelQuery().create({ ...req.body, user_id: id });
+    }
 
     if (label) {
       reply.send(label);
