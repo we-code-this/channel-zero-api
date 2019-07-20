@@ -19,7 +19,7 @@ export default {
     );
 
     if (loginResult.user) {
-      const payload = { user: loginResult.user };
+      const payload = { user: loginResult.user, groups: loginResult.groups };
       const token = jwt.sign(
         payload,
         process.env.JWT_SECRET,

@@ -104,13 +104,31 @@ class UserQuery {
     }
   }
 
+  async groups(id) {
+    const res = await knex
+      .select('name', 'slug')
+      .from('groups')
+      .leftJoin('group_users', 'group_id', 'groups.id')
+      .where('user_id', id);
+
+    const groups = {};
+
+    res.map(group => {
+      groups[group.slug] = group.name;
+    });
+
+    return groups;
+  }
+
   async login(email, password) {
     try {
       const user = await this.findByEmail(email, true);
 
       if (user) {
+        const groups = await this.groups(user.id);
+
         return compare(password, user.password)
-          ? { user: user.email }
+          ? { user: user.email, groups }
           : { error: AUTHENTICATION_ERROR };
       } else {
         return { error: USER_NOT_FOUND_ERROR };
