@@ -128,7 +128,7 @@ class UserQuery {
         const groups = await this.groups(user.id);
 
         return compare(password, user.password)
-          ? { user: user.email, groups }
+          ? { id: user.id, user: user.email, groups }
           : { error: AUTHENTICATION_ERROR };
       } else {
         return { error: USER_NOT_FOUND_ERROR };
