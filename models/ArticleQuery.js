@@ -84,6 +84,7 @@ class ArticleQuery {
   }
 
   async get(params = {}) {
+    const offset = params.offset ? parseInt(params.offset) : 0;
     const limit = params.limit ? parseInt(params.limit) : 10;
     const order = params.order ? params.order.toUpperCase() : 'DESC';
 
@@ -96,6 +97,7 @@ class ArticleQuery {
       .from(this.tablename)
       .where('published', true)
       .limit(limit)
+      .offset(offset)
       .orderBy('created_at', order);
 
     this.items = results.map(function(record) {

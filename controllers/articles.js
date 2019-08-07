@@ -55,6 +55,14 @@ export default {
       reply.status(404).send();
     }
   },
+  getRange: async (req, reply) => {
+    const articles = await new ArticleQuery().get({
+      offset: req.params.offset,
+      limit: req.params.limit,
+      order: req.params.order
+    });
+    reply.send(articles);
+  },
   getWithLimit: async (req, reply) => {
     const articles = await new ArticleQuery().get({
       limit: req.params.limit

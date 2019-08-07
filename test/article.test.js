@@ -91,6 +91,20 @@ describe('articles', function() {
         expect(JSON.parse(response.payload)[0]).to.be.an.instanceOf(Object);
       });
     });
+
+    describe('GET /articles/range/:offset/:limit/:order', function() {
+      it("should return article with id of 11 with offset 1, limit 10 and order 'asc'", async function() {
+        const response = await app.inject({
+          method: 'GET',
+          url: '/articles/range/1/10/asc'
+        });
+
+        const results = JSON.parse(response.payload);
+
+        expect(results[0].id).to.equal(2);
+        expect(results[results.length - 1].id).to.equal(11);
+      });
+    });
   });
 
   describe('GET /article/:slug', function() {
