@@ -8,6 +8,10 @@ class ArticleQuery {
     this.items = undefined;
   }
 
+  async count() {
+    return await knex.count('* as count').from(this.tablename);
+  }
+
   async create(data) {
     const articleData = { ...data };
     const article = new Article(articleData, true);

@@ -37,6 +37,17 @@ describe('articles', function() {
       expect(JSON.parse(response.payload).length).to.equal(10);
     });
 
+    describe('GET /articles/count', function() {
+      it('should return count of 11', async function() {
+        const response = await app.inject({
+          method: 'GET',
+          url: '/articles/count'
+        });
+
+        expect(JSON.parse(response.payload)[0].count).to.equal(11);
+      });
+    });
+
     describe('GET /articles/:limit', function() {
       it('should return 11 articles if :limit is 11', async function() {
         const response = await app.inject({

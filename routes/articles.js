@@ -4,6 +4,7 @@ import { isAdmin } from '../lib/auth';
 
 const routes = fastify => {
   fastify.get('/articles/:limit/:order', articles.getWithLimitAndOrder);
+  fastify.get('/articles/count', articles.count);
   fastify.get('/articles/:limit', articles.getWithLimit);
   fastify.get('/articles', articles.get);
   fastify.get('/article/:slug', articles.getOneBySlug);

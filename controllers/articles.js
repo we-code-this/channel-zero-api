@@ -3,6 +3,10 @@ import ArticleQuery from '../models/ArticleQuery';
 import UserQuery from '../models/UserQuery';
 
 export default {
+  count: async (req, reply) => {
+    const count = await new ArticleQuery().count();
+    reply.send(count);
+  },
   create: async (req, reply) => {
     const id = await new UserQuery().getIdByEmail(req.decoded.user);
     const files = await req.raw.files;
