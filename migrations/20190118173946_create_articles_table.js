@@ -6,6 +6,7 @@ exports.up = function(knex, Promise) {
       .unsigned()
       .notNullable();
     table.string('title').notNullable();
+    table.string('slug').notNullable();
     table.text('summary');
     table.text('description').notNullable();
     table.string('filename');

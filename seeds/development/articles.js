@@ -7,6 +7,7 @@ exports.seed = function(knex, Promise) {
           id: 1,
           user_id: 1,
           title: 'Sollicitudin Ligula Parturient',
+          slug: 'sollicitudin-ligula-parturient',
           summary:
             'Donec id elit non mi porta gravida at eget metus. Etiam porta sem malesuada magna mollis euismod. Donec id elit non mi porta gravida at eget metus…',
           description: `Donec id elit non mi porta gravida at eget metus. Etiam porta sem malesuada magna mollis euismod. Donec id elit non mi porta gravida at eget metus. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
@@ -24,6 +25,7 @@ Nulla vitae elit libero, a pharetra augue. Curabitur blandit tempus porttitor. S
           id: 2,
           user_id: 1,
           title: 'Mattis Ultricies Egestas Pharetra',
+          slug: 'mattis-ultricies-egestas-pharetra',
           summary:
             'Sed posuere consectetur est at lobortis. Nulla vitae elit libero, a pharetra augue. Nulla vitae elit libero, a pharetra augue.',
           description: `Sed posuere consectetur est at lobortis. Nulla vitae elit libero, a pharetra augue. Nulla vitae elit libero, a pharetra augue. Sed posuere consectetur est at lobortis.
@@ -41,6 +43,7 @@ Donec id elit non mi porta gravida at eget metus. Cras mattis consectetur purus 
           id: 3,
           user_id: 1,
           title: 'Parturient Fermentum Bibendum, Yo!',
+          slug: 'parturient-fermentum-bibendum-yo',
           summary:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Curabitur blandit tempus porttitor…',
           description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Curabitur blandit tempus porttitor. Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Donec sed odio dui. Donec id elit non mi porta gravida at eget metus.
@@ -58,6 +61,7 @@ Nullam quis risus eget urna mollis ornare vel eu leo. Donec ullamcorper nulla no
           id: 4,
           user_id: 1,
           title: 'Sollicitudin Ligula Parturient',
+          slug: 'sollicitudin-ligula-parturient',
           summary:
             'Maecenas sed diam eget risus varius blandit sit amet non magna. Donec id elit non mi porta gravida at eget metus. Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam',
           description: `Maecenas sed diam eget risus varius blandit sit amet non magna. Donec id elit non mi porta gravida at eget metus. Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam.
@@ -75,6 +79,7 @@ Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Maecenas sed
           id: 5,
           user_id: 1,
           title: 'Mattis Ultricies Egestas Pharetra',
+          slug: 'mattis-ultricies-egestas-pharetra',
           summary:
             'Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus',
           description: `Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
@@ -92,6 +97,7 @@ Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec sed odio dui.
           id: 6,
           user_id: 1,
           title: 'Parturient Fermentum Bibendum',
+          slug: 'parturient-fermentum-bibendum',
           summary:
             'Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Donec ullamcorper nulla non metus auctor fringilla. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit…',
           description: `Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Donec ullamcorper nulla non metus auctor fringilla. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Nullam id dolor id nibh ultricies vehicula ut id elit. Maecenas faucibus mollis interdum.
@@ -109,6 +115,7 @@ Donec sed odio dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nul
           id: 7,
           user_id: 1,
           title: 'Egestas Ornare Commodo Cursus',
+          slug: 'egestas-ornare-commodo-cursus',
           summary:
             'Curabitur blandit tempus porttitor. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Nullam id dolor id nibh ultricies vehicula ut id elit. Maecenas sed diam eget risus varius blandit sit amet non magna.',
           description: `Curabitur blandit tempus porttitor. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Nullam id dolor id nibh ultricies vehicula ut id elit. Maecenas sed diam eget risus varius blandit sit amet non magna. Sed posuere consectetur est at lobortis. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
@@ -126,6 +133,7 @@ Nulla vitae elit libero, a pharetra augue. Integer posuere erat a ante venenatis
           id: 8,
           user_id: 1,
           title: 'Ullamcorper Sit Vehicula Condimentum',
+          slug: 'ullamcorper-sit-vehicula-condimentum',
           summary:
             'Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Praesent commodo cursus magna, vel scelerisque nisl consectetur et',
           description: `Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
@@ -143,6 +151,7 @@ Etiam porta sem malesuada magna mollis euismod. Integer posuere erat a ante vene
           id: 9,
           user_id: 1,
           title: 'Elit Cursus Nibh',
+          slug: 'elit-cursus-nibh',
           summary:
             'Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Vestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum. Nulla vitae elit libero, a pharetra augue. Vestibulum id ligula porta felis euismod semper',
           description: `Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Vestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum. Nulla vitae elit libero, a pharetra augue. Vestibulum id ligula porta felis euismod semper.
@@ -160,6 +169,7 @@ Donec id elit non mi porta gravida at eget metus. Morbi leo risus, porta ac cons
           id: 10,
           user_id: 1,
           title: 'Fermentum Commodo Tortor Vehicula Mattis',
+          slug: 'fermentum-commodo-tortor-vehicula-mattis',
           summary:
             'Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Cras mattis consectetur purus sit amet fermentum. Nullam quis risus eget urna mollis ornare vel eu leo. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor',
           description: `Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Cras mattis consectetur purus sit amet fermentum. Nullam quis risus eget urna mollis ornare vel eu leo. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
@@ -177,6 +187,7 @@ Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut ferm
           id: 11,
           user_id: 1,
           title: 'Tristique Sem Sollicitudin Amet',
+          slug: 'tristique-sem-sollicitudin-amet',
           summary:
             'Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Cras mattis consectetur purus sit amet fermentum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros',
           description: `Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Cras mattis consectetur purus sit amet fermentum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Aenean lacinia bibendum nulla sed consectetur. Vestibulum id ligula porta felis euismod semper.
