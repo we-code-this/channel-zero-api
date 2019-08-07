@@ -5,9 +5,10 @@ exports.up = function(knex, Promise) {
       .integer('user_id')
       .unsigned()
       .notNullable();
-    table.string('url').notNullable();
     table.string('title').notNullable();
-    table.text('summary').notNullable();
+    table.text('summary');
+    table.text('description').notNullable();
+    table.string('filename');
     table
       .boolean('published')
       .notNullable()

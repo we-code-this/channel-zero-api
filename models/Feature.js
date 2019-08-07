@@ -1,6 +1,6 @@
-import Article from "./Article";
-import Model from "./Model";
-import Video from "./Video";
+import Article from './Article';
+import Model from './Model';
+import Video from './Video';
 
 class Feature extends Model {
   constructor(data) {
@@ -8,7 +8,6 @@ class Feature extends Model {
 
     this.article = new Article({
       id: data.article_id,
-      url: data.article_url,
       title: data.article_title,
       summary: data.article_summary,
       published: data.article_published,
