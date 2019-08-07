@@ -1,19 +1,17 @@
-import fs from "fs-extra";
-import path from "path";
-import fileType from "file-type";
-import crypto from "crypto";
-import validator from "validator";
-import knex from "../lib/connection";
-import Artist from "./Artist";
-import Endorsement from "./Endorsement";
-import Label from "./Label";
-import Model from "./Model";
-import Vendor from "./Vendor";
-import ReleaseCredit from "./ReleaseCredit";
+import fileType from 'file-type';
+import crypto from 'crypto';
+import validator from 'validator';
+import knex from '../lib/connection';
+import Artist from './Artist';
+import Endorsement from './Endorsement';
+import Label from './Label';
+import Model from './Model';
+import Vendor from './Vendor';
+import ReleaseCredit from './ReleaseCredit';
 
-import { sanitize, slugify } from "../lib/strings";
-import { fileRoot, assetDirectories, saveFile, deleteFile } from "../lib/files";
-import ArtistQuery from "./ArtistQuery";
+import { sanitize, slugify } from '../lib/strings';
+import { assetDirectories, saveFile, deleteFile } from '../lib/files';
+import ArtistQuery from './ArtistQuery';
 
 class Release extends Model {
   constructor(data, create) {
@@ -24,7 +22,7 @@ class Release extends Model {
 
     this.published =
       this.published &&
-      (this.published === "true" ||
+      (this.published === 'true' ||
         this.published === true ||
         this.published === 1)
         ? true
@@ -51,7 +49,7 @@ class Release extends Model {
       });
     }
 
-    this.allowedExtensions = ["jpg", "jpeg", "png"];
+    this.allowedExtensions = ['jpg', 'jpeg', 'png'];
 
     this.vendors = undefined;
     this.credits = undefined;
@@ -72,13 +70,13 @@ class Release extends Model {
       .select(
         `release_vendors.id`,
         `release_vendors.url`,
-        "vendors.name as name",
-        "vendors.icon_class as icon_class"
+        'vendors.name as name',
+        'vendors.icon_class as icon_class'
       )
-      .from("release_vendors")
-      .leftJoin("vendors", `release_vendors.vendor_id`, "vendors.id")
-      .where("release_vendors.release_id", this.id)
-      .orderBy("vendors.name", "ASC");
+      .from('release_vendors')
+      .leftJoin('vendors', `release_vendors.vendor_id`, 'vendors.id')
+      .where('release_vendors.release_id', this.id)
+      .orderBy('vendors.name', 'ASC');
 
     this.vendors = results.map(function(record) {
       return new Vendor(record);
@@ -89,10 +87,10 @@ class Release extends Model {
 
   async withCredits() {
     const results = await knex
-      .select("*")
-      .from("release_credits")
-      .where("release_credits.release_id", this.id)
-      .orderBy("release_credits.id", "ASC");
+      .select('*')
+      .from('release_credits')
+      .where('release_credits.release_id', this.id)
+      .orderBy('release_credits.id', 'ASC');
 
     this.credits = results.map(function(record) {
       return new ReleaseCredit(record);
@@ -103,15 +101,15 @@ class Release extends Model {
 
   async withEndorsements() {
     const results = await knex
-      .select("endorsements.*")
-      .from("release_endorsements")
+      .select('endorsements.*')
+      .from('release_endorsements')
       .leftJoin(
-        "endorsements",
-        "release_endorsements.endorsement_id",
-        "endorsements.id"
+        'endorsements',
+        'release_endorsements.endorsement_id',
+        'endorsements.id'
       )
-      .where("release_endorsements.release_id", this.id)
-      .orderBy("endorsements.id", "ASC");
+      .where('release_endorsements.release_id', this.id)
+      .orderBy('endorsements.id', 'ASC');
 
     this.endorsements = results.map(function(record) {
       return new Endorsement(record);
@@ -137,7 +135,7 @@ class Release extends Model {
     let valid = validator.isLength(this.title, { min: 1, max: 255 });
 
     if (!valid) {
-      this.errors.push({ field: "title", message: "Invalid length" });
+      this.errors.push({ field: 'title', message: 'Invalid length' });
     }
 
     return valid;
@@ -151,8 +149,8 @@ class Release extends Model {
       type = fileType(this.image.data);
     } catch (e) {
       this.errors.push({
-        field: "image",
-        message: "Invalid image file. Accepted: jpg, jpeg, png"
+        field: 'image',
+        message: 'Invalid image file. Accepted: jpg, jpeg, png'
       });
 
       return false;
@@ -180,8 +178,8 @@ class Release extends Model {
 
     if (!valid) {
       this.errors.push({
-        field: "image",
-        message: "Invalid image file type. Accepted: jpg, jpeg, png"
+        field: 'image',
+        message: 'Invalid image file type. Accepted: jpg, jpeg, png'
       });
     }
 
@@ -197,15 +195,15 @@ class Release extends Model {
       this.artist = await new ArtistQuery().findById(this.artist_id);
       this.slug = await slugify(
         `${this.artist.name} ${this.title}`,
-        "releases",
-        "slug"
+        'releases',
+        'slug'
       );
     }
   }
 
   generateFilename() {
     if (this.create) {
-      const generated = crypto.randomBytes(4).toString("hex");
+      const generated = crypto.randomBytes(4).toString('hex');
       this.filename = `${generated}.${this.extension}`;
     }
   }
