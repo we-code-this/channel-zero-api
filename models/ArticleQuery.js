@@ -1,3 +1,4 @@
+import moment from 'moment';
 import knex from '../lib/connection';
 import Article from './Article';
 
@@ -40,6 +41,32 @@ class ArticleQuery {
     }
   }
 
+  async find(id) {
+    const res = await knex
+      .select('*')
+      .from(this.tablename)
+      .where(`${this.tablename}.id`, id);
+
+    if (res.length > 0) {
+      return new Article(res[0]);
+    } else {
+      return undefined;
+    }
+  }
+
+  async findBySlug(slug) {
+    const res = await knex
+      .select('*')
+      .from(this.tablename)
+      .where(`${this.tablename}.slug`, slug);
+
+    if (res.length > 0) {
+      return new Article(res[0]);
+    } else {
+      return undefined;
+    }
+  }
+
   async get(params = {}) {
     const limit = params.limit ? parseInt(params.limit) : 10;
     const order = params.order ? params.order.toUpperCase() : 'DESC';
@@ -60,6 +87,35 @@ class ArticleQuery {
     });
 
     return this.items;
+  }
+
+  async update(updatedFields) {
+    const { id, ...remainingUpdatedFields } = updatedFields;
+    const oldArticle = await this.find(id);
+
+    const data = {
+      ...oldArticle,
+      ...remainingUpdatedFields,
+      updated_at: moment().format('YYYY-MM-DD HH:mm:ss')
+    };
+
+    const article = new Article(data);
+    const isValid = article.valid();
+
+    if (isValid && article.saveFile()) {
+      await knex(this.tablename)
+        .where('id', id)
+        .update({
+          title: article.title,
+          summary: article.summary,
+          description: article.description,
+          updated_at: article.updated_at
+        });
+
+      return await this.find(id);
+    } else {
+      return { errors: article.validationErrors() };
+    }
   }
 }
 

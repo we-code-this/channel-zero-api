@@ -33,6 +33,15 @@ export default {
     const articles = await new ArticleQuery().get();
     reply.send(articles);
   },
+  getOneBySlug: async (req, reply) => {
+    const article = await new ArticleQuery().findBySlug(req.params.slug);
+
+    if (article) {
+      reply.send(article);
+    } else {
+      reply.status(404).send();
+    }
+  },
   getWithLimit: async (req, reply) => {
     const articles = await new ArticleQuery().get({
       limit: req.params.limit
@@ -45,5 +54,22 @@ export default {
       order: req.params.order
     });
     reply.send(articles);
+  },
+  update: async (req, reply) => {
+    const files = await req.raw.files;
+    let image;
+
+    if (files) {
+      image = files.image;
+      await fs.readFile(files.image.tempFilePath);
+      image.data = await fs.readFile(files.image.tempFilePath);
+    }
+
+    const updatedArticle = await new ArticleQuery().update({
+      image: image,
+      ...req.raw.body
+    });
+
+    reply.send(updatedArticle);
   }
 };

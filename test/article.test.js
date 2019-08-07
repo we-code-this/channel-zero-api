@@ -82,6 +82,16 @@ describe('articles', function() {
     });
   });
 
+  describe('GET /article/:slug', function() {
+    it('should return the article that has the :slug supplied', async function() {
+      const response = await app.inject({
+        method: 'GET',
+        url: '/article/article-1'
+      });
+      expect(JSON.parse(response.payload).slug).to.equal('article-1');
+    });
+  });
+
   describe('POST /article', function() {
     it('should add article record to database', async function() {
       const token = await login(app);
@@ -351,6 +361,89 @@ describe('articles', function() {
       const response = await app.inject(opts);
 
       expect(JSON.parse(response.payload).title).to.equal('Article 1005');
+    });
+  });
+
+  describe('PATCH /article', function() {
+    it('should update article record in database', async function() {
+      const token = await login(app);
+      const getResponse = await app.inject({
+        method: 'GET',
+        url: '/article/article-1'
+      });
+
+      const article = JSON.parse(getResponse.payload);
+
+      expect(article.id).to.equal(1);
+      expect(article.description).to.equal('Article 1 description');
+
+      const newDescription = 'new article description';
+
+      let form = new FormData();
+      form.append('id', 1);
+      form.append('description', newDescription);
+
+      const response = await app.inject({
+        method: 'PATCH',
+        url: '/article',
+        payload: form,
+        headers: form.getHeaders({
+          Authorization: `Bearer ${token}`
+        })
+      });
+
+      expect(JSON.parse(response.payload).description).to.equal(newDescription);
+    });
+
+    it('should replace image with new one', async function() {
+      const token = await login(app);
+      let rs = fs.createReadStream(filePath);
+      let original_form = new FormData();
+      original_form.append('image', rs);
+      original_form.append('user_id', 1);
+      original_form.append('title', 'Test Article');
+      original_form.append('summary', 'Test article summary');
+      original_form.append('description', 'Test article description');
+
+      let original_opts = {
+        url: '/article',
+        method: 'POST',
+        payload: original_form,
+        headers: original_form.getHeaders({
+          Authorization: `Bearer ${token}`
+        })
+      };
+
+      const original_result = await app.inject(original_opts);
+      const original_article = JSON.parse(original_result.payload);
+      const filename = original_article.filename;
+      const destPath = path.join(articlesDir, filename);
+
+      expect(fs.existsSync(destPath)).to.be.true;
+
+      const original_file = fs.readFileSync(destPath);
+
+      let new_rs = fs.createReadStream(altFilePath);
+      let new_form = new FormData();
+      new_form.append('image', new_rs);
+      new_form.append('id', original_article.id);
+
+      let new_opts = {
+        method: 'PATCH',
+        url: '/article',
+        payload: new_form,
+        headers: new_form.getHeaders({
+          Authorization: `Bearer ${token}`
+        })
+      };
+
+      await app.inject(new_opts);
+
+      const new_source = await fs.readFileSync(altFilePath);
+      const new_file = await fs.readFileSync(destPath);
+
+      expect(new_file).to.deep.equal(new_source);
+      expect(new_file).to.not.deep.equal(original_file);
     });
   });
 });
