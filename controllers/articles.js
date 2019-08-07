@@ -29,6 +29,15 @@ export default {
       reply.status(500).send();
     }
   },
+  del: async (req, reply) => {
+    const deleted = await new ArticleQuery().delete(req.body.id);
+
+    if (deleted) {
+      reply.send(deleted);
+    } else {
+      reply.status(404).send();
+    }
+  },
   get: async function(req, reply) {
     const articles = await new ArticleQuery().get();
     reply.send(articles);
@@ -54,6 +63,16 @@ export default {
       order: req.params.order
     });
     reply.send(articles);
+  },
+  publish: async (req, reply) => {
+    const publishedArticle = await new ArticleQuery().publish(req.body.id);
+
+    reply.send(publishedArticle);
+  },
+  unpublish: async (req, reply) => {
+    const unpublishedArticle = await new ArticleQuery().unpublish(req.body.id);
+
+    reply.send(unpublishedArticle);
   },
   update: async (req, reply) => {
     const files = await req.raw.files;

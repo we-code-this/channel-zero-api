@@ -19,6 +19,22 @@ const routes = fastify => {
     { beforeHandler: [validate, isAdmin] },
     articles.update
   );
+  fastify.patch(
+    '/article/publish',
+    { beforeHandler: [validate, isAdmin] },
+    articles.publish
+  );
+  fastify.patch(
+    '/article/unpublish',
+    { beforeHandler: [validate, isAdmin] },
+    articles.unpublish
+  );
+
+  fastify.delete(
+    '/article',
+    { beforeHandler: [validate, isAdmin] },
+    articles.del
+  );
 };
 
 export default routes;

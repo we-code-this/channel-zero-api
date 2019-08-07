@@ -107,7 +107,6 @@ describe('articles', function() {
       expect(beforeResponse.statusCode).to.equal(404);
 
       form.append('image', rs);
-      form.append('user_id', 1);
       form.append('title', 'Article 1000');
       form.append('summary', 'Test summary');
       form.append('description', 'Test description');
@@ -138,7 +137,6 @@ describe('articles', function() {
       let firstForm = new FormData();
 
       firstForm.append('image', firstRs);
-      firstForm.append('user_id', 1);
       firstForm.append('title', title);
       firstForm.append('summary', 'Test summary');
       firstForm.append('description', 'Test description');
@@ -159,7 +157,6 @@ describe('articles', function() {
       let secondRs = fs.createReadStream(filePath);
       let secondForm = new FormData();
       secondForm.append('image', secondRs);
-      secondForm.append('user_id', 1);
       secondForm.append('title', title);
       secondForm.append('summary', 'Test summary');
       secondForm.append('description', 'Test description');
@@ -181,7 +178,6 @@ describe('articles', function() {
     it('should not return error without an image', async function() {
       const token = await login(app);
       let form = new FormData();
-      form.append('user_id', 1);
       form.append('title', 'Article 1002');
       form.append('summary', 'Test summary');
       form.append('description', 'Test description');
@@ -205,7 +201,6 @@ describe('articles', function() {
       let rs = fs.createReadStream(filePath);
 
       form.append('image', rs);
-      form.append('user_id', 1);
       form.append('title', '');
       form.append('summary', 'Test summary');
       form.append('description', 'Test description');
@@ -231,7 +226,6 @@ describe('articles', function() {
       let rs = fs.createReadStream(filePath);
 
       form.append('image', rs);
-      form.append('user_id', 1);
       form.append('title', 'Article 1003');
       form.append('summary', 'Test summary');
 
@@ -258,7 +252,6 @@ describe('articles', function() {
       let rs = fs.createReadStream(filePath);
 
       form.append('image', rs);
-      form.append('user_id', 1);
       form.append('title', 'Article 1003');
       form.append('summary', 'Test summary');
       form.append('description', '');
@@ -286,7 +279,6 @@ describe('articles', function() {
       let rs = fs.createReadStream(filePath);
 
       form.append('image', rs);
-      form.append('user_id', 1);
       form.append('title', 'Article 1003');
       form.append('summary', 'Test summary');
       form.append(
@@ -316,7 +308,6 @@ describe('articles', function() {
       let rs = fs.createReadStream(filePath);
 
       form.append('image', rs);
-      form.append('user_id', 1);
       form.append('title', 'Article 1004');
       form.append(
         'summary',
@@ -344,7 +335,6 @@ describe('articles', function() {
       let rs = fs.createReadStream(filePath);
 
       form.append('image', rs);
-      form.append('user_id', 1);
       form.append('title', "<script>console.log('yo')</script> Article 1005");
       form.append('summary', 'Test summary');
       form.append('description', 'Test description');
@@ -444,6 +434,159 @@ describe('articles', function() {
 
       expect(new_file).to.deep.equal(new_source);
       expect(new_file).to.not.deep.equal(original_file);
+    });
+  });
+
+  describe('PATCH /article/publish', function() {
+    it('should publish an unpublished article', async function() {
+      const token = await login(app);
+      let form = new FormData();
+      let rs = fs.createReadStream(filePath);
+
+      form.append('image', rs);
+      form.append('title', 'Article 1006');
+      form.append('summary', 'Test summary');
+      form.append('description', 'Test description');
+      form.append('published', 'false');
+
+      let opts = {
+        url: '/article',
+        method: 'POST',
+        payload: form,
+        headers: form.getHeaders({
+          Authorization: `Bearer ${token}`
+        })
+      };
+
+      const res = await app.inject(opts);
+      const article = JSON.parse(res.payload);
+      const published = Boolean(article.published);
+
+      expect(published).to.be.false;
+
+      const publishRes = await app.inject({
+        url: '/article/publish',
+        method: 'PATCH',
+        body: {
+          id: article.id
+        },
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const publishedArticle = JSON.parse(publishRes.payload);
+
+      expect(publishedArticle.published).to.be.true;
+    });
+  });
+
+  describe('PATCH /article/unpublish', function() {
+    it('should unpublish an published article', async function() {
+      const token = await login(app);
+      let form = new FormData();
+      let rs = fs.createReadStream(filePath);
+
+      form.append('image', rs);
+      form.append('title', 'Article 1007');
+      form.append('summary', 'Test summary');
+      form.append('description', 'Test description');
+      form.append('published', 'true');
+
+      let opts = {
+        url: '/article',
+        method: 'POST',
+        payload: form,
+        headers: form.getHeaders({
+          Authorization: `Bearer ${token}`
+        })
+      };
+
+      const res = await app.inject(opts);
+      const article = JSON.parse(res.payload);
+      const published = Boolean(article.published);
+
+      expect(published).to.be.true;
+
+      const unpublishRes = await app.inject({
+        url: '/article/unpublish',
+        method: 'PATCH',
+        body: {
+          id: article.id
+        },
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const unpublishedArticle = JSON.parse(unpublishRes.payload);
+
+      expect(unpublishedArticle.published).to.be.false;
+    });
+  });
+
+  describe('DELETE /article', function() {
+    it('should delete article database record and image file', async function() {
+      const token = await login(app);
+      let form = new FormData();
+      let rs = fs.createReadStream(filePath);
+
+      form.append('image', rs);
+      form.append('title', 'Article 1008');
+      form.append('description', 'Test description');
+      form.append('summary', 'Test summary');
+      form.append('published', 'true');
+
+      let opts = {
+        url: '/article',
+        method: 'POST',
+        payload: form,
+        headers: form.getHeaders({
+          Authorization: `Bearer ${token}`
+        })
+      };
+
+      const res = await app.inject(opts);
+      const article = JSON.parse(res.payload);
+      const filename = article.filename;
+      const destPath = path.join(articlesDir, filename);
+
+      expect(fs.existsSync(destPath)).to.be.true;
+
+      await app.inject({
+        method: 'DELETE',
+        url: '/article',
+        payload: {
+          id: article.id
+        },
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const afterResponse = await app.inject({
+        method: 'GET',
+        url: `/article/${article.slug}`
+      });
+
+      expect(afterResponse.statusCode).to.equal(404);
+      expect(fs.existsSync(destPath)).to.be.false;
+    });
+
+    it('should return 404 when trying to delete article that doesn’t exist', async function() {
+      const token = await login(app);
+      const response = await app.inject({
+        method: 'DELETE',
+        url: '/article',
+        payload: {
+          id: 2000
+        },
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      expect(response.statusCode).to.equal(404);
     });
   });
 });

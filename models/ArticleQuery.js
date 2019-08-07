@@ -41,6 +41,18 @@ class ArticleQuery {
     }
   }
 
+  async delete(id) {
+    const article = await this.find(id);
+
+    if (article && article.deleteFile()) {
+      return await knex(this.tablename)
+        .where('id', id)
+        .del();
+    } else {
+      return false;
+    }
+  }
+
   async find(id) {
     const res = await knex
       .select('*')
@@ -87,6 +99,22 @@ class ArticleQuery {
     });
 
     return this.items;
+  }
+
+  async publish(id) {
+    const response = await knex(this.tablename)
+      .where('id', id)
+      .update({ published: 1 });
+
+    return response === 1 ? await this.find(id) : undefined;
+  }
+
+  async unpublish(id) {
+    const response = await knex(this.tablename)
+      .where('id', id)
+      .update({ published: 0 });
+
+    return response === 1 ? await this.find(id) : undefined;
   }
 
   async update(updatedFields) {
