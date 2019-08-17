@@ -4,6 +4,10 @@ import { isAdmin } from '../lib/auth';
 
 const routes = fastify => {
   fastify.get('/articles/range/:offset/:limit/:order', articles.getRange);
+  fastify.get(
+    '/articles/unpublished/:offset/:limit/:order',
+    articles.getUnpublished
+  );
   fastify.get('/articles/:limit/:order', articles.getWithLimitAndOrder);
   fastify.get('/articles/count', articles.count);
   fastify.get('/articles/:limit', articles.getWithLimit);

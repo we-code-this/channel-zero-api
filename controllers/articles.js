@@ -63,6 +63,17 @@ export default {
     });
     reply.send(articles);
   },
+  getUnpublished: async (req, reply) => {
+    const articles = await new ArticleQuery().get(
+      {
+        offset: req.params.offset,
+        limit: req.params.limit,
+        order: req.params.order
+      },
+      true
+    );
+    reply.send(articles);
+  },
   getWithLimit: async (req, reply) => {
     const articles = await new ArticleQuery().get({
       limit: req.params.limit
