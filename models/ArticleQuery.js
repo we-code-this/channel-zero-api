@@ -48,13 +48,19 @@ class ArticleQuery {
   async delete(id) {
     const article = await this.find(id);
 
-    if (article && article.deleteFile()) {
+    if (article && article.filename) {
+      if (article.deleteFile()) {
+        return await knex(this.tablename)
+          .where('id', id)
+          .del();
+      }
+    } else if (article) {
       return await knex(this.tablename)
         .where('id', id)
         .del();
-    } else {
-      return false;
     }
+
+    return false;
   }
 
   async find(id) {
