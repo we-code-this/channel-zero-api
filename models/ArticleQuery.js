@@ -154,14 +154,26 @@ class ArticleQuery {
     const isValid = article.valid();
 
     if (isValid && article.saveFile()) {
-      await knex(this.tablename)
-        .where('id', id)
-        .update({
-          title: article.title,
-          summary: article.summary,
-          description: article.description,
-          updated_at: article.updated_at
-        });
+      if (article.image) {
+        await knex(this.tablename)
+          .where('id', id)
+          .update({
+            title: article.title,
+            summary: article.summary,
+            description: article.description,
+            filename: article.filename,
+            updated_at: article.updated_at
+          });
+      } else {
+        await knex(this.tablename)
+          .where('id', id)
+          .update({
+            title: article.title,
+            summary: article.summary,
+            description: article.description,
+            updated_at: article.updated_at
+          });
+      }
 
       return await this.find(id);
     } else {

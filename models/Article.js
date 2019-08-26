@@ -85,7 +85,7 @@ class Article extends Model {
 
     valid = this.validExtension();
 
-    if (this.create && valid) {
+    if (valid) {
       this.generateFilename();
     }
 
@@ -120,13 +120,14 @@ class Article extends Model {
   }
 
   generateFilename() {
-    if (this.create) {
+    if (!this.filename) {
       const generated = crypto.randomBytes(4).toString('hex');
       this.filename = `${generated}.${this.extension}`;
     }
   }
 
   saveFile() {
+    console.log(this.filename);
     if (this.image) {
       return saveFile(
         assetDirectories.articles,
