@@ -127,7 +127,6 @@ class Article extends Model {
   }
 
   saveFile() {
-    console.log(this.filename);
     if (this.image) {
       return saveFile(
         assetDirectories.articles,
