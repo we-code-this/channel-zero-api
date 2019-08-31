@@ -5,7 +5,7 @@ import helmet from 'fastify-helmet';
 import pino from 'pino';
 import routes from './routes';
 
-const logging = 'silent';
+const logging = 'info';
 const log = pino({
   level: logging,
   prettyPrint: { colorize: true }

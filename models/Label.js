@@ -1,6 +1,6 @@
-import Model from "./Model";
-import validator from "validator";
-import { sanitize, slugify } from "../lib/strings";
+import Model from './Model';
+import validator from 'validator';
+import { sanitize, slugify } from '../lib/strings';
 
 class Label extends Model {
   constructor(data, create) {
@@ -15,7 +15,7 @@ class Label extends Model {
     valid = validator.isLength(this.name, { min: 1, max: 255 });
 
     if (!valid) {
-      this.errors.push({ field: "name", message: "Invalid length" });
+      this.errors.push({ field: 'name', message: 'Invalid length' });
     }
 
     return valid;
@@ -23,7 +23,7 @@ class Label extends Model {
 
   async generateSlug() {
     if (this.create) {
-      this.slug = await slugify(this.name, "labels", "name");
+      this.slug = await slugify(this.name, 'labels', 'name');
     }
   }
 

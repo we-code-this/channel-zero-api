@@ -7,6 +7,7 @@ import promoRoutes from './promos';
 import releaseRoutes from './releases';
 import featureRoutes from './features';
 import vendorRoutes from './vendors';
+import videoRoutes from './videos';
 import userRoutes from './users';
 
 const routes = fastify => {
@@ -19,6 +20,7 @@ const routes = fastify => {
   releaseRoutes(fastify);
   featureRoutes(fastify);
   vendorRoutes(fastify);
+  videoRoutes(fastify);
   userRoutes(fastify);
 };
 

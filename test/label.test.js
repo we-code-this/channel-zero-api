@@ -129,7 +129,7 @@ describe('labels', function() {
 
       expect(beforeResponse.statusCode).to.equal(404);
 
-      const artist = await app.inject({
+      const label = await app.inject({
         method: 'POST',
         url: '/label',
         payload: {
@@ -140,7 +140,7 @@ describe('labels', function() {
         }
       });
 
-      expect(JSON.parse(artist.payload).slug).to.equal(slug);
+      expect(JSON.parse(label.payload).slug).to.equal(slug);
     });
 
     it('should increment label slug when name is same as another label', async function() {
@@ -286,22 +286,6 @@ describe('labels', function() {
       });
 
       expect(afterResponse.statusCode).to.equal(404);
-    });
-
-    it('should return 404 when trying to delete label that doesn’t exist', async function() {
-      const token = await login(app);
-      const response = await app.inject({
-        method: 'DELETE',
-        url: '/label',
-        payload: {
-          id: 1000
-        },
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      expect(response.statusCode).to.equal(404);
     });
   });
 });
