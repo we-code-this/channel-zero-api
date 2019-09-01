@@ -153,7 +153,6 @@ describe('videos', function() {
       });
 
       const videoId = JSON.parse(video.payload).id;
-
       const newSrc = 'http://video-2003-updated.com';
 
       const updatedVideo = await app.inject({

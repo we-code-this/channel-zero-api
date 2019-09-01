@@ -18,8 +18,6 @@ class Video extends Model {
       this.errors.push({ field: 'src', message: 'Invalid length' });
     }
 
-    console.log('isURL:', validator.isURL(this.src));
-
     valid = valid && validator.isURL(this.src);
 
     if (!valid) {

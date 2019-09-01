@@ -1,6 +1,8 @@
 import Article from './Article';
 import Model from './Model';
 import Video from './Video';
+import validator from 'validator';
+import { sanitize } from '../lib/strings';
 
 class Feature extends Model {
   constructor(data) {
@@ -21,6 +23,26 @@ class Feature extends Model {
       created_at: data.created_at,
       updated_at: data.updated_at
     });
+  }
+
+  valid() {
+    let valid = false;
+
+    valid = validator.isInt(this.article_id.toString());
+    if (!valid) {
+      this.errors.push({ field: 'article_id', message: 'Invalid value' });
+    }
+
+    valid = valid && validator.isInt(this.video_id.toString());
+    if (!valid) {
+      this.errors.push({ field: 'video_id', message: 'Invalid value' });
+    }
+
+    return valid;
+  }
+
+  validationErrors() {
+    return this.errors;
   }
 }
 

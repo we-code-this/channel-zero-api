@@ -1,5 +1,6 @@
 import knex from '../lib/connection';
 import Feature from './Feature';
+import moment from 'moment';
 
 class FeatureQuery {
   constructor() {
@@ -7,15 +8,8 @@ class FeatureQuery {
     this.items = undefined;
   }
 
-  async query(params = {}) {
-    if (this.items) {
-      return items;
-    }
-
-    const limit = params.limit ? parseInt(params.limit) : 10;
-    const order = params.order ? params.order.toUpperCase() : 'DESC';
-
-    const results = await knex
+  select() {
+    return knex
       .select(
         `${this.tablename}.*`,
         'articles.title as article_title',
@@ -29,9 +23,22 @@ class FeatureQuery {
       )
       .from(this.tablename)
       .leftJoin('articles', `${this.tablename}.article_id`, 'articles.id')
-      .leftJoin('videos', `${this.tablename}.video_id`, 'videos.id')
+      .leftJoin('videos', `${this.tablename}.video_id`, 'videos.id');
+  }
+
+  async query(params = {}) {
+    if (this.items) {
+      return items;
+    }
+
+    const offset = params.offset ? parseInt(params.offset) : 0;
+    const limit = params.limit ? parseInt(params.limit) : 10;
+    const order = params.order ? params.order.toUpperCase() : 'DESC';
+
+    const results = await this.select()
       .where(`${this.tablename}.published`, true)
       .limit(limit)
+      .offset(offset)
       .orderBy('created_at', order);
 
     this.items = results.map(function(record) {
@@ -41,12 +48,79 @@ class FeatureQuery {
     return this.items;
   }
 
+  async create(data) {
+    const featureData = { ...data };
+    const feature = new Feature(featureData, true);
+    const isValid = feature.valid();
+
+    if (isValid) {
+      const id = await knex(this.tablename).insert(
+        {
+          user_id: feature.user_id,
+          article_id: feature.article_id,
+          video_id: feature.video_id
+        },
+        ['id']
+      );
+
+      return await this.findById(id[0]);
+    } else {
+      return { errors: feature.validationErrors() };
+    }
+  }
+
+  async delete(id) {
+    return await knex(this.tablename)
+      .where('id', id)
+      .del();
+  }
+
+  async findById(id) {
+    const result = await this.select()
+      .where(`${this.tablename}.id`, id)
+      .limit(1);
+
+    if (result.length > 0) {
+      return new Feature(result[0]);
+    } else {
+      return undefined;
+    }
+  }
+
   async get(params) {
     return await this.query(params);
   }
 
   async current() {
     return (await this.query({ limit: 1 }))[0];
+  }
+
+  async update(fieldData) {
+    const { id, article_id, video_id } = fieldData;
+    const oldFeature = await this.findById(id);
+    const data = {
+      ...oldFeature,
+      article_id,
+      video_id,
+      updated_at: moment().format('YYYY-MM-DD HH:mm:ss')
+    };
+
+    const feature = new Feature(data);
+    const isValid = feature.valid();
+
+    if (isValid) {
+      await knex(this.tablename)
+        .where('id', id)
+        .update({
+          article_id: feature.article_id,
+          video_id: feature.video_id,
+          updated_at: feature.updated_at
+        });
+
+      return await this.findById(id);
+    } else {
+      return { errors: feature.validationErrors() };
+    }
   }
 }
 
