@@ -2,6 +2,10 @@ import FeatureQuery from '../models/FeatureQuery';
 import UserQuery from '../models/UserQuery';
 
 export default {
+  count: async (req, reply) => {
+    const count = await new FeatureQuery().count();
+    reply.send(count);
+  },
   create: async (req, reply) => {
     const id = await new UserQuery().getIdByEmail(req.decoded.user);
     let feature;

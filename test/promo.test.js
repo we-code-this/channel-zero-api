@@ -18,6 +18,7 @@ describe('promos', function() {
   let app;
 
   before(function() {
+    rimraf(promosDir, () => {});
     app = buildApp();
   });
 

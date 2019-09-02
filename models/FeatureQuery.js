@@ -48,6 +48,10 @@ class FeatureQuery {
     return this.items;
   }
 
+  async count() {
+    return await knex.count('* as count').from(this.tablename);
+  }
+
   async create(data) {
     const featureData = { ...data };
     const feature = new Feature(featureData, true);

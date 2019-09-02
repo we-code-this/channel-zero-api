@@ -75,6 +75,17 @@ describe('features', function() {
     });
   });
 
+  describe('GET /features/count', function() {
+    it('should return count of 11', async function() {
+      const response = await app.inject({
+        method: 'GET',
+        url: '/features/count'
+      });
+
+      expect(JSON.parse(response.payload)[0].count).to.equal(11);
+    });
+  });
+
   describe('GET /feature', function() {
     it('should return most recent feature', async function() {
       const response = await app.inject({
