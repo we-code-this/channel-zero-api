@@ -46,7 +46,7 @@ class ArticleQuery {
   }
 
   async deleteQuery(id, article) {
-    const featureDeletion = await knex('features')
+    await knex('features')
       .where('article_id', article.id)
       .del();
 

@@ -598,7 +598,7 @@ describe('articles', function() {
       expect(fs.existsSync(destPath)).to.be.false;
     });
 
-    it.only('should delete associated feature', async function() {
+    it('should delete associated feature', async function() {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);

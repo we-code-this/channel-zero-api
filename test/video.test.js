@@ -210,20 +210,32 @@ describe('videos', function() {
   describe('DELETE /video', function() {
     it('should delete video database record', async function() {
       const token = await login(app);
-      const id = 1;
+
+      const newVideoResponse = await app.inject({
+        method: 'POST',
+        url: '/video',
+        payload: {
+          src: 'http://video-3000.com'
+        },
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const video = JSON.parse(newVideoResponse.payload);
 
       const beforeResponse = await app.inject({
         method: 'GET',
-        url: `/video/${id}`
+        url: `/video/${video.id}`
       });
 
-      expect(JSON.parse(beforeResponse.payload).id).to.equal(1);
+      expect(JSON.parse(beforeResponse.payload).id).to.equal(video.id);
 
       await app.inject({
         method: 'DELETE',
         url: '/video',
         payload: {
-          id: id
+          id: video.id
         },
         headers: {
           Authorization: `Bearer ${token}`
@@ -232,10 +244,59 @@ describe('videos', function() {
 
       const afterResponse = await app.inject({
         method: 'GET',
-        url: `/video/${id}`
+        url: `/video/${video.id}`
       });
 
       expect(afterResponse.statusCode).to.equal(404);
+    });
+
+    it('should delete associated feature', async function() {
+      const token = await login(app);
+
+      const newVideoResponse = await app.inject({
+        method: 'POST',
+        url: '/video',
+        payload: {
+          src: 'http://video-3000.com'
+        },
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const video = JSON.parse(newVideoResponse.payload);
+
+      const newFeatureResponse = await app.inject({
+        method: 'POST',
+        url: '/feature',
+        payload: {
+          article_id: 1,
+          video_id: video.id
+        },
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const feature = JSON.parse(newFeatureResponse.payload);
+
+      await app.inject({
+        method: 'DELETE',
+        url: '/video',
+        payload: {
+          id: video.id
+        },
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const afterFeatureResponse = await app.inject({
+        method: 'GET',
+        url: `/feature/${feature.id}`
+      });
+
+      expect(afterFeatureResponse.statusCode).to.equal(404);
     });
   });
 });

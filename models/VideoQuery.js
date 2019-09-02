@@ -33,6 +33,10 @@ class VideoQuery {
   }
 
   async delete(id) {
+    await knex('features')
+      .where('video_id', id)
+      .del();
+
     return await knex(this.tablename)
       .where('id', id)
       .del();
