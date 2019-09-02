@@ -551,7 +551,7 @@ describe('articles', function() {
   });
 
   describe('DELETE /article', function() {
-    it('should delete article database record and image file', async function() {
+    it('should delete article database record, image file', async function() {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -596,6 +596,64 @@ describe('articles', function() {
 
       expect(afterResponse.statusCode).to.equal(404);
       expect(fs.existsSync(destPath)).to.be.false;
+    });
+
+    it.only('should delete associated feature', async function() {
+      const token = await login(app);
+      let form = new FormData();
+      let rs = fs.createReadStream(filePath);
+
+      form.append('image', rs);
+      form.append('title', 'Article 1009');
+      form.append('description', 'Test description');
+      form.append('summary', 'Test summary');
+      form.append('published', 'true');
+
+      let opts = {
+        method: 'POST',
+        url: '/article',
+        payload: form,
+        headers: form.getHeaders({
+          Authorization: `Bearer ${token}`
+        })
+      };
+
+      const res = await app.inject(opts);
+      const article = JSON.parse(res.payload);
+
+      const featureResponse = await app.inject({
+        method: 'POST',
+        url: '/feature',
+        payload: {
+          article_id: article.id,
+          video_id: 1
+        },
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const feature = JSON.parse(featureResponse.payload);
+
+      expect(feature.article_id).to.equal(article.id);
+
+      await app.inject({
+        method: 'DELETE',
+        url: '/article',
+        payload: {
+          id: article.id
+        },
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const afterFeatureResponse = await app.inject({
+        method: 'GET',
+        url: `/feature/${feature.id}`
+      });
+
+      expect(afterFeatureResponse.statusCode).to.equal(404);
     });
 
     it('should return 404 when trying to delete article that doesn’t exist', async function() {

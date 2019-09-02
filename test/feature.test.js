@@ -193,7 +193,7 @@ describe('features', function() {
     });
   });
 
-  describe.only('DELETE /feature', function() {
+  describe('DELETE /feature', function() {
     it('should delete feature database record', async function() {
       const token = await login(app);
       const id = 1;

@@ -45,19 +45,25 @@ class ArticleQuery {
     }
   }
 
+  async deleteQuery(id, article) {
+    const featureDeletion = await knex('features')
+      .where('article_id', article.id)
+      .del();
+
+    return await knex(this.tablename)
+      .where('id', id)
+      .del();
+  }
+
   async delete(id) {
     const article = await this.find(id);
 
     if (article && article.filename) {
       if (article.deleteFile()) {
-        return await knex(this.tablename)
-          .where('id', id)
-          .del();
+        return await this.deleteQuery(id, article);
       }
     } else if (article) {
-      return await knex(this.tablename)
-        .where('id', id)
-        .del();
+      return await this.deleteQuery(id, article);
     }
 
     return false;
