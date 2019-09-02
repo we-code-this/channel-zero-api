@@ -92,6 +92,36 @@ exports.seed = function(knex, Promise) {
           location: 'vertical',
           published: true,
           created_at: '2019-01-19 12:08:00'
+        },
+        {
+          id: 10,
+          user_id: 1,
+          name: 'Promo 10',
+          url: '#',
+          filename: 'promo-10.svg',
+          location: 'vertical',
+          published: true,
+          created_at: '2019-01-19 12:09:00'
+        },
+        {
+          id: 11,
+          user_id: 1,
+          name: 'Promo 11',
+          url: '#',
+          filename: 'promo-11.svg',
+          location: 'horizontal',
+          published: true,
+          created_at: '2019-01-19 12:10:00'
+        },
+        {
+          id: 12,
+          user_id: 1,
+          name: 'Promo 12',
+          url: '#',
+          filename: 'promo-12.svg',
+          location: 'horizontal',
+          published: false,
+          created_at: '2019-01-19 12:11:00'
         }
       ]);
     });
