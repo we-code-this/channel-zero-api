@@ -90,7 +90,7 @@ describe('videos', function() {
     });
   });
 
-  describe('GET /videos/:id', function() {
+  describe('GET /video/:id', function() {
     it('should return the video that has the :id supplied', async function() {
       const response = await app.inject({
         method: 'GET',
