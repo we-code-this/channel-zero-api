@@ -101,15 +101,11 @@ class Release extends Model {
 
   async withEndorsements() {
     const results = await knex
-      .select('endorsements.*')
-      .from('release_endorsements')
-      .leftJoin(
-        'endorsements',
-        'release_endorsements.endorsement_id',
-        'endorsements.id'
-      )
-      .where('release_endorsements.release_id', this.id)
-      .orderBy('endorsements.id', 'ASC');
+      .select('*')
+      .from('endorsements')
+      .where('related_id', this.id)
+      .where('type', 'release')
+      .orderBy('id', 'ASC');
 
     this.endorsements = results.map(function(record) {
       return new Endorsement(record);
