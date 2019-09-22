@@ -6,9 +6,44 @@ export default {
     const count = await new EndorsementQuery().count();
     reply.send(count);
   },
+  create: async (req, reply) => {
+    const id = await new UserQuery().getIdByEmail(req.decoded.user);
+    let endorsement;
+
+    if (id) {
+      endorsement = await new EndorsementQuery().create({
+        ...req.body,
+        user_id: id
+      });
+    }
+
+    if (endorsement) {
+      reply.send(endorsement);
+    } else {
+      reply.status(500).send();
+    }
+  },
+  del: async (req, reply) => {
+    const deleted = await new EndorsementQuery().delete(req.body.id);
+
+    if (deleted) {
+      reply.send(deleted);
+    } else {
+      reply.status(404).send();
+    }
+  },
   get: async (req, reply) => {
     const endorsements = await new EndorsementQuery().get();
     reply.send(endorsements);
+  },
+  getOneById: async (req, reply) => {
+    const endorsement = await new EndorsementQuery().findById(req.params.id);
+
+    if (endorsement) {
+      reply.send(endorsement);
+    } else {
+      reply.status(404).send();
+    }
   },
   getRange: async (req, reply) => {
     const endorsements = await new EndorsementQuery().get({
@@ -52,5 +87,9 @@ export default {
       order: req.params.order
     });
     reply.send(endorsements);
+  },
+  update: async (req, reply) => {
+    const updatedEndorsement = await new EndorsementQuery().update(req.body);
+    reply.send(updatedEndorsement);
   }
 };

@@ -20,6 +20,25 @@ const routes = fastify => {
   fastify.get('/endorsements/count', endorsements.count);
   fastify.get('/endorsements/:limit', endorsements.getWithLimit);
   fastify.get('/endorsements', endorsements.get);
+  fastify.get('/endorsement/:id', endorsements.getOneById);
+
+  fastify.patch(
+    '/endorsement',
+    { beforeHandler: [validate, isAdmin] },
+    endorsements.update
+  );
+
+  fastify.delete(
+    '/endorsement',
+    { beforeHandler: [validate, isAdmin] },
+    endorsements.del
+  );
+
+  fastify.post(
+    '/endorsement',
+    { beforeHandler: [validate, isAdmin] },
+    endorsements.create
+  );
 };
 
 export default routes;
