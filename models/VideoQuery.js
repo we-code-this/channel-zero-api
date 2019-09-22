@@ -21,6 +21,7 @@ class VideoQuery {
       const id = await knex(this.tablename).insert(
         {
           user_id: video.user_id,
+          title: video.title,
           src: video.src
         },
         ['id']
@@ -76,11 +77,11 @@ class VideoQuery {
   }
 
   async update(fieldData) {
-    const { id, src } = fieldData;
+    const { id, ...remainingFields } = fieldData;
     const oldVideo = await this.findById(id);
     const data = {
       ...oldVideo,
-      src,
+      ...remainingFields,
       updated_at: moment().format('YYYY-MM-DD HH:mm:ss')
     };
 
@@ -92,6 +93,7 @@ class VideoQuery {
         .where('id', id)
         .update({
           src: video.src,
+          title: video.title,
           updated_at: video.updated_at
         });
 

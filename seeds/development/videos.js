@@ -3,7 +3,12 @@ exports.seed = function(knex, Promise) {
     .del()
     .then(function() {
       return knex('videos').insert([
-        { id: 1, user_id: 1, src: 'https://www.youtube.com/embed/YNorGUam5w4' }
+        {
+          id: 1,
+          user_id: 1,
+          title: 'HaStyle - Revolution is HaStyle',
+          src: 'https://www.youtube.com/embed/YNorGUam5w4'
+        }
       ]);
     });
 };

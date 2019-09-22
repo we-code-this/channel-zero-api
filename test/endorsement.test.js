@@ -464,7 +464,7 @@ describe('endorsements', function() {
     });
   });
 
-  describe.only('DELETE /endorsement', function() {
+  describe('DELETE /endorsement', function() {
     it('should delete endorsement database record', async function() {
       const token = await login(app);
       const newEndorsementResponse = await app.inject({

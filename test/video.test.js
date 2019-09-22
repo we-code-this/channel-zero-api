@@ -103,20 +103,22 @@ describe('videos', function() {
   describe('POST /video', function() {
     it('should add video record to database', async function() {
       const token = await login(app);
-      const src = 'http://video-2000.com';
+      const newVideo = {
+        src: 'http://video-2000.com',
+        title: 'Test Video'
+      };
 
       const video = await app.inject({
         method: 'POST',
         url: '/video',
-        payload: {
-          src
-        },
+        payload: newVideo,
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
 
-      expect(JSON.parse(video.payload).src).to.equal(src);
+      expect(JSON.parse(video.payload).src).to.equal(newVideo.src);
+      expect(JSON.parse(video.payload).title).to.equal(newVideo.title);
     });
 
     it('should sanitize src', async function() {
@@ -125,7 +127,8 @@ describe('videos', function() {
         method: 'POST',
         url: '/video',
         payload: {
-          src: "<script>console.log('yo')</script> http://video-2001.com"
+          src: "<script>console.log('yo')</script> http://video-2001.com",
+          title: 'Test Video'
         },
         headers: {
           Authorization: `Bearer ${token}`
@@ -136,6 +139,23 @@ describe('videos', function() {
         'http://video-2001.com'
       );
     });
+
+    it('should sanitize title', async function() {
+      const token = await login(app);
+      const response = await app.inject({
+        method: 'POST',
+        url: '/video',
+        payload: {
+          src: 'http://video-2001.com',
+          title: "<script>console.log('yo')</script> Test Video"
+        },
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      expect(JSON.parse(response.payload).title).to.equal('Test Video');
+    });
   });
 
   describe('PATCH /video', function() {
@@ -145,21 +165,23 @@ describe('videos', function() {
         method: 'POST',
         url: '/video',
         payload: {
-          src: 'http://video-2003.com'
+          src: 'http://video-2003.com',
+          title: 'Test Video'
         },
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
 
-      const videoId = JSON.parse(video.payload).id;
+      const returnedVideo = JSON.parse(video.payload);
       const newSrc = 'http://video-2003-updated.com';
 
       const updatedVideo = await app.inject({
         method: 'PATCH',
         url: '/video',
         payload: {
-          id: videoId,
+          id: returnedVideo.id,
+          title: returnedVideo.title,
           src: newSrc
         },
         headers: {
@@ -168,42 +190,6 @@ describe('videos', function() {
       });
 
       expect(JSON.parse(updatedVideo.payload).src).to.equal(newSrc);
-    });
-
-    it('should sanitize src', async function() {
-      const token = await login(app);
-      const video = await app.inject({
-        method: 'POST',
-        url: '/video',
-        payload: {
-          src: 'http://video-2004.com'
-        },
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      const videoId = JSON.parse(video.payload).id;
-
-      const newSrc =
-        "<script>console.log('yo')</script> http://video-2004-updated.com";
-
-      const updatedVideo = await app.inject({
-        method: 'PATCH',
-        url: '/video',
-        payload: {
-          id: videoId,
-          src:
-            "<script>console.log('yo')</script> http://video-2004-updated.com"
-        },
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      expect(JSON.parse(updatedVideo.payload).src).to.equal(
-        'http://video-2004-updated.com'
-      );
     });
   });
 
@@ -215,7 +201,8 @@ describe('videos', function() {
         method: 'POST',
         url: '/video',
         payload: {
-          src: 'http://video-3000.com'
+          src: 'http://video-3000.com',
+          title: 'Test Video'
         },
         headers: {
           Authorization: `Bearer ${token}`
@@ -257,7 +244,8 @@ describe('videos', function() {
         method: 'POST',
         url: '/video',
         payload: {
-          src: 'http://video-3000.com'
+          src: 'http://video-3000.com',
+          title: 'Test Video'
         },
         headers: {
           Authorization: `Bearer ${token}`
