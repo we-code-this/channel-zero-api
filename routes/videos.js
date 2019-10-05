@@ -4,6 +4,7 @@ import { isAdmin } from '../lib/auth';
 
 const routes = fastify => {
   fastify.get('/videos/range/:offset/:limit/:order', videos.getRange);
+  fastify.get('/videos/by/title', videos.getByTitle);
   fastify.get('/videos/:limit/:order', videos.getWithLimitAndOrder);
   fastify.get('/videos/count', videos.count);
   fastify.get('/videos/:limit', videos.getWithLimit);

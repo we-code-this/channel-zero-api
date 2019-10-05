@@ -130,6 +130,25 @@ class ArticleQuery {
     return this.items;
   }
 
+  async getByTitle() {
+    if (this.items) {
+      return items;
+    }
+
+    const results = await knex
+      .select('*')
+      .from(this.tablename)
+      .orderBy('title', 'ASC');
+
+    this.items = await Promise.all(
+      results.map(async function(record) {
+        return await new Article(record);
+      })
+    );
+
+    return this.items;
+  }
+
   async publish(id) {
     const response = await knex(this.tablename)
       .where('id', id)

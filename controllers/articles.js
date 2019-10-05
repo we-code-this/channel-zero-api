@@ -46,6 +46,10 @@ export default {
     const articles = await new ArticleQuery().get();
     reply.send(articles);
   },
+  getByTitle: async (req, reply) => {
+    const articles = await new ArticleQuery().getByTitle();
+    reply.send(articles);
+  },
   getOneBySlug: async (req, reply) => {
     const article = await new ArticleQuery().findBySlug(req.params.slug);
 

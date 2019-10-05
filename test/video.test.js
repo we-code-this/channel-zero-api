@@ -88,6 +88,21 @@ describe('videos', function() {
         expect(results[results.length - 1].id).to.equal(11);
       });
     });
+
+    describe('GET /videos/by/title', function() {
+      it('should return all videos sorted by title', async function() {
+        const response = await app.inject({
+          method: 'GET',
+          url: '/videos/by/title'
+        });
+
+        const results = JSON.parse(response.payload);
+
+        expect(results[0].title).to.equal('Video 1');
+        expect(results[1].title).to.equal('Video 10');
+        expect(results[2].title).to.equal('Video 11');
+      });
+    });
   });
 
   describe('GET /video/:id', function() {

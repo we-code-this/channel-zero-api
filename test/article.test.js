@@ -105,6 +105,21 @@ describe('articles', function() {
         expect(results[results.length - 1].id).to.equal(11);
       });
     });
+
+    describe('GET /articles/by/title', function() {
+      it('should return all articles sorted by title', async function() {
+        const response = await app.inject({
+          method: 'GET',
+          url: '/articles/by/title'
+        });
+
+        const results = JSON.parse(response.payload);
+
+        expect(results[0].title).to.equal('Article 1');
+        expect(results[1].title).to.equal('Article 10');
+        expect(results[2].title).to.equal('Article 11');
+      });
+    });
   });
 
   describe('GET /article/:slug', function() {

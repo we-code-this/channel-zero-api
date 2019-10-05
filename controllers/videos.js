@@ -33,6 +33,10 @@ export default {
     const videos = await new VideoQuery().get();
     reply.send(videos);
   },
+  getByTitle: async (req, reply) => {
+    const videos = await new VideoQuery().getByTitle();
+    reply.send(videos);
+  },
   getOneById: async (req, reply) => {
     const video = await new VideoQuery().findById(req.params.id);
 
