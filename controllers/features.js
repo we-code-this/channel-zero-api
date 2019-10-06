@@ -47,11 +47,14 @@ export default {
     }
   },
   getRange: async (req, reply) => {
-    const features = await new FeatureQuery().get({
-      offset: req.params.offset,
-      limit: req.params.limit,
-      order: req.params.order
-    });
+    const features = await new FeatureQuery().get(
+      {
+        offset: req.params.offset,
+        limit: req.params.limit,
+        order: req.params.order
+      },
+      false
+    );
     reply.send(features);
   },
   getWithLimit: async (req, reply) => {

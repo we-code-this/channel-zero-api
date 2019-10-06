@@ -26,7 +26,7 @@ class FeatureQuery {
       .leftJoin('videos', `${this.tablename}.video_id`, 'videos.id');
   }
 
-  async query(params = {}) {
+  async query(params = {}, published = true) {
     if (this.items) {
       return items;
     }
@@ -35,11 +35,20 @@ class FeatureQuery {
     const limit = params.limit ? parseInt(params.limit) : 10;
     const order = params.order ? params.order.toUpperCase() : 'DESC';
 
-    const results = await this.select()
-      .where(`${this.tablename}.published`, true)
-      .limit(limit)
-      .offset(offset)
-      .orderBy('created_at', order);
+    let results;
+
+    if (published) {
+      results = await this.select()
+        .where(`${this.tablename}.published`, published)
+        .limit(limit)
+        .offset(offset)
+        .orderBy('created_at', order);
+    } else {
+      results = await this.select()
+        .limit(limit)
+        .offset(offset)
+        .orderBy('created_at', order);
+    }
 
     this.items = results.map(function(record) {
       return new Feature(record);
@@ -91,8 +100,8 @@ class FeatureQuery {
     }
   }
 
-  async get(params) {
-    return await this.query(params);
+  async get(params, published = true) {
+    return await this.query(params, published);
   }
 
   async current() {
