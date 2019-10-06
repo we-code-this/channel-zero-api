@@ -129,6 +129,7 @@ class PromoQuery {
         .update({
           name: promo.name,
           url: promo.url,
+          location: promo.location,
           updated_at: promo.updated_at
         });
 
