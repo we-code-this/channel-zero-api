@@ -12,6 +12,9 @@ import videoRoutes from './videos';
 import userRoutes from './users';
 
 const routes = fastify => {
+  fastify.get('/health', async (req, reply) => {
+    reply.send('OK');
+  });
   adRoutes(fastify);
   artistImageRoutes(fastify);
   artistRoutes(fastify);
