@@ -4,7 +4,12 @@ import validator from 'validator';
 import Model from './Model';
 
 import { sanitize, slugify } from '../lib/strings';
-import { assetDirectories, saveFile, deleteFile } from '../lib/files';
+import {
+  assetDirectories,
+  saveFile,
+  deleteFile,
+  publicUrl
+} from '../lib/files';
 
 class Article extends Model {
   constructor(data, create) {
@@ -13,6 +18,10 @@ class Article extends Model {
     this.title = sanitize(this.title);
     this.summary = sanitize(this.summary);
     this.description = sanitize(this.description);
+
+    if (!this.create && this.filename) {
+      this.url = publicUrl(`/articles/${this.filename}`);
+    }
 
     this.published =
       this.published &&

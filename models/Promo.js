@@ -6,7 +6,12 @@ import knex from '../lib/connection';
 import Model from './Model';
 
 import { sanitize } from '../lib/strings';
-import { assetDirectories, saveFile, deleteFile } from '../lib/files';
+import {
+  assetDirectories,
+  saveFile,
+  deleteFile,
+  publicUrl
+} from '../lib/files';
 
 class Promo extends Model {
   constructor(data, create) {
@@ -23,6 +28,10 @@ class Promo extends Model {
         : false;
 
     this.extension = undefined;
+
+    if (!this.create && this.filename) {
+      this.url = publicUrl(`/promos/${this.filename}`);
+    }
   }
 
   valid() {

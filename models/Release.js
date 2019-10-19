@@ -10,7 +10,12 @@ import Vendor from './Vendor';
 import ReleaseCredit from './ReleaseCredit';
 
 import { sanitize, slugify } from '../lib/strings';
-import { assetDirectories, saveFile, deleteFile } from '../lib/files';
+import {
+  assetDirectories,
+  saveFile,
+  deleteFile,
+  publicUrl
+} from '../lib/files';
 import ArtistQuery from './ArtistQuery';
 
 class Release extends Model {
@@ -31,6 +36,10 @@ class Release extends Model {
     if (this.create) {
       this.artist = undefined;
     } else {
+      if (this.filename) {
+        this.url = publicUrl(`/releases/${this.filename}`);
+      }
+
       this.artist = new Artist({
         id: data.artist_id,
         name: data.artist_name,

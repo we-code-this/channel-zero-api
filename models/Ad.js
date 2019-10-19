@@ -1,19 +1,24 @@
-import knex from "../lib/connection";
+import knex from '../lib/connection';
+import { publicUrl } from '../lib/files';
 
 class Ad {
   constructor() {
-    this.tablename = "ads";
+    this.tablename = 'ads';
   }
 
   async random() {
     const res = await knex
-      .select("*")
+      .select('*')
       .from(this.tablename)
-      .where("published", true)
-      .orderByRaw("RAND()")
+      .where('published', true)
+      .orderByRaw('RAND()')
       .limit(1);
 
-    return res;
+    return {
+      ...res,
+      desktop_url: publicUrl(`/a/${res.desktop_filename}`),
+      mobile_url: publicUrl(`/a/${res.mobile_filename}`)
+    };
   }
 }
 

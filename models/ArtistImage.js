@@ -1,16 +1,26 @@
-import fs from "fs-extra";
-import path from "path";
-import fileType from "file-type";
-import crypto from "crypto";
-import { fileRoot, assetDirectories, saveFile, deleteFile } from "../lib/files";
-import Model from "./Model";
+import fs from 'fs-extra';
+import path from 'path';
+import fileType from 'file-type';
+import crypto from 'crypto';
+import {
+  fileRoot,
+  assetDirectories,
+  saveFile,
+  deleteFile,
+  publicUrl
+} from '../lib/files';
+import Model from './Model';
 
 class ArtistImage extends Model {
   constructor(data, create) {
     super(data, create);
 
-    this.allowedExtensions = ["jpg", "jpeg", "png"];
+    this.allowedExtensions = ['jpg', 'jpeg', 'png'];
     this.extension = undefined;
+
+    if (!this.create && this.filename) {
+      this.url = publicUrl(`/artists/${this.filename}`);
+    }
   }
 
   setImage(image) {
@@ -33,8 +43,8 @@ class ArtistImage extends Model {
       type = fileType(this.image.data);
     } catch (e) {
       this.errors.push({
-        field: "image",
-        message: "Invalid image file. Accepted: jpg, jpeg, png"
+        field: 'image',
+        message: 'Invalid image file. Accepted: jpg, jpeg, png'
       });
 
       return false;
@@ -62,8 +72,8 @@ class ArtistImage extends Model {
 
     if (!valid) {
       this.errors.push({
-        field: "image",
-        message: "Invalid image file type. Accepted: jpg, jpeg, png"
+        field: 'image',
+        message: 'Invalid image file type. Accepted: jpg, jpeg, png'
       });
     }
 
@@ -76,7 +86,7 @@ class ArtistImage extends Model {
 
   generateFilename() {
     if (this.create) {
-      const generated = crypto.randomBytes(4).toString("hex");
+      const generated = crypto.randomBytes(4).toString('hex');
       this.filename = `${generated}.${this.extension}`;
     }
   }
