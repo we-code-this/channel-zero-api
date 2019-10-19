@@ -19,7 +19,7 @@ class ArticleQuery {
 
     await article.generateSlug();
 
-    if (isValid && article.saveFile()) {
+    if (isValid && (await article.saveFile())) {
       const id = await knex(this.tablename).insert(
         {
           user_id: article.user_id,
@@ -178,7 +178,7 @@ class ArticleQuery {
     const article = new Article(data);
     const isValid = article.valid();
 
-    if (isValid && article.saveFile()) {
+    if (isValid && (await article.saveFile())) {
       if (article.image) {
         await knex(this.tablename)
           .where('id', id)

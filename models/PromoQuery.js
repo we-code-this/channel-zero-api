@@ -17,7 +17,7 @@ class PromoQuery {
     const promo = new Promo(promoData, true);
     const isValid = promo.valid();
 
-    if (isValid && promo.saveFile()) {
+    if (isValid && (await promo.saveFile())) {
       const id = await knex(this.tablename).insert(
         {
           user_id: promo.user_id,
@@ -123,7 +123,7 @@ class PromoQuery {
     const promo = new Promo(data);
     const isValid = promo.valid();
 
-    if (isValid && promo.saveFile()) {
+    if (isValid && (await promo.saveFile())) {
       await knex(this.tablename)
         .where('id', id)
         .update({

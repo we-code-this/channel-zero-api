@@ -30,7 +30,7 @@ class Promo extends Model {
     this.extension = undefined;
 
     if (!this.create && this.filename) {
-      this.url = publicUrl(`/promos/${this.filename}`);
+      this.image_url = publicUrl(`/promos/${this.filename}`);
     }
   }
 

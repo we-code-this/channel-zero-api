@@ -34,7 +34,7 @@ class ReleaseQuery {
 
     await release.generateSlug();
 
-    if (isValid && release.saveFile()) {
+    if (isValid && (await release.saveFile())) {
       const id = await knex(this.tablename).insert(
         {
           user_id: release.user_id,
@@ -141,7 +141,7 @@ class ReleaseQuery {
     const release = new Release(data);
     const isValid = release.valid();
 
-    if (isValid && release.saveFile()) {
+    if (isValid && (await release.saveFile())) {
       await knex(this.tablename)
         .where('id', id)
         .update({
