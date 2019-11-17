@@ -19,6 +19,7 @@ function buildApp() {
   fastify.register(cors, {
     origin: [process.env.ADMIN_ORIGIN, process.env.PUBLIC_ORIGIN]
   });
+
   fastify.register(fileUpload, {
     useTempFiles: true,
     tempFileDir: '/tmp/'

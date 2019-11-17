@@ -1,0 +1,5 @@
+.git
+.next
+.nyc_output
+.vscode
+node_modules
