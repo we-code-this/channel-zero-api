@@ -43,6 +43,7 @@
     "lodash.merge": "^4.6.2",
     "moment": "^2.24.0",
     "mysql2": "^1.6.4",
+    "pg": "^7.14.0",
     "sanitize-html": "^1.20.1",
     "slug": "^1.0.0",
     "strip-js": "^1.2.0",

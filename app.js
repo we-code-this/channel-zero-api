@@ -1,11 +1,11 @@
-import Fastify from 'fastify';
-import fileUpload from 'fastify-file-upload';
-import cors from 'fastify-cors';
-import helmet from 'fastify-helmet';
-import pino from 'pino';
-import routes from './routes';
+import Fastify from "fastify";
+import fileUpload from "fastify-file-upload";
+import cors from "fastify-cors";
+import helmet from "fastify-helmet";
+import pino from "pino";
+import routes from "./routes";
 
-const logging = 'silent';
+const logging = "silent";
 const log = pino({
   level: logging,
   prettyPrint: { colorize: true }
@@ -22,7 +22,7 @@ function buildApp() {
 
   fastify.register(fileUpload, {
     useTempFiles: true,
-    tempFileDir: '/tmp/'
+    tempFileDir: "/tmp/"
   });
 
   routes(fastify);

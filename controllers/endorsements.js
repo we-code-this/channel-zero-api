@@ -1,10 +1,10 @@
-import EndorsementQuery from '../models/EndorsementQuery';
-import UserQuery from '../models/UserQuery';
+import EndorsementQuery from "../models/EndorsementQuery";
+import UserQuery from "../models/UserQuery";
 
 export default {
   count: async (req, reply) => {
-    const count = await new EndorsementQuery().count();
-    reply.send(count);
+    const res = await new EndorsementQuery().count();
+    reply.send([{ count: parseInt(res.count) }]);
   },
   create: async (req, reply) => {
     const id = await new UserQuery().getIdByEmail(req.decoded.user);

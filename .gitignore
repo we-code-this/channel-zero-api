@@ -8,3 +8,4 @@ seeds/development/groups.js
 seeds/development/group_users.js
 test/test.sqlite3
 .env
+mysql-ca.crt

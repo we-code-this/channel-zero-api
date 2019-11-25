@@ -1,11 +1,11 @@
-import fs from 'fs-extra';
-import PromoQuery from '../models/PromoQuery';
-import UserQuery from '../models/UserQuery';
+import fs from "fs-extra";
+import PromoQuery from "../models/PromoQuery";
+import UserQuery from "../models/UserQuery";
 
 export default {
   count: async (req, reply) => {
-    const count = await new PromoQuery().count();
-    reply.send(count);
+    const res = await new PromoQuery().count();
+    reply.send([{ count: parseInt(res.count) }]);
   },
   create: async (req, reply) => {
     const id = await new UserQuery().getIdByEmail(req.decoded.user);

@@ -1,15 +1,15 @@
-import moment from 'moment';
-import knex from '../lib/connection';
-import Endorsement from './Endorsement';
+import moment from "moment";
+import knex from "../lib/connection";
+import Endorsement from "./Endorsement";
 
 class EndorsementQuery {
   constructor() {
-    this.tablename = 'endorsements';
+    this.tablename = "endorsements";
     this.items = undefined;
   }
 
   async count() {
-    return await knex.count('* as count').from(this.tablename);
+    return await knex.count("* as count").from(this.tablename);
   }
 
   async create(data) {
@@ -27,10 +27,10 @@ class EndorsementQuery {
           url: endorsement.url,
           type: endorsement.type
         },
-        ['id']
+        ["id"]
       );
 
-      return await this.findById(id[0]);
+      return await this.findById(id[0].id);
     } else {
       return { errors: endorsement.validationErrors() };
     }
@@ -38,15 +38,15 @@ class EndorsementQuery {
 
   async delete(id) {
     return await knex(this.tablename)
-      .where('id', id)
+      .where("id", id)
       .del();
   }
 
   async findById(id) {
     const result = await knex
-      .select('*')
+      .select("*")
       .from(this.tablename)
-      .where('id', id)
+      .where("id", id)
       .limit(1);
 
     if (result.length > 0) {
@@ -59,7 +59,7 @@ class EndorsementQuery {
   async get(params = {}) {
     const offset = params.offset ? parseInt(params.offset) : 0;
     const limit = params.limit ? parseInt(params.limit) : 10;
-    const order = params.order ? params.order.toUpperCase() : 'DESC';
+    const order = params.order ? params.order.toUpperCase() : "DESC";
     const type = params.type ? params.type : undefined;
     const relatedId = params.related_id ? params.related_id : undefined;
 
@@ -68,27 +68,27 @@ class EndorsementQuery {
     if (type) {
       if (relatedId) {
         results = await knex
-          .select('*')
+          .select("*")
           .from(this.tablename)
-          .where('type', type)
-          .where('related_id', relatedId)
-          .orderBy('created_at', order);
+          .where("type", type)
+          .where("related_id", relatedId)
+          .orderBy("created_at", order);
       } else {
         results = await knex
-          .select('*')
+          .select("*")
           .from(this.tablename)
-          .where('type', type)
+          .where("type", type)
           .limit(limit)
           .offset(offset)
-          .orderBy('created_at', order);
+          .orderBy("created_at", order);
       }
     } else {
       results = await knex
-        .select('*')
+        .select("*")
         .from(this.tablename)
         .limit(limit)
         .offset(offset)
-        .orderBy('created_at', order);
+        .orderBy("created_at", order);
     }
 
     this.items = results.map(function(record) {
@@ -104,7 +104,7 @@ class EndorsementQuery {
     const data = {
       ...oldEndorsement,
       ...remainingFields,
-      updated_at: moment().format('YYYY-MM-DD HH:mm:ss')
+      updated_at: moment().format("YYYY-MM-DD HH:mm:ss")
     };
 
     const endorsement = new Endorsement(data);
@@ -112,7 +112,7 @@ class EndorsementQuery {
 
     if (isValid) {
       await knex(this.tablename)
-        .where('id', id)
+        .where("id", id)
         .update({
           review: endorsement.review,
           reviewer: endorsement.reviewer,

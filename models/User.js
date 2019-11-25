@@ -1,15 +1,15 @@
-import validator from 'validator';
-import Model from './Model';
-import knex from '../lib/connection';
-import { sanitize } from '../lib/strings';
-import { hash } from '../lib/passwords';
+import validator from "validator";
+import Model from "./Model";
+import knex from "../lib/connection";
+import { sanitize } from "../lib/strings";
+import { hash } from "../lib/passwords";
 import {
   INVALID_LENGTH,
   DUPLICATE_EMAIL,
   PASSWORD_CONFIRMATION_MISMATCH,
   PASSWORD_WRONG_LENGTH,
   PASSWORD_REQUIRED
-} from '../messages/errors';
+} from "../messages/errors";
 
 class User extends Model {
   constructor(data, create) {
@@ -43,21 +43,21 @@ class User extends Model {
     let valid = validator.isEmail(this.email);
 
     if (valid) {
-      const res = await knex('users')
-        .count({ count: '*' })
-        .where('email', this.email);
-      const emailExists = res[0].count > 0;
+      const res = await knex("users")
+        .count({ count: "*" })
+        .where("email", this.email);
+      const emailExists = parseInt(res[0].count) > 0;
 
       if (emailExists) {
         this.errors.push({
-          field: 'email',
+          field: "email",
           message: DUPLICATE_EMAIL
         });
 
         valid = !emailExists;
       }
     } else {
-      this.errors.push({ field: 'email', message: INVALID_LENGTH });
+      this.errors.push({ field: "email", message: INVALID_LENGTH });
     }
 
     return valid;
@@ -67,21 +67,21 @@ class User extends Model {
     let valid = validator.isLength(this.username, { min: 6, max: 255 });
 
     if (valid) {
-      const res = await knex('users')
-        .count({ count: '*' })
-        .where('username', this.username);
-      const usernameExists = res[0].count > 0;
+      const res = await knex("users")
+        .count({ count: "*" })
+        .where("username", this.username);
+      const usernameExists = parseInt(res[0].count) > 0;
 
       if (usernameExists) {
         this.errors.push({
-          field: 'username',
-          message: 'A user with that username already exists'
+          field: "username",
+          message: "A user with that username already exists"
         });
 
         valid = !usernameExists;
       }
     } else {
-      this.errors.push({ field: 'username', message: 'Invalid length' });
+      this.errors.push({ field: "username", message: "Invalid length" });
     }
 
     return valid;
@@ -97,19 +97,19 @@ class User extends Model {
           valid = true;
         } else {
           this.errors.push({
-            field: 'password',
+            field: "password",
             message: PASSWORD_CONFIRMATION_MISMATCH
           });
         }
       } else {
         this.errors.push({
-          field: 'password',
+          field: "password",
           message: PASSWORD_WRONG_LENGTH
         });
       }
     } else {
       this.errors.push({
-        field: 'password',
+        field: "password",
         message: PASSWORD_REQUIRED
       });
     }

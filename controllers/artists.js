@@ -1,10 +1,10 @@
-import ArtistQuery from '../models/ArtistQuery';
-import UserQuery from '../models/UserQuery';
+import ArtistQuery from "../models/ArtistQuery";
+import UserQuery from "../models/UserQuery";
 
 export default {
   count: async (req, reply) => {
-    const count = await new ArtistQuery().count();
-    reply.send(count);
+    const res = await new ArtistQuery().count();
+    reply.send([{ count: parseInt(res.count) }]);
   },
   get: async (req, reply) => {
     const artists = await new ArtistQuery().get();
