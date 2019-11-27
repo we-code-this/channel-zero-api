@@ -14,11 +14,19 @@ const routes = fastify => {
   fastify.patch(
     '/video',
     { beforeHandler: [validate, isAdmin] },
-    videos.update
+    videos.update,
   );
 
-  fastify.delete('/video', { beforeHandler: [validate, isAdmin] }, videos.del);
-  fastify.post('/video', { beforeHandler: [validate, isAdmin] }, videos.create);
+  fastify.delete(
+    '/video',
+    { beforeHandler: [validate, isAdmin] },
+    videos.del,
+  );
+  fastify.post(
+    '/video',
+    { beforeHandler: [validate, isAdmin] },
+    videos.create,
+  );
 };
 
 export default routes;

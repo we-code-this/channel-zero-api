@@ -14,10 +14,18 @@ const routes = fastify => {
   fastify.patch(
     '/label/:slug',
     { beforeHandler: [validate, isAdmin] },
-    labels.update
+    labels.update,
   );
-  fastify.delete('/label', { beforeHandler: [validate, isAdmin] }, labels.del);
-  fastify.post('/label', { beforeHandler: [validate, isAdmin] }, labels.create);
+  fastify.delete(
+    '/label',
+    { beforeHandler: [validate, isAdmin] },
+    labels.del,
+  );
+  fastify.post(
+    '/label',
+    { beforeHandler: [validate, isAdmin] },
+    labels.create,
+  );
 };
 
 export default routes;

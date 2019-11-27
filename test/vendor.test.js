@@ -19,10 +19,10 @@ describe('vendors', function() {
     it('should return the vendor with a id 1', async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/vendor/1'
+        url: '/vendor/1',
       });
       expect(response.headers['content-type']).to.equal(
-        'application/json; charset=utf-8'
+        'application/json; charset=utf-8',
       );
       expect(JSON.parse(response.payload).name).to.equal('Vendor 1');
     });
@@ -30,7 +30,7 @@ describe('vendors', function() {
     it("should return 404 if vendor record doesn't exist in database", async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/vendor/2000'
+        url: '/vendor/2000',
       });
 
       expect(response.statusCode).to.equal(404);
@@ -42,7 +42,7 @@ describe('vendors', function() {
       const token = await login(app);
       const getResponse = await app.inject({
         method: 'GET',
-        url: '/vendor/10'
+        url: '/vendor/10',
       });
 
       const vendor = JSON.parse(getResponse.payload);
@@ -56,11 +56,11 @@ describe('vendors', function() {
         url: '/vendor',
         payload: {
           id: 10,
-          name: newName
+          name: newName,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       expect(JSON.parse(response.payload).name).to.equal(newName);
@@ -73,14 +73,16 @@ describe('vendors', function() {
         url: '/vendor',
         payload: {
           id: 10,
-          name: "new <script>console.log('yo')</script> vendor name"
+          name: "new <script>console.log('yo')</script> vendor name",
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      expect(JSON.parse(response.payload).name).to.equal('new vendor name');
+      expect(JSON.parse(response.payload).name).to.equal(
+        'new vendor name',
+      );
     });
 
     it("should return name field error of 'Invalid length'", async function() {
@@ -90,26 +92,31 @@ describe('vendors', function() {
         url: '/vendor',
         payload: {
           id: 10,
-          name: ''
+          name: '',
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       expect(JSON.parse(response.payload)).to.have.property('errors');
-      expect(JSON.parse(response.payload).errors[0].field).to.equal('name');
+      expect(JSON.parse(response.payload).errors[0].field).to.equal(
+        'name',
+      );
       expect(JSON.parse(response.payload).errors[0].message).to.equal(
-        'Invalid length'
+        'Invalid length',
       );
     });
   });
 
   describe('GET /vendors', function() {
     it('should return 10 vendors', async function() {
-      const response = await app.inject({ method: 'GET', url: '/vendors' });
+      const response = await app.inject({
+        method: 'GET',
+        url: '/vendors',
+      });
       expect(response.headers['content-type']).to.equal(
-        'application/json; charset=utf-8'
+        'application/json; charset=utf-8',
       );
       expect(JSON.parse(response.payload).length).to.equal(10);
     });
@@ -118,7 +125,7 @@ describe('vendors', function() {
       it("should return vendor with id of 6 with offset 1, limit 5 and order 'asc'", async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/vendors/range/1/5/asc'
+          url: '/vendors/range/1/5/asc',
         });
 
         const results = JSON.parse(response.payload);
@@ -132,7 +139,7 @@ describe('vendors', function() {
       it('should return the count of all vendors', async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/vendors/count'
+          url: '/vendors/count',
         });
 
         expect(JSON.parse(response.payload)[0].count).to.equal(10);
@@ -149,11 +156,11 @@ describe('vendors', function() {
         method: 'POST',
         body: {
           name,
-          icon_class: 'test-icon'
+          icon_class: 'test-icon',
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const vendor = JSON.parse(response.payload);
@@ -168,14 +175,16 @@ describe('vendors', function() {
         url: '/vendor',
         body: {
           name: "<script>console.log('yo')</script> vendor name",
-          icon_class: 'test-icon'
+          icon_class: 'test-icon',
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      expect(JSON.parse(response.payload).name).to.equal('vendor name');
+      expect(JSON.parse(response.payload).name).to.equal(
+        'vendor name',
+      );
     });
 
     it('should sanitize icon_class', async function() {
@@ -185,14 +194,16 @@ describe('vendors', function() {
         url: '/vendor',
         body: {
           name: 'Vendor 1002',
-          icon_class: "<script>console.log('yo')</script> test-icon"
+          icon_class: "<script>console.log('yo')</script> test-icon",
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      expect(JSON.parse(response.payload).icon_class).to.equal('test-icon');
+      expect(JSON.parse(response.payload).icon_class).to.equal(
+        'test-icon',
+      );
     });
   });
 
@@ -201,7 +212,7 @@ describe('vendors', function() {
       const token = await login(app);
       const beforeResponse = await app.inject({
         method: 'GET',
-        url: `/vendor/1`
+        url: `/vendor/1`,
       });
 
       expect(JSON.parse(beforeResponse.payload).id).to.equal(1);
@@ -210,16 +221,16 @@ describe('vendors', function() {
         method: 'DELETE',
         url: '/vendor',
         payload: {
-          id: 1
+          id: 1,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const afterResponse = await app.inject({
         method: 'GET',
-        url: `/vendor/1`
+        url: `/vendor/1`,
       });
 
       expect(afterResponse.statusCode).to.equal(404);
@@ -231,11 +242,11 @@ describe('vendors', function() {
         method: 'DELETE',
         url: '/vendor',
         payload: {
-          id: 1000
+          id: 1000,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       expect(response.statusCode).to.equal(404);

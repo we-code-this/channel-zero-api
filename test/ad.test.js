@@ -17,9 +17,11 @@ describe('GET /a', function() {
   it('should return 1 ad', async function() {
     const response = await app.inject({ method: 'GET', url: '/a' });
     expect(response.headers['content-type']).to.equal(
-      'application/json; charset=utf-8'
+      'application/json; charset=utf-8',
     );
-    expect(JSON.parse(response.payload).length).to.equal(1);
+
+    expect(JSON.parse(response.payload)[0]).to.exist;
+    expect(JSON.parse(response.payload)[1]).to.be.undefined;
   });
 
   it("should have alt text 'Ad 1'", async function() {

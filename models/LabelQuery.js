@@ -1,24 +1,25 @@
-import moment from "moment";
-import knex from "../lib/connection";
-import Label from "./Label";
+import moment from 'moment';
+import knex from '../lib/connection';
+import Label from './Label';
+import { normalizeID, normalizeCount } from '../lib/utilities';
 
 class LabelQuery {
   constructor() {
-    this.tablename = "labels";
+    this.tablename = 'labels';
     this.items = undefined;
   }
 
   async get(params = {}) {
     const offset = params.offset ? parseInt(params.offset) : 0;
     const limit = params.limit ? parseInt(params.limit) : 10;
-    const order = params.order ? params.order.toUpperCase() : "DESC";
+    const order = params.order ? params.order.toUpperCase() : 'DESC';
 
     const results = await knex
-      .select("*")
+      .select('*')
       .from(this.tablename)
       .limit(limit)
       .offset(offset)
-      .orderBy("created_at", order);
+      .orderBy('created_at', order);
 
     this.items = results.map(function(record) {
       return new Label(record);
@@ -28,7 +29,8 @@ class LabelQuery {
   }
 
   async count() {
-    return await knex.count("* as count").from(this.tablename);
+    const count = await knex.count('* as count').from(this.tablename);
+    return normalizeCount(count);
   }
 
   async create(data) {
@@ -43,12 +45,12 @@ class LabelQuery {
         {
           user_id: label.user_id,
           name: label.name,
-          slug: label.slug
+          slug: label.slug,
         },
-        ["id"]
+        ['id'],
       );
 
-      return await this.findById(id[0].id);
+      return await this.findById(normalizeID(id));
     } else {
       return { errors: label.validationErrors() };
     }
@@ -56,9 +58,9 @@ class LabelQuery {
 
   async findById(id) {
     const result = await knex
-      .select("*")
+      .select('*')
       .from(this.tablename)
-      .where("id", id)
+      .where('id', id)
       .limit(1);
 
     if (result.length > 0) {
@@ -70,9 +72,9 @@ class LabelQuery {
 
   async findBySlug(slug) {
     const result = await knex
-      .select("*")
+      .select('*')
       .from(this.tablename)
-      .where("slug", slug)
+      .where('slug', slug)
       .limit(1);
 
     if (result.length > 0) {
@@ -88,14 +90,14 @@ class LabelQuery {
     }
 
     const results = await knex
-      .select("*")
+      .select('*')
       .from(this.tablename)
-      .orderBy("name", "ASC");
+      .orderBy('name', 'ASC');
 
     this.items = await Promise.all(
       results.map(async function(record) {
         return await new Label(record);
-      })
+      }),
     );
 
     return this.items;
@@ -106,7 +108,7 @@ class LabelQuery {
     const data = {
       ...oldLabel,
       ...updatedFields,
-      updated_at: moment().format("YYYY-MM-DD HH:mm:ss")
+      updated_at: moment().format('YYYY-MM-DD HH:mm:ss'),
     };
 
     const label = new Label(data);
@@ -115,10 +117,10 @@ class LabelQuery {
 
     if (isValid) {
       await knex(this.tablename)
-        .where("slug", slug)
+        .where('slug', slug)
         .update({
           name: label.name,
-          updated_at: label.updated_at
+          updated_at: label.updated_at,
         });
 
       return await this.findBySlug(slug);
@@ -129,7 +131,7 @@ class LabelQuery {
 
   async delete(id) {
     return await knex(this.tablename)
-      .where("id", id)
+      .where('id', id)
       .del();
   }
 }

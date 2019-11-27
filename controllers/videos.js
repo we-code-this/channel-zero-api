@@ -1,5 +1,5 @@
-import VideoQuery from "../models/VideoQuery";
-import UserQuery from "../models/UserQuery";
+import VideoQuery from '../models/VideoQuery';
+import UserQuery from '../models/UserQuery';
 
 export default {
   count: async (req, reply) => {
@@ -11,7 +11,10 @@ export default {
     let video;
 
     if (id) {
-      video = await new VideoQuery().create({ ...req.body, user_id: id });
+      video = await new VideoQuery().create({
+        ...req.body,
+        user_id: id,
+      });
     }
 
     if (video) {
@@ -50,25 +53,25 @@ export default {
     const videos = await new VideoQuery().get({
       offset: req.params.offset,
       limit: req.params.limit,
-      order: req.params.order
+      order: req.params.order,
     });
     reply.send(videos);
   },
   getWithLimit: async (req, reply) => {
     const videos = await new VideoQuery().get({
-      limit: req.params.limit
+      limit: req.params.limit,
     });
     reply.send(videos);
   },
   getWithLimitAndOrder: async (req, reply) => {
     const videos = await new VideoQuery().get({
       limit: req.params.limit,
-      order: req.params.order
+      order: req.params.order,
     });
     reply.send(videos);
   },
   update: async (req, reply) => {
     const updatedVideo = await new VideoQuery().update(req.body);
     reply.send(updatedVideo);
-  }
+  },
 };

@@ -1,19 +1,27 @@
-import moment from "moment";
-import knex from "../lib/connection";
-import User from "./User";
-import { compare } from "../lib/passwords";
+import knex from '../lib/connection';
+import User from './User';
+import { compare } from '../lib/passwords';
 
-import { USER_NOT_FOUND_ERROR, AUTHENTICATION_ERROR } from "../lib/constants";
+import {
+  USER_NOT_FOUND_ERROR,
+  AUTHENTICATION_ERROR,
+} from '../lib/constants';
 
 class UserQuery {
   constructor() {
-    this.tablename = "users";
+    this.tablename = 'users';
     this.items = null;
   }
 
   select() {
     return knex
-      .select("username", "email", "first_name", "last_name", "created_at")
+      .select(
+        'username',
+        'email',
+        'first_name',
+        'last_name',
+        'created_at',
+      )
       .from(this.tablename);
   }
 
@@ -28,12 +36,12 @@ class UserQuery {
         {
           email: user.email,
           username: user.username,
-          password: user.password
+          password: user.password,
         },
-        ["id"]
+        ['id'],
       );
 
-      return await this.findById(id[0].id);
+      return await this.findById(id);
     } else {
       return { errors: user.validationErrors() };
     }
@@ -53,11 +61,14 @@ class UserQuery {
     let res;
     if (login) {
       res = await knex
-        .select("id", "email", "password")
+        .select('id', 'email', 'password')
         .from(this.tablename)
         .where(`${this.tablename}.email`, email);
     } else {
-      res = await this.select().where(`${this.tablename}.email`, email);
+      res = await this.select().where(
+        `${this.tablename}.email`,
+        email,
+      );
     }
 
     if (res.length > 0) {
@@ -69,9 +80,10 @@ class UserQuery {
 
   async getIdByEmail(email) {
     const res = await knex
-      .select("id")
+      .select('id')
       .from(this.tablename)
-      .where(`${this.tablename}.email`, email);
+      .where(`${this.tablename}.email`, email)
+      .limit(1);
 
     if (res.length > 0) {
       return res[0].id;
@@ -84,18 +96,18 @@ class UserQuery {
     const user = await this.findByEmail(email, true);
 
     const group = await knex
-      .select("id")
-      .from("groups")
-      .where("slug", groupSlug)
+      .select('id')
+      .from('groups')
+      .where('slug', groupSlug)
       .first();
 
     if (user && group) {
       const res = await knex
-        .count("* as count")
-        .from("group_users")
+        .count('* as count')
+        .from('group_users')
         .where({
           group_id: group.id,
-          user_id: user.id
+          user_id: user.id,
         })
         .first();
 
@@ -107,10 +119,10 @@ class UserQuery {
 
   async groups(id) {
     const res = await knex
-      .select("name", "slug")
-      .from("groups")
-      .leftJoin("group_users", "group_id", "groups.id")
-      .where("user_id", id);
+      .select('name', 'slug')
+      .from('groups')
+      .leftJoin('group_users', 'group_id', 'groups.id')
+      .where('user_id', id);
 
     const groups = {};
 

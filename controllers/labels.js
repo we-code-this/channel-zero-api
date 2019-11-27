@@ -1,5 +1,5 @@
-import LabelQuery from "../models/LabelQuery";
-import UserQuery from "../models/UserQuery";
+import LabelQuery from '../models/LabelQuery';
+import UserQuery from '../models/UserQuery';
 
 export default {
   count: async (req, reply) => {
@@ -11,7 +11,10 @@ export default {
     let label;
 
     if (id) {
-      label = await new LabelQuery().create({ ...req.body, user_id: id });
+      label = await new LabelQuery().create({
+        ...req.body,
+        user_id: id,
+      });
     }
 
     if (label) {
@@ -50,28 +53,28 @@ export default {
     const labels = await new LabelQuery().get({
       offset: req.params.offset,
       limit: req.params.limit,
-      order: req.params.order
+      order: req.params.order,
     });
     reply.send(labels);
   },
   getWithLimit: async (req, reply) => {
     const labels = await new LabelQuery().get({
-      limit: req.params.limit
+      limit: req.params.limit,
     });
     reply.send(labels);
   },
   getWithLimitAndOrder: async (req, reply) => {
     const labels = await new LabelQuery().get({
       limit: req.params.limit,
-      order: req.params.order
+      order: req.params.order,
     });
     reply.send(labels);
   },
   update: async (req, reply) => {
     const updatedLabel = await new LabelQuery().updateBySlug(
       req.params.slug,
-      req.body
+      req.body,
     );
     reply.send(updatedLabel);
-  }
+  },
 };

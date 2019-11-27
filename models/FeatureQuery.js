@@ -1,10 +1,11 @@
-import knex from "../lib/connection";
-import Feature from "./Feature";
-import moment from "moment";
+import knex from '../lib/connection';
+import Feature from './Feature';
+import moment from 'moment';
+import { normalizeID, normalizeCount } from '../lib/utilities';
 
 class FeatureQuery {
   constructor() {
-    this.tablename = "features";
+    this.tablename = 'features';
     this.items = undefined;
   }
 
@@ -12,18 +13,22 @@ class FeatureQuery {
     return knex
       .select(
         `${this.tablename}.*`,
-        "articles.title as article_title",
-        "articles.summary as article_summary",
-        "articles.published as article_published",
-        "articles.created_at as article_created_at",
-        "articles.updated_at as article_updated_at",
-        "videos.src as video_src",
-        "videos.created_at as video_created_at",
-        "videos.updated_at as video_updated_at"
+        'articles.title as article_title',
+        'articles.summary as article_summary',
+        'articles.published as article_published',
+        'articles.created_at as article_created_at',
+        'articles.updated_at as article_updated_at',
+        'videos.src as video_src',
+        'videos.created_at as video_created_at',
+        'videos.updated_at as video_updated_at',
       )
       .from(this.tablename)
-      .leftJoin("articles", `${this.tablename}.article_id`, "articles.id")
-      .leftJoin("videos", `${this.tablename}.video_id`, "videos.id");
+      .leftJoin(
+        'articles',
+        `${this.tablename}.article_id`,
+        'articles.id',
+      )
+      .leftJoin('videos', `${this.tablename}.video_id`, 'videos.id');
   }
 
   async query(params = {}, published = true) {
@@ -33,7 +38,7 @@ class FeatureQuery {
 
     const offset = params.offset ? parseInt(params.offset) : 0;
     const limit = params.limit ? parseInt(params.limit) : 10;
-    const order = params.order ? params.order.toUpperCase() : "DESC";
+    const order = params.order ? params.order.toUpperCase() : 'DESC';
 
     let results;
 
@@ -42,12 +47,12 @@ class FeatureQuery {
         .where(`${this.tablename}.published`, published)
         .limit(limit)
         .offset(offset)
-        .orderBy("created_at", order);
+        .orderBy('created_at', order);
     } else {
       results = await this.select()
         .limit(limit)
         .offset(offset)
-        .orderBy("created_at", order);
+        .orderBy('created_at', order);
     }
 
     this.items = results.map(function(record) {
@@ -58,7 +63,8 @@ class FeatureQuery {
   }
 
   async count() {
-    return await knex.count("* as count").from(this.tablename);
+    const count = await knex.count('* as count').from(this.tablename);
+    return normalizeCount(count);
   }
 
   async create(data) {
@@ -71,12 +77,12 @@ class FeatureQuery {
         {
           user_id: feature.user_id,
           article_id: feature.article_id,
-          video_id: feature.video_id
+          video_id: feature.video_id,
         },
-        ["id"]
+        ['id'],
       );
 
-      return await this.findById(id[0].id);
+      return await this.findById(normalizeID(id));
     } else {
       return { errors: feature.validationErrors() };
     }
@@ -84,7 +90,7 @@ class FeatureQuery {
 
   async delete(id) {
     return await knex(this.tablename)
-      .where("id", id)
+      .where('id', id)
       .del();
   }
 
@@ -115,7 +121,7 @@ class FeatureQuery {
       ...oldFeature,
       article_id,
       video_id,
-      updated_at: moment().format("YYYY-MM-DD HH:mm:ss")
+      updated_at: moment().format('YYYY-MM-DD HH:mm:ss'),
     };
 
     const feature = new Feature(data);
@@ -123,11 +129,11 @@ class FeatureQuery {
 
     if (isValid) {
       await knex(this.tablename)
-        .where("id", id)
+        .where('id', id)
         .update({
           article_id: feature.article_id,
           video_id: feature.video_id,
-          updated_at: feature.updated_at
+          updated_at: feature.updated_at,
         });
 
       return await this.findById(id);

@@ -1,51 +1,62 @@
-require("dotenv").config();
+require('dotenv').config();
+let fs = require('fs-extra');
+
+let productionConnection = {};
+if (process.env.NODE_ENV === 'production') {
+  productionConnection = {
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    port: process.env.DB_PORT,
+    ssl: {
+      ca: fs.readFileSync(
+        __dirname + '/' + process.env.DB_CERT_FILENAME,
+      ),
+    },
+  };
+}
 
 module.exports = {
   test: {
-    client: "mysql2",
+    client: 'sqlite3',
     connection: {
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_TEST_DATABASE
+      filename: './test/test.sqlite3',
     },
+    useNullAsDefault: true,
     migrations: {
-      tableName: process.env.DB_MIGRATIONS_TABLE
+      tableName: process.env.DB_MIGRATIONS_TABLE,
     },
     seeds: {
-      directory: "./seeds/test"
-    }
+      directory: './seeds/test',
+    },
   },
 
   development: {
-    client: "mysql2",
+    client: 'pg',
     connection: {
       host: process.env.DB_HOST,
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE
+      database: process.env.DB_DATABASE,
+      port: process.env.DB_PORT,
     },
     migrations: {
-      tableName: process.env.DB_MIGRATIONS_TABLE
+      tableName: process.env.DB_MIGRATIONS_TABLE,
     },
     seeds: {
-      directory: "./seeds/development"
-    }
+      directory: './seeds/development',
+    },
   },
 
   production: {
-    client: "mysql2",
-    connection: {
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE
-    },
+    client: 'pg',
+    connection: productionConnection,
     migrations: {
-      tableName: process.env.DB_MIGRATIONS_TABLE
+      tableName: process.env.DB_MIGRATIONS_TABLE,
     },
     seeds: {
-      directory: "./seeds/production"
-    }
-  }
+      directory: './seeds/production',
+    },
+  },
 };

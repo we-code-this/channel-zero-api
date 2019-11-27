@@ -1,15 +1,17 @@
-import moment from "moment";
-import knex from "../lib/connection";
-import Video from "./Video";
+import moment from 'moment';
+import knex from '../lib/connection';
+import Video from './Video';
+import { normalizeID, normalizeCount } from '../lib/utilities';
 
 class VideoQuery {
   constructor() {
-    this.tablename = "videos";
+    this.tablename = 'videos';
     this.items = undefined;
   }
 
   async count() {
-    return await knex.count("* as count").from(this.tablename);
+    const count = await knex.count('* as count').from(this.tablename);
+    return normalizeCount(count);
   }
 
   async create(data) {
@@ -22,33 +24,32 @@ class VideoQuery {
         {
           user_id: video.user_id,
           title: video.title,
-          src: video.src
+          src: video.src,
         },
-        ["id"]
+        ['id'],
       );
 
-      return await this.findById(id[0].id);
+      return await this.findById(normalizeID(id));
     } else {
       return { errors: video.validationErrors() };
     }
   }
 
   async delete(id) {
-    await knex("features")
-      .where("video_id", id)
+    await knex('features')
+      .where('video_id', id)
       .del();
 
     return await knex(this.tablename)
-      .where("id", id)
+      .where('id', id)
       .del();
   }
 
   async findById(id) {
     const result = await knex
-      .select("*")
+      .select('*')
       .from(this.tablename)
-      .where("id", id)
-      .limit(1);
+      .where('id', id);
 
     if (result.length > 0) {
       return new Video(result[0]);
@@ -60,14 +61,14 @@ class VideoQuery {
   async get(params = {}) {
     const offset = params.offset ? parseInt(params.offset) : 0;
     const limit = params.limit ? parseInt(params.limit) : 10;
-    const order = params.order ? params.order.toUpperCase() : "DESC";
+    const order = params.order ? params.order.toUpperCase() : 'DESC';
 
     const results = await knex
-      .select("*")
+      .select('*')
       .from(this.tablename)
       .limit(limit)
       .offset(offset)
-      .orderBy("created_at", order);
+      .orderBy('created_at', order);
 
     this.items = results.map(function(record) {
       return new Video(record);
@@ -78,18 +79,18 @@ class VideoQuery {
 
   async getByTitle() {
     if (this.items) {
-      return items;
+      return this.items;
     }
 
     const results = await knex
-      .select("*")
+      .select('*')
       .from(this.tablename)
-      .orderBy("title", "ASC");
+      .orderBy('title', 'ASC');
 
     this.items = await Promise.all(
       results.map(async function(record) {
         return await new Video(record);
-      })
+      }),
     );
 
     return this.items;
@@ -101,7 +102,7 @@ class VideoQuery {
     const data = {
       ...oldVideo,
       ...remainingFields,
-      updated_at: moment().format("YYYY-MM-DD HH:mm:ss")
+      updated_at: moment().format('YYYY-MM-DD HH:mm:ss'),
     };
 
     const video = new Video(data);
@@ -109,11 +110,11 @@ class VideoQuery {
 
     if (isValid) {
       await knex(this.tablename)
-        .where("id", id)
+        .where('id', id)
         .update({
           src: video.src,
           title: video.title,
-          updated_at: video.updated_at
+          updated_at: video.updated_at,
         });
 
       return await this.findById(id);

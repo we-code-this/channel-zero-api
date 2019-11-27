@@ -1,15 +1,17 @@
-import knex from "../lib/connection";
-import Promo from "./Promo";
-import moment from "moment";
+import knex from '../lib/connection';
+import Promo from './Promo';
+import moment from 'moment';
+import { normalizeID, normalizeCount } from '../lib/utilities';
 
 class PromoQuery {
   constructor() {
-    this.tablename = "promos";
+    this.tablename = 'promos';
     this.items = undefined;
   }
 
   async count() {
-    return await knex.count("* as count").from(this.tablename);
+    const count = await knex.count('* as count').from(this.tablename);
+    return normalizeCount(count);
   }
 
   async create(data) {
@@ -25,12 +27,12 @@ class PromoQuery {
           url: promo.url,
           filename: promo.filename,
           location: promo.location,
-          published: promo.published
+          published: promo.published,
         },
-        ["id"]
+        ['id'],
       );
 
-      const res = await this.findById(id[0].id);
+      const res = await this.findById(normalizeID(id));
 
       return new Promo(res);
     } else {
@@ -43,7 +45,7 @@ class PromoQuery {
 
     if (promo && promo.deleteFile()) {
       return await knex(this.tablename)
-        .where("id", id)
+        .where('id', id)
         .del();
     } else {
       return false;
@@ -52,9 +54,9 @@ class PromoQuery {
 
   async findById(id) {
     const result = await knex
-      .select("*")
+      .select('*')
       .from(this.tablename)
-      .where("id", id)
+      .where('id', id)
       .limit(1);
 
     if (result.length > 0) {
@@ -67,7 +69,7 @@ class PromoQuery {
   async get(params = {}, unpublished = false) {
     const offset = params.offset ? parseInt(params.offset) : 0;
     const limit = params.limit ? parseInt(params.limit) : 10;
-    const order = params.order ? params.order.toUpperCase() : "DESC";
+    const order = params.order ? params.order.toUpperCase() : 'DESC';
 
     let where;
 
@@ -80,12 +82,12 @@ class PromoQuery {
     }
 
     const results = await knex
-      .select("*")
+      .select('*')
       .from(this.tablename)
       .where(where)
       .limit(limit)
       .offset(offset)
-      .orderBy("created_at", order);
+      .orderBy('created_at', order);
 
     this.items = results.map(function(record) {
       return new Promo(record);
@@ -96,7 +98,7 @@ class PromoQuery {
 
   async publish(id) {
     const response = await knex(this.tablename)
-      .where("id", id)
+      .where('id', id)
       .update({ published: 1 });
 
     return response === 1 ? await this.findById(id) : undefined;
@@ -104,7 +106,7 @@ class PromoQuery {
 
   async unpublish(id) {
     const response = await knex(this.tablename)
-      .where("id", id)
+      .where('id', id)
       .update({ published: 0 });
 
     return response === 1 ? await this.findById(id) : undefined;
@@ -117,7 +119,7 @@ class PromoQuery {
     const data = {
       ...oldPromo,
       ...remainingUpdatedFields,
-      updated_at: moment().format("YYYY-MM-DD HH:mm:ss")
+      updated_at: moment().format('YYYY-MM-DD HH:mm:ss'),
     };
 
     const promo = new Promo(data);
@@ -125,12 +127,12 @@ class PromoQuery {
 
     if (isValid && (await promo.saveFile())) {
       await knex(this.tablename)
-        .where("id", id)
+        .where('id', id)
         .update({
           name: promo.name,
           url: promo.url,
           location: promo.location,
-          updated_at: promo.updated_at
+          updated_at: promo.updated_at,
         });
 
       return await this.findById(id);

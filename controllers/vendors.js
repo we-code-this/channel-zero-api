@@ -1,5 +1,5 @@
-import VendorQuery from "../models/VendorQuery";
-import UserQuery from "../models/UserQuery";
+import VendorQuery from '../models/VendorQuery';
+import UserQuery from '../models/UserQuery';
 
 export default {
   count: async (req, reply) => {
@@ -11,7 +11,10 @@ export default {
     let vendor;
 
     if (id) {
-      vendor = await new VendorQuery().create({ ...req.body, user_id: id });
+      vendor = await new VendorQuery().create({
+        ...req.body,
+        user_id: id,
+      });
     }
 
     if (vendor) {
@@ -46,12 +49,12 @@ export default {
     const releases = await new VendorQuery().get({
       offset: req.params.offset,
       limit: req.params.limit,
-      order: req.params.order
+      order: req.params.order,
     });
     reply.send(releases);
   },
   update: async (req, reply) => {
     const updatedVendor = await new VendorQuery().update(req.body);
     reply.send(updatedVendor);
-  }
+  },
 };

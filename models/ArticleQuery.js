@@ -1,6 +1,7 @@
 import moment from 'moment';
 import knex from '../lib/connection';
 import Article from './Article';
+import { normalizeID, normalizeCount } from '../lib/utilities';
 
 class ArticleQuery {
   constructor() {
@@ -9,7 +10,8 @@ class ArticleQuery {
   }
 
   async count() {
-    return await knex.count('* as count').from(this.tablename);
+    const count = await knex.count('* as count').from(this.tablename);
+    return normalizeCount(count);
   }
 
   async create(data) {
@@ -28,18 +30,18 @@ class ArticleQuery {
           summary: article.summary,
           description: article.description,
           filename: article.filename,
-          published: article.published
+          published: article.published,
         },
-        ['id']
+        ['id'],
       );
 
-      const res = (await knex
+      const res = await knex
         .select('*')
         .from(this.tablename)
-        .where(`${this.tablename}.id`, id[0])
-        .limit(1))[0];
+        .where(`${this.tablename}.id`, normalizeID(id))
+        .limit(1);
 
-      return new Article(res);
+      return new Article(res[0]);
     } else {
       return { errors: article.validationErrors() };
     }
@@ -143,7 +145,7 @@ class ArticleQuery {
     this.items = await Promise.all(
       results.map(async function(record) {
         return await new Article(record);
-      })
+      }),
     );
 
     return this.items;
@@ -172,7 +174,7 @@ class ArticleQuery {
     const data = {
       ...oldArticle,
       ...remainingUpdatedFields,
-      updated_at: moment().format('YYYY-MM-DD HH:mm:ss')
+      updated_at: moment().format('YYYY-MM-DD HH:mm:ss'),
     };
 
     const article = new Article(data);
@@ -187,7 +189,7 @@ class ArticleQuery {
             summary: article.summary,
             description: article.description,
             filename: article.filename,
-            updated_at: article.updated_at
+            updated_at: article.updated_at,
           });
       } else {
         await knex(this.tablename)
@@ -196,7 +198,7 @@ class ArticleQuery {
             title: article.title,
             summary: article.summary,
             description: article.description,
-            updated_at: article.updated_at
+            updated_at: article.updated_at,
           });
       }
 

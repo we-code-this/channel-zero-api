@@ -30,9 +30,12 @@ describe('releases', function() {
 
   describe('GET /releases', function() {
     it('should return 10 releases', async function() {
-      const response = await app.inject({ method: 'GET', url: '/releases' });
+      const response = await app.inject({
+        method: 'GET',
+        url: '/releases',
+      });
       expect(response.headers['content-type']).to.equal(
-        'application/json; charset=utf-8'
+        'application/json; charset=utf-8',
       );
       expect(JSON.parse(response.payload).length).to.equal(10);
     });
@@ -41,7 +44,7 @@ describe('releases', function() {
       it('should return 11 releases if :limit is 11', async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/releases/11'
+          url: '/releases/11',
         });
         expect(JSON.parse(response.payload).length).to.equal(11);
       });
@@ -49,7 +52,7 @@ describe('releases', function() {
       it('should return 9 releases if :limit is 9', async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/releases/9'
+          url: '/releases/9',
         });
         expect(JSON.parse(response.payload).length).to.equal(9);
       });
@@ -59,7 +62,7 @@ describe('releases', function() {
       it("should return release with id of 11 when :order is 'desc'", async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/releases/1/desc'
+          url: '/releases/1/desc',
         });
         expect(JSON.parse(response.payload)[0].id).to.equal(11);
       });
@@ -67,7 +70,7 @@ describe('releases', function() {
       it("should return release with id of 1 when :order is 'asc'", async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/releases/1/asc'
+          url: '/releases/1/asc',
         });
         expect(JSON.parse(response.payload)[0].id).to.equal(1);
       });
@@ -77,7 +80,7 @@ describe('releases', function() {
       it("should return releases with IDs in range of 12 to 3 with offset 0, limit 10 and order 'desc'", async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/releases/unpublished/0/10/desc'
+          url: '/releases/unpublished/0/10/desc',
         });
 
         const results = JSON.parse(response.payload);
@@ -91,7 +94,7 @@ describe('releases', function() {
       it("should return release with id of 11 with offset 1, limit 10 and order 'asc'", async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/releases/range/1/10/asc'
+          url: '/releases/range/1/10/asc',
         });
 
         const results = JSON.parse(response.payload);
@@ -105,7 +108,7 @@ describe('releases', function() {
       it('should return count of 12', async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/releases/count'
+          url: '/releases/count',
         });
 
         expect(JSON.parse(response.payload)[0].count).to.equal(12);
@@ -117,26 +120,32 @@ describe('releases', function() {
     it('should return the release that has the :slug supplied', async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/release/artist-9-album-9'
+        url: '/release/artist-9-album-9',
       });
-      expect(JSON.parse(response.payload).slug).to.equal('artist-9-album-9');
+      expect(JSON.parse(response.payload).slug).to.equal(
+        'artist-9-album-9',
+      );
     });
 
     describe('release artist relationship', function() {
       it('should return the release with an artist property', async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/release/artist-9-album-9'
+          url: '/release/artist-9-album-9',
         });
-        expect(JSON.parse(response.payload)).to.have.property('artist');
+        expect(JSON.parse(response.payload)).to.have.property(
+          'artist',
+        );
       });
 
       it("should return the release with an artist property that's an object", async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/release/artist-9-album-9'
+          url: '/release/artist-9-album-9',
         });
-        expect(JSON.parse(response.payload).artist).to.be.an.instanceof(Object);
+        expect(
+          JSON.parse(response.payload).artist,
+        ).to.be.an.instanceof(Object);
       });
     });
 
@@ -144,25 +153,31 @@ describe('releases', function() {
       it('should return the release with a vendors property', async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/release/artist-9-album-9'
+          url: '/release/artist-9-album-9',
         });
-        expect(JSON.parse(response.payload)).to.have.property('vendors');
+        expect(JSON.parse(response.payload)).to.have.property(
+          'vendors',
+        );
       });
 
       it("should return the release with a vendors property that's an array", async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/release/artist-9-album-9'
+          url: '/release/artist-9-album-9',
         });
-        expect(JSON.parse(response.payload).vendors).to.be.an.instanceOf(Array);
+        expect(
+          JSON.parse(response.payload).vendors,
+        ).to.be.an.instanceOf(Array);
       });
 
       it('should return the release with 3 vendors', async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/release/artist-9-album-9'
+          url: '/release/artist-9-album-9',
         });
-        expect(JSON.parse(response.payload).vendors.length).to.equal(3);
+        expect(JSON.parse(response.payload).vendors.length).to.equal(
+          3,
+        );
       });
     });
 
@@ -170,25 +185,31 @@ describe('releases', function() {
       it('should return the release with a credits property', async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/release/artist-1-album-1'
+          url: '/release/artist-1-album-1',
         });
-        expect(JSON.parse(response.payload)).to.have.property('credits');
+        expect(JSON.parse(response.payload)).to.have.property(
+          'credits',
+        );
       });
 
       it("should return the release with a credits property that's an array", async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/release/artist-1-album-1'
+          url: '/release/artist-1-album-1',
         });
-        expect(JSON.parse(response.payload).credits).to.be.an.instanceOf(Array);
+        expect(
+          JSON.parse(response.payload).credits,
+        ).to.be.an.instanceOf(Array);
       });
 
       it('should return the release with 10 credits', async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/release/artist-1-album-1'
+          url: '/release/artist-1-album-1',
         });
-        expect(JSON.parse(response.payload).credits.length).to.equal(10);
+        expect(JSON.parse(response.payload).credits.length).to.equal(
+          10,
+        );
       });
     });
 
@@ -196,27 +217,31 @@ describe('releases', function() {
       it('should return the release with a endorsements property', async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/release/artist-1-album-1'
+          url: '/release/artist-1-album-1',
         });
-        expect(JSON.parse(response.payload)).to.have.property('endorsements');
+        expect(JSON.parse(response.payload)).to.have.property(
+          'endorsements',
+        );
       });
 
       it("should return the release with a endorsements property that's an array", async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/release/artist-1-album-1'
+          url: '/release/artist-1-album-1',
         });
-        expect(JSON.parse(response.payload).endorsements).to.be.an.instanceOf(
-          Array
-        );
+        expect(
+          JSON.parse(response.payload).endorsements,
+        ).to.be.an.instanceOf(Array);
       });
 
       it('should return the release with 2 endorsements', async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/release/artist-1-album-1'
+          url: '/release/artist-1-album-1',
         });
-        expect(JSON.parse(response.payload).endorsements.length).to.equal(2);
+        expect(
+          JSON.parse(response.payload).endorsements.length,
+        ).to.equal(2);
       });
     });
 
@@ -224,34 +249,42 @@ describe('releases', function() {
       it('should return the release with a label property', async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/release/artist-1-album-1'
+          url: '/release/artist-1-album-1',
         });
-        expect(JSON.parse(response.payload)).to.have.property('label');
+        expect(JSON.parse(response.payload)).to.have.property(
+          'label',
+        );
       });
 
       it("should return the release with a label property that's an object", async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/release/artist-9-album-9'
+          url: '/release/artist-9-album-9',
         });
-        expect(JSON.parse(response.payload).label).to.be.an.instanceof(Object);
+        expect(
+          JSON.parse(response.payload).label,
+        ).to.be.an.instanceof(Object);
       });
 
       describe('release label id', function() {
         it('should have a label property with an id', async function() {
           const response = await app.inject({
             method: 'GET',
-            url: '/release/artist-9-album-9'
+            url: '/release/artist-9-album-9',
           });
-          expect(JSON.parse(response.payload).label).to.have.property('id');
+          expect(JSON.parse(response.payload).label).to.have.property(
+            'id',
+          );
         });
 
         it('should have a label property with an integer id', async function() {
           const response = await app.inject({
             method: 'GET',
-            url: '/release/artist-9-album-9'
+            url: '/release/artist-9-album-9',
           });
-          expect(JSON.parse(response.payload).label.id).to.be.a('number');
+          expect(JSON.parse(response.payload).label.id).to.be.a(
+            'number',
+          );
         });
       });
 
@@ -259,17 +292,21 @@ describe('releases', function() {
         it('should have a label property with a name', async function() {
           const response = await app.inject({
             method: 'GET',
-            url: '/release/artist-9-album-9'
+            url: '/release/artist-9-album-9',
           });
-          expect(JSON.parse(response.payload).label).to.have.property('name');
+          expect(JSON.parse(response.payload).label).to.have.property(
+            'name',
+          );
         });
 
         it('should have a label property with a name string', async function() {
           const response = await app.inject({
             method: 'GET',
-            url: '/release/artist-9-album-9'
+            url: '/release/artist-9-album-9',
           });
-          expect(JSON.parse(response.payload).label.name).to.be.a('string');
+          expect(JSON.parse(response.payload).label.name).to.be.a(
+            'string',
+          );
         });
       });
 
@@ -277,17 +314,21 @@ describe('releases', function() {
         it('should have a label property with a slug', async function() {
           const response = await app.inject({
             method: 'GET',
-            url: '/release/artist-9-album-9'
+            url: '/release/artist-9-album-9',
           });
-          expect(JSON.parse(response.payload).label).to.have.property('slug');
+          expect(JSON.parse(response.payload).label).to.have.property(
+            'slug',
+          );
         });
 
         it('should have a label property with a slug string', async function() {
           const response = await app.inject({
             method: 'GET',
-            url: '/release/artist-9-album-9'
+            url: '/release/artist-9-album-9',
           });
-          expect(JSON.parse(response.payload).label.slug).to.be.a('string');
+          expect(JSON.parse(response.payload).label.slug).to.be.a(
+            'string',
+          );
         });
       });
 
@@ -295,20 +336,20 @@ describe('releases', function() {
         it('should have a label property with a created_at property', async function() {
           const response = await app.inject({
             method: 'GET',
-            url: '/release/artist-9-album-9'
+            url: '/release/artist-9-album-9',
           });
           expect(JSON.parse(response.payload).label).to.have.property(
-            'created_at'
+            'created_at',
           );
         });
 
         it('should have a label property with a created_at datetime string', async function() {
           const response = await app.inject({
             method: 'GET',
-            url: '/release/artist-9-album-9'
+            url: '/release/artist-9-album-9',
           });
           expect(
-            JSON.parse(response.payload).label.created_at
+            JSON.parse(response.payload).label.created_at,
           ).to.be.a.dateString();
         });
       });
@@ -317,20 +358,20 @@ describe('releases', function() {
         it('should have a label property with an updated_at property', async function() {
           const response = await app.inject({
             method: 'GET',
-            url: '/release/artist-9-album-9'
+            url: '/release/artist-9-album-9',
           });
           expect(JSON.parse(response.payload).label).to.have.property(
-            'updated_at'
+            'updated_at',
           );
         });
 
         it('should have a label property with an updated_at datetime string', async function() {
           const response = await app.inject({
             method: 'GET',
-            url: '/release/artist-9-album-9'
+            url: '/release/artist-9-album-9',
           });
           expect(
-            JSON.parse(response.payload).label.updated_at
+            JSON.parse(response.payload).label.updated_at,
           ).to.be.a.dateString();
         });
       });
@@ -346,7 +387,7 @@ describe('releases', function() {
 
       const beforeResponse = await app.inject({
         method: 'GET',
-        url: `/release/${slug}`
+        url: `/release/${slug}`,
       });
 
       expect(beforeResponse.statusCode).to.equal(404);
@@ -362,8 +403,8 @@ describe('releases', function() {
         method: 'POST',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const release = await app.inject(opts);
@@ -393,8 +434,8 @@ describe('releases', function() {
         method: 'POST',
         payload: firstForm,
         headers: firstForm.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const firstRelease = await app.inject(firstOpts);
@@ -414,13 +455,15 @@ describe('releases', function() {
         method: 'POST',
         payload: secondForm,
         headers: secondForm.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const secondRelease = await app.inject(secondOpts);
 
-      expect(JSON.parse(secondRelease.payload).slug).to.equal(`${slug}-1`);
+      expect(JSON.parse(secondRelease.payload).slug).to.equal(
+        `${slug}-1`,
+      );
     });
 
     it('should return error without an image', async function() {
@@ -436,14 +479,16 @@ describe('releases', function() {
         method: 'POST',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const response = await app.inject(opts);
 
       expect(JSON.parse(response.payload)).to.have.property('errors');
-      expect(JSON.parse(response.payload).errors[0].field).to.equal('image');
+      expect(JSON.parse(response.payload).errors[0].field).to.equal(
+        'image',
+      );
     });
 
     it('should return error with invalid title', async function() {
@@ -462,14 +507,16 @@ describe('releases', function() {
         method: 'POST',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const response = await app.inject(opts);
 
       expect(JSON.parse(response.payload)).to.have.property('errors');
-      expect(JSON.parse(response.payload).errors[0].field).to.equal('title');
+      expect(JSON.parse(response.payload).errors[0].field).to.equal(
+        'title',
+      );
     });
 
     it('should sanitize description', async function() {
@@ -483,7 +530,7 @@ describe('releases', function() {
       form.append('title', 'Album 1001');
       form.append(
         'description',
-        "<script>console.log('yo')</script> release description"
+        "<script>console.log('yo')</script> release description",
       );
 
       let opts = {
@@ -491,14 +538,14 @@ describe('releases', function() {
         method: 'POST',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const response = await app.inject(opts);
 
       expect(JSON.parse(response.payload).description).to.equal(
-        'release description'
+        'release description',
       );
     });
 
@@ -510,7 +557,10 @@ describe('releases', function() {
       form.append('image', rs);
       form.append('artist_id', 2);
       form.append('label_id', 1);
-      form.append('title', "<script>console.log('yo')</script> release title");
+      form.append(
+        'title',
+        "<script>console.log('yo')</script> release title",
+      );
       form.append('description', 'Album description');
 
       let opts = {
@@ -518,13 +568,15 @@ describe('releases', function() {
         method: 'POST',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const response = await app.inject(opts);
 
-      expect(JSON.parse(response.payload).title).to.equal('release title');
+      expect(JSON.parse(response.payload).title).to.equal(
+        'release title',
+      );
     });
   });
 
@@ -533,7 +585,7 @@ describe('releases', function() {
       const token = await login(app);
       const getResponse = await app.inject({
         method: 'GET',
-        url: '/release/artist-1-album-1'
+        url: '/release/artist-1-album-1',
       });
 
       const release = JSON.parse(getResponse.payload);
@@ -552,11 +604,13 @@ describe('releases', function() {
         url: '/release',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       });
 
-      expect(JSON.parse(response.payload).description).to.equal(newDescription);
+      expect(JSON.parse(response.payload).description).to.equal(
+        newDescription,
+      );
     });
 
     it('should replace image with new one', async function() {
@@ -574,8 +628,8 @@ describe('releases', function() {
         method: 'POST',
         payload: original_form,
         headers: original_form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const original_result = await app.inject(original_opts);
@@ -597,8 +651,8 @@ describe('releases', function() {
         url: '/release',
         payload: new_form,
         headers: new_form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       await app.inject(new_opts);
@@ -621,14 +675,16 @@ describe('releases', function() {
         method: 'PATCH',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const response = await app.inject(opts);
 
       expect(JSON.parse(response.payload)).to.have.property('errors');
-      expect(JSON.parse(response.payload).errors[0].field).to.equal('title');
+      expect(JSON.parse(response.payload).errors[0].field).to.equal(
+        'title',
+      );
     });
   });
 
@@ -650,8 +706,8 @@ describe('releases', function() {
         method: 'POST',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const res = await app.inject(opts);
@@ -664,11 +720,11 @@ describe('releases', function() {
         url: '/release/publish',
         method: 'PATCH',
         body: {
-          id: release.id
+          id: release.id,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const publishedRelease = JSON.parse(publishRes.payload);
@@ -695,8 +751,8 @@ describe('releases', function() {
         method: 'POST',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const res = await app.inject(opts);
@@ -709,11 +765,11 @@ describe('releases', function() {
         url: '/release/unpublish',
         method: 'PATCH',
         body: {
-          id: release.id
+          id: release.id,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const unpublishedRelease = JSON.parse(unpublishRes.payload);
@@ -740,8 +796,8 @@ describe('releases', function() {
         method: 'POST',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const res = await app.inject(opts);
@@ -755,16 +811,16 @@ describe('releases', function() {
         method: 'DELETE',
         url: '/release',
         payload: {
-          id: release.id
+          id: release.id,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const afterResponse = await app.inject({
         method: 'GET',
-        url: `/release/${release.slug}`
+        url: `/release/${release.slug}`,
       });
 
       expect(afterResponse.statusCode).to.equal(404);
@@ -777,11 +833,11 @@ describe('releases', function() {
         method: 'DELETE',
         url: '/release',
         payload: {
-          id: 2000
+          id: 2000,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       expect(response.statusCode).to.equal(404);

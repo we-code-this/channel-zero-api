@@ -28,9 +28,12 @@ describe('promos', function() {
 
   describe('GET /promos', function() {
     it('should return 10 promos', async function() {
-      const response = await app.inject({ method: 'GET', url: '/promos' });
+      const response = await app.inject({
+        method: 'GET',
+        url: '/promos',
+      });
       expect(response.headers['content-type']).to.equal(
-        'application/json; charset=utf-8'
+        'application/json; charset=utf-8',
       );
       expect(JSON.parse(response.payload).length).to.equal(10);
     });
@@ -40,7 +43,7 @@ describe('promos', function() {
     it('should return the promo that has the :id supplied', async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/promo/1'
+        url: '/promo/1',
       });
       expect(JSON.parse(response.payload).id).to.equal(1);
     });
@@ -50,7 +53,7 @@ describe('promos', function() {
     it('should return 11 promos if :limit is 11', async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/promos/11'
+        url: '/promos/11',
       });
       expect(JSON.parse(response.payload).length).to.equal(11);
     });
@@ -58,7 +61,7 @@ describe('promos', function() {
     it('should return 9 promos if :limit is 9', async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/promos/9'
+        url: '/promos/9',
       });
       expect(JSON.parse(response.payload).length).to.equal(9);
     });
@@ -68,7 +71,7 @@ describe('promos', function() {
     it("should return promo with id of 11 when :limit is 1 and :order is 'desc'", async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/promos/1/desc'
+        url: '/promos/1/desc',
       });
       expect(JSON.parse(response.payload)[0].id).to.equal(11);
     });
@@ -76,7 +79,7 @@ describe('promos', function() {
     it("should return promo with id of 1 when :limit is 1 and :order is 'asc'", async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/promos/1/asc'
+        url: '/promos/1/asc',
       });
       expect(JSON.parse(response.payload)[0].id).to.equal(1);
     });
@@ -86,7 +89,7 @@ describe('promos', function() {
     it("should return promos with range of IDs of 2-11 with :offset 1, :limit 10 and order 'asc'", async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/promos/range/1/10/asc'
+        url: '/promos/range/1/10/asc',
       });
 
       const results = JSON.parse(response.payload);
@@ -100,7 +103,7 @@ describe('promos', function() {
     it("should return promos with IDs in range of 12-3 with :offset 0, :limit 10 and order 'desc'", async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/promos/unpublished/0/10/desc'
+        url: '/promos/unpublished/0/10/desc',
       });
 
       const results = JSON.parse(response.payload);
@@ -114,7 +117,7 @@ describe('promos', function() {
     it('should return count of 12', async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/promos/count'
+        url: '/promos/count',
       });
 
       expect(JSON.parse(response.payload)[0].count).to.equal(12);
@@ -125,7 +128,7 @@ describe('promos', function() {
     it("should return 6 promos when 'horizontal' is supplied to :location", async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/promos/placement/horizontal'
+        url: '/promos/placement/horizontal',
       });
       expect(JSON.parse(response.payload).length).to.equal(6);
     });
@@ -133,7 +136,7 @@ describe('promos', function() {
     it("should return 5 promos when 'vertical' is supplied to :location", async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/promos/placement/vertical'
+        url: '/promos/placement/vertical',
       });
       expect(JSON.parse(response.payload).length).to.equal(5);
     });
@@ -143,7 +146,7 @@ describe('promos', function() {
     it('should return 2 promos when :limit is 2', async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/promos/placement/horizontal/2'
+        url: '/promos/placement/horizontal/2',
       });
       expect(JSON.parse(response.payload).length).to.equal(2);
     });
@@ -166,8 +169,8 @@ describe('promos', function() {
         url: '/promo',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const promo = await app.inject(opts);
@@ -194,14 +197,16 @@ describe('promos', function() {
         url: '/promo',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const promo = await app.inject(opts);
 
       expect(JSON.parse(promo.payload)).to.haveOwnProperty('errors');
-      expect(JSON.parse(promo.payload).errors[0].field).to.equal('image');
+      expect(JSON.parse(promo.payload).errors[0].field).to.equal(
+        'image',
+      );
     });
 
     it('should return error when file is not svg', async function() {
@@ -220,14 +225,16 @@ describe('promos', function() {
         url: '/promo',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const promo = await app.inject(opts);
 
       expect(JSON.parse(promo.payload)).to.haveOwnProperty('errors');
-      expect(JSON.parse(promo.payload).errors[0].field).to.equal('image');
+      expect(JSON.parse(promo.payload).errors[0].field).to.equal(
+        'image',
+      );
     });
 
     it('should return error with invalid name', async function() {
@@ -245,14 +252,16 @@ describe('promos', function() {
         url: '/promo',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const promo = await app.inject(opts);
 
       expect(JSON.parse(promo.payload)).to.haveOwnProperty('errors');
-      expect(JSON.parse(promo.payload).errors[0].field).to.equal('name');
+      expect(JSON.parse(promo.payload).errors[0].field).to.equal(
+        'name',
+      );
     });
 
     it('should return error with invalid url', async function() {
@@ -270,14 +279,16 @@ describe('promos', function() {
         url: '/promo',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const promo = await app.inject(opts);
 
       expect(JSON.parse(promo.payload)).to.haveOwnProperty('errors');
-      expect(JSON.parse(promo.payload).errors[0].field).to.equal('url');
+      expect(JSON.parse(promo.payload).errors[0].field).to.equal(
+        'url',
+      );
     });
 
     it('should return error with invalid location', async function() {
@@ -295,14 +306,16 @@ describe('promos', function() {
         url: '/promo',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const promo = await app.inject(opts);
 
       expect(JSON.parse(promo.payload)).to.haveOwnProperty('errors');
-      expect(JSON.parse(promo.payload).errors[0].field).to.equal('location');
+      expect(JSON.parse(promo.payload).errors[0].field).to.equal(
+        'location',
+      );
     });
 
     it('should sanitize name', async function() {
@@ -311,7 +324,10 @@ describe('promos', function() {
       let rs = fs.createReadStream(filePath);
 
       form.append('image', rs);
-      form.append('name', "<script>console.log('yo')</script> Promo 2002");
+      form.append(
+        'name',
+        "<script>console.log('yo')</script> Promo 2002",
+      );
       form.append('url', 'http://promo-2000.com');
       form.append('location', 'horizontal');
 
@@ -320,8 +336,8 @@ describe('promos', function() {
         url: '/promo',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const promo = await app.inject(opts);
@@ -346,8 +362,8 @@ describe('promos', function() {
         url: '/promo',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       });
 
       const promo = JSON.parse(createResponse.payload);
@@ -363,8 +379,8 @@ describe('promos', function() {
         url: '/promo',
         payload: newForm,
         headers: newForm.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       });
 
       expect(JSON.parse(newResponse.payload).name).to.equal(newName);
@@ -385,8 +401,8 @@ describe('promos', function() {
         url: '/promo',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       });
 
       const promo = JSON.parse(createResponse.payload);
@@ -408,8 +424,8 @@ describe('promos', function() {
         url: '/promo',
         payload: newForm,
         headers: newForm.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       });
 
       const new_source = await fs.readFileSync(altFilePath);
@@ -437,8 +453,8 @@ describe('promos', function() {
         url: '/promo',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       });
 
       const promo = JSON.parse(createResponse.payload);
@@ -450,11 +466,11 @@ describe('promos', function() {
         url: '/promo/publish',
         method: 'PATCH',
         body: {
-          id: promo.id
+          id: promo.id,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const publishedPromo = JSON.parse(publishRes.payload);
@@ -480,8 +496,8 @@ describe('promos', function() {
         url: '/promo',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       });
 
       const promo = JSON.parse(createResponse.payload);
@@ -493,11 +509,11 @@ describe('promos', function() {
         url: '/promo/unpublish',
         method: 'PATCH',
         body: {
-          id: promo.id
+          id: promo.id,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const publishedPromo = JSON.parse(publishRes.payload);
@@ -522,8 +538,8 @@ describe('promos', function() {
         url: '/promo',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const res = await app.inject(opts);
@@ -535,16 +551,16 @@ describe('promos', function() {
         method: 'DELETE',
         url: '/promo',
         payload: {
-          id: promo.id
+          id: promo.id,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const afterResponse = await app.inject({
         method: 'GET',
-        url: `/promo/${promo.id}`
+        url: `/promo/${promo.id}`,
       });
 
       expect(afterResponse.statusCode).to.equal(404);
@@ -557,11 +573,11 @@ describe('promos', function() {
         method: 'DELETE',
         url: '/promo',
         payload: {
-          id: 2000
+          id: 2000,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       expect(response.statusCode).to.equal(404);

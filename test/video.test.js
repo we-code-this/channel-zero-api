@@ -19,11 +19,11 @@ describe('videos', function() {
     it('should return 10 videos', async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/videos'
+        url: '/videos',
       });
 
       expect(response.headers['content-type']).to.equal(
-        'application/json; charset=utf-8'
+        'application/json; charset=utf-8',
       );
       expect(JSON.parse(response.payload).length).to.equal(10);
     });
@@ -32,7 +32,7 @@ describe('videos', function() {
       it('should return count of 11', async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/videos/count'
+          url: '/videos/count',
         });
 
         expect(JSON.parse(response.payload)[0].count).to.equal(11);
@@ -43,7 +43,7 @@ describe('videos', function() {
       it('should return 11 videos if :limit is 11', async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/videos/11'
+          url: '/videos/11',
         });
         expect(JSON.parse(response.payload).length).to.equal(11);
       });
@@ -51,7 +51,7 @@ describe('videos', function() {
       it('should return 9 videos if :limit is 9', async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/videos/9'
+          url: '/videos/9',
         });
         expect(JSON.parse(response.payload).length).to.equal(9);
       });
@@ -61,7 +61,7 @@ describe('videos', function() {
       it("should return video with id of 11 when :order is 'desc'", async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/videos/1/desc'
+          url: '/videos/1/desc',
         });
         expect(JSON.parse(response.payload)[0].id).to.equal(11);
       });
@@ -69,7 +69,7 @@ describe('videos', function() {
       it("should return video with id of 1 when :order is 'asc'", async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/videos/1/asc'
+          url: '/videos/1/asc',
         });
         expect(JSON.parse(response.payload)[0].id).to.equal(1);
       });
@@ -79,7 +79,7 @@ describe('videos', function() {
       it("should return video with id of 11 with :offset 1, :limit 10 and :order 'asc'", async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/videos/range/1/10/asc'
+          url: '/videos/range/1/10/asc',
         });
 
         const results = JSON.parse(response.payload);
@@ -93,7 +93,7 @@ describe('videos', function() {
       it('should return all videos sorted by title', async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/videos/by/title'
+          url: '/videos/by/title',
         });
 
         const results = JSON.parse(response.payload);
@@ -109,9 +109,11 @@ describe('videos', function() {
     it('should return the video that has the :id supplied', async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/video/1'
+        url: '/video/1',
       });
-      expect(JSON.parse(response.payload).src).to.equal('http://video-1.com');
+      expect(JSON.parse(response.payload).src).to.equal(
+        'http://video-1.com',
+      );
     });
   });
 
@@ -120,7 +122,7 @@ describe('videos', function() {
       const token = await login(app);
       const newVideo = {
         src: 'http://video-2000.com',
-        title: 'Test Video'
+        title: 'Test Video',
       };
 
       const video = await app.inject({
@@ -128,12 +130,14 @@ describe('videos', function() {
         url: '/video',
         payload: newVideo,
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       expect(JSON.parse(video.payload).src).to.equal(newVideo.src);
-      expect(JSON.parse(video.payload).title).to.equal(newVideo.title);
+      expect(JSON.parse(video.payload).title).to.equal(
+        newVideo.title,
+      );
     });
 
     it('should sanitize src', async function() {
@@ -142,16 +146,17 @@ describe('videos', function() {
         method: 'POST',
         url: '/video',
         payload: {
-          src: "<script>console.log('yo')</script> http://video-2001.com",
-          title: 'Test Video'
+          src:
+            "<script>console.log('yo')</script> http://video-2001.com",
+          title: 'Test Video',
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       expect(JSON.parse(response.payload).src).to.equal(
-        'http://video-2001.com'
+        'http://video-2001.com',
       );
     });
 
@@ -162,14 +167,16 @@ describe('videos', function() {
         url: '/video',
         payload: {
           src: 'http://video-2001.com',
-          title: "<script>console.log('yo')</script> Test Video"
+          title: "<script>console.log('yo')</script> Test Video",
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      expect(JSON.parse(response.payload).title).to.equal('Test Video');
+      expect(JSON.parse(response.payload).title).to.equal(
+        'Test Video',
+      );
     });
   });
 
@@ -181,11 +188,11 @@ describe('videos', function() {
         url: '/video',
         payload: {
           src: 'http://video-2003.com',
-          title: 'Test Video'
+          title: 'Test Video',
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const returnedVideo = JSON.parse(video.payload);
@@ -197,11 +204,11 @@ describe('videos', function() {
         payload: {
           id: returnedVideo.id,
           title: returnedVideo.title,
-          src: newSrc
+          src: newSrc,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       expect(JSON.parse(updatedVideo.payload).src).to.equal(newSrc);
@@ -217,36 +224,38 @@ describe('videos', function() {
         url: '/video',
         payload: {
           src: 'http://video-3000.com',
-          title: 'Test Video'
+          title: 'Test Video',
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const video = JSON.parse(newVideoResponse.payload);
 
       const beforeResponse = await app.inject({
         method: 'GET',
-        url: `/video/${video.id}`
+        url: `/video/${video.id}`,
       });
 
-      expect(JSON.parse(beforeResponse.payload).id).to.equal(video.id);
+      expect(JSON.parse(beforeResponse.payload).id).to.equal(
+        video.id,
+      );
 
       await app.inject({
         method: 'DELETE',
         url: '/video',
         payload: {
-          id: video.id
+          id: video.id,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const afterResponse = await app.inject({
         method: 'GET',
-        url: `/video/${video.id}`
+        url: `/video/${video.id}`,
       });
 
       expect(afterResponse.statusCode).to.equal(404);
@@ -260,11 +269,11 @@ describe('videos', function() {
         url: '/video',
         payload: {
           src: 'http://video-3000.com',
-          title: 'Test Video'
+          title: 'Test Video',
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const video = JSON.parse(newVideoResponse.payload);
@@ -274,11 +283,11 @@ describe('videos', function() {
         url: '/feature',
         payload: {
           article_id: 1,
-          video_id: video.id
+          video_id: video.id,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const feature = JSON.parse(newFeatureResponse.payload);
@@ -287,16 +296,16 @@ describe('videos', function() {
         method: 'DELETE',
         url: '/video',
         payload: {
-          id: video.id
+          id: video.id,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const afterFeatureResponse = await app.inject({
         method: 'GET',
-        url: `/feature/${feature.id}`
+        url: `/feature/${feature.id}`,
       });
 
       expect(afterFeatureResponse.statusCode).to.equal(404);

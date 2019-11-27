@@ -1,33 +1,34 @@
-import moment from "moment";
-import knex from "../lib/connection";
-import Artist from "./Artist";
+import moment from 'moment';
+import knex from '../lib/connection';
+import Artist from './Artist';
+import { normalizeID, normalizeCount } from '../lib/utilities';
 
 class ArtistQuery {
   constructor() {
-    this.tablename = "artists";
+    this.tablename = 'artists';
     this.items = undefined;
   }
 
   async get(params = {}) {
     const offset = params.offset ? parseInt(params.offset) : 0;
     const limit = params.limit ? parseInt(params.limit) : 10;
-    const order = params.order ? params.order.toUpperCase() : "DESC";
+    const order = params.order ? params.order.toUpperCase() : 'DESC';
 
     if (this.items) {
       return items;
     }
 
     const results = await knex
-      .select("*")
+      .select('*')
       .from(this.tablename)
       .limit(limit)
       .offset(offset)
-      .orderBy("created_at", order);
+      .orderBy('created_at', order);
 
     this.items = await Promise.all(
       results.map(async function(record) {
         return await new Artist(record).withRelated();
-      })
+      }),
     );
 
     return this.items;
@@ -39,28 +40,29 @@ class ArtistQuery {
     }
 
     const results = await knex
-      .select("*")
+      .select('*')
       .from(this.tablename)
-      .orderBy("name", "ASC");
+      .orderBy('name', 'ASC');
 
     this.items = await Promise.all(
       results.map(async function(record) {
         return await new Artist(record).withRelated();
-      })
+      }),
     );
 
     return this.items;
   }
 
   async count() {
-    return await knex.count("* as count").from(this.tablename);
+    const count = await knex.count('* as count').from(this.tablename);
+    return normalizeCount(count);
   }
 
   async findById(id) {
     const result = await knex
-      .select("*")
+      .select('*')
       .from(this.tablename)
-      .where("id", id)
+      .where('id', id)
       .limit(1);
 
     if (result.length > 0) {
@@ -72,9 +74,9 @@ class ArtistQuery {
 
   async findBySlug(slug) {
     const result = await knex
-      .select("*")
+      .select('*')
       .from(this.tablename)
-      .where("slug", slug)
+      .where('slug', slug)
       .limit(1);
 
     if (result.length > 0) {
@@ -90,7 +92,7 @@ class ArtistQuery {
     const data = {
       ...oldArtist,
       ...remainingUpdatedFields,
-      updated_at: moment().format("YYYY-MM-DD HH:mm:ss")
+      updated_at: moment().format('YYYY-MM-DD HH:mm:ss'),
     };
 
     const artist = new Artist(data);
@@ -99,11 +101,11 @@ class ArtistQuery {
 
     if (isValid) {
       await knex(this.tablename)
-        .where("slug", slug)
+        .where('slug', slug)
         .update({
           name: artist.name,
           description: artist.description,
-          updated_at: artist.updated_at
+          updated_at: artist.updated_at,
         });
 
       return await this.findBySlug(slug);
@@ -117,11 +119,11 @@ class ArtistQuery {
 
     if (artist && artist.releases && artist.releases.length > 0) {
       return {
-        error: "Unable to delete artist with releases"
+        error: 'Unable to delete artist with releases',
       };
     } else {
       return await knex(this.tablename)
-        .where("id", id)
+        .where('id', id)
         .del();
     }
   }
@@ -139,12 +141,12 @@ class ArtistQuery {
           user_id: artist.user_id,
           name: artist.name,
           slug: artist.slug,
-          description: artist.description
+          description: artist.description,
         },
-        ["id"]
+        ['id'],
       );
 
-      return await this.findById(id[0].id);
+      return await this.findById(normalizeID(id));
     } else {
       return { errors: artist.validationErrors() };
     }

@@ -1,6 +1,6 @@
 FROM node:12
 
-ARG NODE_ENV=development
+ARG NODE_ENV=production
 ENV NODE_ENV $NODE_ENV
 
 RUN apt-get update && apt-get install -y netcat && apt-get clean
@@ -10,8 +10,8 @@ COPY package.json ./
 RUN npm install
 COPY . .
 
-COPY dev.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/dev.sh
-ENTRYPOINT ["dev.sh"]
+COPY staging.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/staging.sh
+ENTRYPOINT ["staging.sh"]
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start"]

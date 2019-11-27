@@ -1,6 +1,7 @@
 import moment from 'moment';
 import knex from '../lib/connection';
 import Release from './Release';
+import { normalizeID, normalizeCount } from '../lib/utilities';
 
 class ReleaseQuery {
   constructor() {
@@ -20,10 +21,14 @@ class ReleaseQuery {
         'labels.name as label_name',
         'labels.slug as label_slug',
         'labels.created_at as label_created_at',
-        'labels.updated_at as label_updated_at'
+        'labels.updated_at as label_updated_at',
       )
       .from(this.tablename)
-      .leftJoin('artists', `${this.tablename}.artist_id`, 'artists.id')
+      .leftJoin(
+        'artists',
+        `${this.tablename}.artist_id`,
+        'artists.id',
+      )
       .leftJoin('labels', `${this.tablename}.label_id`, 'labels.id');
   }
 
@@ -44,14 +49,16 @@ class ReleaseQuery {
           slug: release.slug,
           description: release.description,
           filename: release.filename,
-          published: release.published
+          published: release.published,
         },
-        ['id']
+        ['id'],
       );
 
-      const res = (await this.select()
-        .where(`${this.tablename}.id`, id[0])
-        .limit(1))[0];
+      const res = (
+        await this.select()
+          .where(`${this.tablename}.id`, normalizeID(id))
+          .limit(1)
+      )[0];
 
       return new Release(res).withRelated();
     } else {
@@ -60,7 +67,8 @@ class ReleaseQuery {
   }
 
   async count() {
-    return await knex.count('* as count').from(this.tablename);
+    const count = await knex.count('* as count').from(this.tablename);
+    return normalizeCount(count);
   }
 
   async delete(id) {
@@ -98,18 +106,23 @@ class ReleaseQuery {
     return Promise.all(
       res.map(async function(record) {
         return new Release(record).withRelated();
-      })
+      }),
     );
   }
 
   async findByArtist(id) {
-    return (await knex(this.tablename).where('artist_id', id)).map(release => {
-      return new Release(release);
-    });
+    return (await knex(this.tablename).where('artist_id', id)).map(
+      release => {
+        return new Release(release);
+      },
+    );
   }
 
   async findBySlug(slug) {
-    const res = await this.select().where(`${this.tablename}.slug`, slug);
+    const res = await this.select().where(
+      `${this.tablename}.slug`,
+      slug,
+    );
 
     if (res.length > 0) {
       return new Release(res[0]).withRelated();
@@ -135,7 +148,7 @@ class ReleaseQuery {
     const data = {
       ...oldRelease,
       ...remainingUpdatedFields,
-      updated_at: moment().format('YYYY-MM-DD HH:mm:ss')
+      updated_at: moment().format('YYYY-MM-DD HH:mm:ss'),
     };
 
     const release = new Release(data);
@@ -149,7 +162,7 @@ class ReleaseQuery {
           label_id: release.label_id,
           title: release.title,
           description: release.description,
-          updated_at: release.updated_at
+          updated_at: release.updated_at,
         });
 
       return await this.find(id);

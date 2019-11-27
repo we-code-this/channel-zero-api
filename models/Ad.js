@@ -1,17 +1,17 @@
-import knex from '../lib/connection';
-import { publicUrl } from '../lib/files';
+import knex from "../lib/connection";
+import { publicUrl } from "../lib/files";
 
 class Ad {
   constructor() {
-    this.tablename = 'ads';
+    this.tablename = "ads";
   }
 
   async random() {
     const res = await knex
-      .select('*')
+      .select("*")
       .from(this.tablename)
-      .where('published', true)
-      .orderByRaw('RAND()')
+      .where("published", true)
+      .orderByRaw("random()")
       .limit(1);
 
     return {

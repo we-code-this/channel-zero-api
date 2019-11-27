@@ -30,9 +30,12 @@ describe('articles', function() {
 
   describe('GET /articles', function() {
     it('should return 10 articles', async function() {
-      const response = await app.inject({ method: 'GET', url: '/articles' });
+      const response = await app.inject({
+        method: 'GET',
+        url: '/articles',
+      });
       expect(response.headers['content-type']).to.equal(
-        'application/json; charset=utf-8'
+        'application/json; charset=utf-8',
       );
       expect(JSON.parse(response.payload).length).to.equal(10);
     });
@@ -41,7 +44,7 @@ describe('articles', function() {
       it('should return count of 11', async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/articles/count'
+          url: '/articles/count',
         });
 
         expect(JSON.parse(response.payload)[0].count).to.equal(11);
@@ -52,7 +55,7 @@ describe('articles', function() {
       it('should return 11 articles if :limit is 11', async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/articles/11'
+          url: '/articles/11',
         });
         expect(JSON.parse(response.payload).length).to.equal(11);
       });
@@ -60,7 +63,7 @@ describe('articles', function() {
       it('should return 9 articles if :limit is 9', async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/articles/9'
+          url: '/articles/9',
         });
         expect(JSON.parse(response.payload).length).to.equal(9);
       });
@@ -70,7 +73,7 @@ describe('articles', function() {
       it("should return article with id of 11 when :order is 'desc'", async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/articles/1/desc'
+          url: '/articles/1/desc',
         });
         expect(JSON.parse(response.payload)[0].id).to.equal(11);
       });
@@ -78,7 +81,7 @@ describe('articles', function() {
       it("should return article with id of 1 when :order is 'asc'", async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/articles/1/asc'
+          url: '/articles/1/asc',
         });
         expect(JSON.parse(response.payload)[0].id).to.equal(1);
       });
@@ -86,9 +89,11 @@ describe('articles', function() {
       it('should return Object', async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/articles/1'
+          url: '/articles/1',
         });
-        expect(JSON.parse(response.payload)[0]).to.be.an.instanceOf(Object);
+        expect(JSON.parse(response.payload)[0]).to.be.an.instanceOf(
+          Object,
+        );
       });
     });
 
@@ -96,7 +101,7 @@ describe('articles', function() {
       it("should return article with id of 11 with offset 1, limit 10 and order 'asc'", async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/articles/range/1/10/asc'
+          url: '/articles/range/1/10/asc',
         });
 
         const results = JSON.parse(response.payload);
@@ -110,7 +115,7 @@ describe('articles', function() {
       it('should return all articles sorted by title', async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/articles/by/title'
+          url: '/articles/by/title',
         });
 
         const results = JSON.parse(response.payload);
@@ -126,7 +131,7 @@ describe('articles', function() {
     it('should return the article that has the :slug supplied', async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/article/article-1'
+        url: '/article/article-1',
       });
       expect(JSON.parse(response.payload).slug).to.equal('article-1');
     });
@@ -141,7 +146,7 @@ describe('articles', function() {
 
       const beforeResponse = await app.inject({
         method: 'GET',
-        url: `/article/${slug}`
+        url: `/article/${slug}`,
       });
 
       expect(beforeResponse.statusCode).to.equal(404);
@@ -156,8 +161,8 @@ describe('articles', function() {
         method: 'POST',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const article = await app.inject(opts);
@@ -186,8 +191,8 @@ describe('articles', function() {
         method: 'POST',
         payload: firstForm,
         headers: firstForm.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const firstRelease = await app.inject(firstOpts);
@@ -206,13 +211,15 @@ describe('articles', function() {
         method: 'POST',
         payload: secondForm,
         headers: secondForm.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const secondRelease = await app.inject(secondOpts);
 
-      expect(JSON.parse(secondRelease.payload).slug).to.equal(`${slug}-1`);
+      expect(JSON.parse(secondRelease.payload).slug).to.equal(
+        `${slug}-1`,
+      );
     });
 
     it('should not return error without an image', async function() {
@@ -227,8 +234,8 @@ describe('articles', function() {
         method: 'POST',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const response = await app.inject(opts);
@@ -250,14 +257,16 @@ describe('articles', function() {
         method: 'POST',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const response = await app.inject(opts);
 
       expect(JSON.parse(response.payload)).to.have.property('errors');
-      expect(JSON.parse(response.payload).errors[0].field).to.equal('title');
+      expect(JSON.parse(response.payload).errors[0].field).to.equal(
+        'title',
+      );
     });
 
     it('should return error with no description', async function() {
@@ -274,15 +283,15 @@ describe('articles', function() {
         method: 'POST',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const response = await app.inject(opts);
 
       expect(JSON.parse(response.payload)).to.have.property('errors');
       expect(JSON.parse(response.payload).errors[0].field).to.equal(
-        'description'
+        'description',
       );
     });
 
@@ -301,15 +310,15 @@ describe('articles', function() {
         method: 'POST',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const response = await app.inject(opts);
 
       expect(JSON.parse(response.payload)).to.have.property('errors');
       expect(JSON.parse(response.payload).errors[0].field).to.equal(
-        'description'
+        'description',
       );
     });
 
@@ -323,7 +332,7 @@ describe('articles', function() {
       form.append('summary', 'Test summary');
       form.append(
         'description',
-        "<script>console.log('yo')</script> article description"
+        "<script>console.log('yo')</script> article description",
       );
 
       let opts = {
@@ -331,14 +340,14 @@ describe('articles', function() {
         method: 'POST',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const response = await app.inject(opts);
 
       expect(JSON.parse(response.payload).description).to.equal(
-        'article description'
+        'article description',
       );
     });
 
@@ -351,7 +360,7 @@ describe('articles', function() {
       form.append('title', 'Article 1004');
       form.append(
         'summary',
-        "<script>console.log('yo')</script> article summary"
+        "<script>console.log('yo')</script> article summary",
       );
       form.append('description', 'Test description');
 
@@ -360,13 +369,15 @@ describe('articles', function() {
         method: 'POST',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const response = await app.inject(opts);
 
-      expect(JSON.parse(response.payload).summary).to.equal('article summary');
+      expect(JSON.parse(response.payload).summary).to.equal(
+        'article summary',
+      );
     });
 
     it('should sanitize title', async function() {
@@ -375,7 +386,10 @@ describe('articles', function() {
       let rs = fs.createReadStream(filePath);
 
       form.append('image', rs);
-      form.append('title', "<script>console.log('yo')</script> Article 1005");
+      form.append(
+        'title',
+        "<script>console.log('yo')</script> Article 1005",
+      );
       form.append('summary', 'Test summary');
       form.append('description', 'Test description');
 
@@ -384,13 +398,15 @@ describe('articles', function() {
         method: 'POST',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const response = await app.inject(opts);
 
-      expect(JSON.parse(response.payload).title).to.equal('Article 1005');
+      expect(JSON.parse(response.payload).title).to.equal(
+        'Article 1005',
+      );
     });
   });
 
@@ -399,7 +415,7 @@ describe('articles', function() {
       const token = await login(app);
       const getResponse = await app.inject({
         method: 'GET',
-        url: '/article/article-1'
+        url: '/article/article-1',
       });
 
       const article = JSON.parse(getResponse.payload);
@@ -418,11 +434,13 @@ describe('articles', function() {
         url: '/article',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       });
 
-      expect(JSON.parse(response.payload).description).to.equal(newDescription);
+      expect(JSON.parse(response.payload).description).to.equal(
+        newDescription,
+      );
     });
 
     it('should replace image with new one', async function() {
@@ -440,8 +458,8 @@ describe('articles', function() {
         method: 'POST',
         payload: original_form,
         headers: original_form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const original_result = await app.inject(original_opts);
@@ -463,8 +481,8 @@ describe('articles', function() {
         url: '/article',
         payload: new_form,
         headers: new_form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       await app.inject(new_opts);
@@ -494,8 +512,8 @@ describe('articles', function() {
         method: 'POST',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const res = await app.inject(opts);
@@ -508,11 +526,11 @@ describe('articles', function() {
         url: '/article/publish',
         method: 'PATCH',
         body: {
-          id: article.id
+          id: article.id,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const publishedArticle = JSON.parse(publishRes.payload);
@@ -538,8 +556,8 @@ describe('articles', function() {
         method: 'POST',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const res = await app.inject(opts);
@@ -552,11 +570,11 @@ describe('articles', function() {
         url: '/article/unpublish',
         method: 'PATCH',
         body: {
-          id: article.id
+          id: article.id,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const unpublishedArticle = JSON.parse(unpublishRes.payload);
@@ -582,8 +600,8 @@ describe('articles', function() {
         method: 'POST',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const res = await app.inject(opts);
@@ -597,16 +615,16 @@ describe('articles', function() {
         method: 'DELETE',
         url: '/article',
         payload: {
-          id: article.id
+          id: article.id,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const afterResponse = await app.inject({
         method: 'GET',
-        url: `/article/${article.slug}`
+        url: `/article/${article.slug}`,
       });
 
       expect(afterResponse.statusCode).to.equal(404);
@@ -629,8 +647,8 @@ describe('articles', function() {
         url: '/article',
         payload: form,
         headers: form.getHeaders({
-          Authorization: `Bearer ${token}`
-        })
+          Authorization: `Bearer ${token}`,
+        }),
       };
 
       const res = await app.inject(opts);
@@ -641,11 +659,11 @@ describe('articles', function() {
         url: '/feature',
         payload: {
           article_id: article.id,
-          video_id: 1
+          video_id: 1,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const feature = JSON.parse(featureResponse.payload);
@@ -656,16 +674,16 @@ describe('articles', function() {
         method: 'DELETE',
         url: '/article',
         payload: {
-          id: article.id
+          id: article.id,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const afterFeatureResponse = await app.inject({
         method: 'GET',
-        url: `/feature/${feature.id}`
+        url: `/feature/${feature.id}`,
       });
 
       expect(afterFeatureResponse.statusCode).to.equal(404);
@@ -677,11 +695,11 @@ describe('articles', function() {
         method: 'DELETE',
         url: '/article',
         payload: {
-          id: 2000
+          id: 2000,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       expect(response.statusCode).to.equal(404);

@@ -1,5 +1,5 @@
-import moment from 'moment';
 import knex from '../lib/connection';
+import { normalizeID, normalizeCount } from '../lib/utilities';
 
 import ArtistImage from './ArtistImage';
 
@@ -17,14 +17,16 @@ class ArtistImageQuery {
       const id = await knex(this.tablename).insert(
         {
           artist_id: artistImage.artist_id,
-          filename: artistImage.filename
+          filename: artistImage.filename,
         },
-        ['id']
+        ['id'],
       );
 
-      return (await knex(this.tablename)
-        .where('id', id[0])
-        .limit(1))[0];
+      return (
+        await knex(this.tablename)
+          .where('id', normalizeID(id))
+          .limit(1)
+      )[0];
     } else {
       return { errors: artistImage.validationErrors() };
     }
@@ -38,9 +40,11 @@ class ArtistImageQuery {
     const isValid = artistImage.valid();
 
     if (isValid && (await artistImage.saveFile())) {
-      return (await knex(this.tablename)
-        .where('id', imageData.id)
-        .limit(1))[0];
+      return (
+        await knex(this.tablename)
+          .where('id', imageData.id)
+          .limit(1)
+      )[0];
     } else {
       return { errors: artistImage.validationErrors() };
     }
@@ -69,9 +73,11 @@ class ArtistImageQuery {
   }
 
   async findByArtist(id) {
-    return (await knex(this.tablename).where('artist_id', id)).map(image => {
-      return new ArtistImage(image);
-    });
+    return (await knex(this.tablename).where('artist_id', id)).map(
+      image => {
+        return new ArtistImage(image);
+      },
+    );
   }
 }
 
