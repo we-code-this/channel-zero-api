@@ -3,10 +3,10 @@ import UserQuery from '../models/UserQuery';
 import config from '../config';
 import {
   AUTHENTICATION_ERROR_MESSAGE,
-  USER_NOT_FOUND
+  USER_NOT_FOUND,
 } from '../messages/errors';
-
 import { AUTHENTICATION_ERROR } from '../lib/constants';
+import { jwtSecret } from '../lib/utilities';
 
 export default {
   login: async (req, reply) => {
@@ -15,20 +15,17 @@ export default {
 
     const loginResult = await new UserQuery().login(
       req.body.email,
-      req.body.password
+      req.body.password,
     );
 
     if (loginResult.user) {
+      const secret = jwtSecret();
       const payload = {
         id: loginResult.id,
         user: loginResult.user,
-        groups: loginResult.groups
+        groups: loginResult.groups,
       };
-      const token = jwt.sign(
-        payload,
-        process.env.JWT_SECRET,
-        config.jwtOptions
-      );
+      const token = jwt.sign(payload, secret, config.jwtOptions);
       result.token = token;
       result.status = status;
       result.result = loginResult.user;
@@ -54,5 +51,5 @@ export default {
     } else {
       reply.status(500).send();
     }
-  }
+  },
 };
