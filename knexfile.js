@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'production') {
     port: process.env.DB_PORT,
     ssl: {
       ca: fs.readFileSync(
-        __dirname + '/' + process.env.DB_CERT_FILENAME,
+        '/etc/ssl/certs/' + process.env.DB_CERT_FILENAME,
       ),
     },
   };
