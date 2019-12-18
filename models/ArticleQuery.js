@@ -39,6 +39,8 @@ class ArticleQuery {
         .select('*')
         .from(this.tablename)
         .where(`${this.tablename}.id`, normalizeID(id));
+      
+      console.log('article res:', res);
 
       return new Article(res[0]);
     } else {
@@ -74,7 +76,7 @@ class ArticleQuery {
     const res = await knex
       .select('*')
       .from(this.tablename)
-      .where(`${this.tablename}.id`, id);
+      .where(`${this.tablename}.id`, normalizeID(id));
 
     if (res.length > 0) {
       return new Article(res[0]);
