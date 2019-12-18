@@ -25,7 +25,6 @@ class ArtistImageQuery {
       return (
         await knex(this.tablename)
           .where('id', normalizeID(id))
-          .limit(1)
       )[0];
     } else {
       return { errors: artistImage.validationErrors() };

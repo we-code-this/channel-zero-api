@@ -57,7 +57,6 @@ class ReleaseQuery {
       const res = (
         await this.select()
           .where(`${this.tablename}.id`, normalizeID(id))
-          .limit(1)
       )[0];
 
       return new Release(res).withRelated();

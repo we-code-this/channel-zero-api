@@ -96,8 +96,7 @@ class FeatureQuery {
 
   async findById(id) {
     const result = await this.select()
-      .where(`${this.tablename}.id`, id)
-      .limit(1);
+      .where(`${this.tablename}.id`, id);
 
     if (result.length > 0) {
       return new Feature(result[0]);

@@ -38,8 +38,7 @@ class ArticleQuery {
       const res = await knex
         .select('*')
         .from(this.tablename)
-        .where(`${this.tablename}.id`, normalizeID(id))
-        .limit(1);
+        .where(`${this.tablename}.id`, normalizeID(id));
 
       return new Article(res[0]);
     } else {

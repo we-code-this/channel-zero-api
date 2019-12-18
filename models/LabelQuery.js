@@ -60,8 +60,7 @@ class LabelQuery {
     const result = await knex
       .select('*')
       .from(this.tablename)
-      .where('id', id)
-      .limit(1);
+      .where('id', id);
 
     if (result.length > 0) {
       return new Label(result[0]);
