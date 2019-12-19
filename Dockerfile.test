@@ -1,0 +1,13 @@
+FROM node:12
+
+ARG NODE_ENV=test
+ENV NODE_ENV $NODE_ENV
+
+RUN apt-get update && apt-get install -y netcat && apt-get clean && mkdir /test-files
+
+WORKDIR /app
+COPY package.json ./
+RUN npm install
+COPY . .
+
+CMD ["npm", "run", "test"]
