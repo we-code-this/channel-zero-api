@@ -127,6 +127,96 @@ describe('articles', function() {
     });
   });
 
+  describe('GET /article/next/:id', function() {
+    it('should return the next published article', async function() {
+      const currentArticleResponse = await app.inject({
+        method: 'GET',
+        url: '/article/article-1',
+      });
+
+      const currentArticle = JSON.parse(
+        currentArticleResponse.payload,
+      );
+
+      expect(currentArticle.id).to.equal(1);
+
+      const nextArticleResponse = await app.inject({
+        method: 'GET',
+        url: `/article/next/${currentArticle.id}`,
+      });
+
+      expect(JSON.parse(nextArticleResponse.payload).id).to.equal(2);
+      expect(
+        JSON.parse(nextArticleResponse.payload).published,
+      ).to.equal(true);
+    });
+
+    it('should return 404 when no article available with higher id', async function() {
+      const currentArticleResponse = await app.inject({
+        method: 'GET',
+        url: '/article/article-11',
+      });
+
+      const currentArticle = JSON.parse(
+        currentArticleResponse.payload,
+      );
+
+      expect(currentArticle.id).to.equal(11);
+
+      const nextArticleResponse = await app.inject({
+        method: 'GET',
+        url: `/article/next/${currentArticle.id}`,
+      });
+
+      expect(nextArticleResponse.statusCode).to.equal(404);
+    });
+  });
+
+  describe('GET /article/prev/:id', function() {
+    it('should return the previous published article', async function() {
+      const currentArticleResponse = await app.inject({
+        method: 'GET',
+        url: '/article/article-2',
+      });
+
+      const currentArticle = JSON.parse(
+        currentArticleResponse.payload,
+      );
+
+      expect(currentArticle.id).to.equal(2);
+
+      const prevArticleResponse = await app.inject({
+        method: 'GET',
+        url: `/article/prev/${currentArticle.id}`,
+      });
+
+      expect(JSON.parse(prevArticleResponse.payload).id).to.equal(1);
+      expect(
+        JSON.parse(prevArticleResponse.payload).published,
+      ).to.equal(true);
+    });
+
+    it('should return 404 when no article available with lower id', async function() {
+      const currentArticleResponse = await app.inject({
+        method: 'GET',
+        url: '/article/article-1',
+      });
+
+      const currentArticle = JSON.parse(
+        currentArticleResponse.payload,
+      );
+
+      expect(currentArticle.id).to.equal(1);
+
+      const prevArticleResponse = await app.inject({
+        method: 'GET',
+        url: `/article/prev/${currentArticle.id}`,
+      });
+
+      expect(prevArticleResponse.statusCode).to.equal(404);
+    });
+  });
+
   describe('GET /article/:slug', function() {
     it('should return the article that has the :slug supplied', async function() {
       const response = await app.inject({

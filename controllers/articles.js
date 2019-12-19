@@ -1,6 +1,6 @@
-import fs from "fs-extra";
-import ArticleQuery from "../models/ArticleQuery";
-import UserQuery from "../models/UserQuery";
+import fs from 'fs-extra';
+import ArticleQuery from '../models/ArticleQuery';
+import UserQuery from '../models/UserQuery';
 
 export default {
   count: async (req, reply) => {
@@ -23,7 +23,7 @@ export default {
       article = await new ArticleQuery().create({
         ...req.raw.body,
         user_id: id,
-        image: image
+        image: image,
       });
     }
 
@@ -50,8 +50,28 @@ export default {
     const articles = await new ArticleQuery().getByTitle();
     reply.send(articles);
   },
+  getNext: async (req, reply) => {
+    const article = await new ArticleQuery().getNext(req.params.id);
+
+    if (article) {
+      reply.send(article);
+    } else {
+      reply.status(404).send();
+    }
+  },
   getOneBySlug: async (req, reply) => {
-    const article = await new ArticleQuery().findBySlug(req.params.slug);
+    const article = await new ArticleQuery().findBySlug(
+      req.params.slug,
+    );
+
+    if (article) {
+      reply.send(article);
+    } else {
+      reply.status(404).send();
+    }
+  },
+  getPrev: async (req, reply) => {
+    const article = await new ArticleQuery().getPrev(req.params.id);
 
     if (article) {
       reply.send(article);
@@ -63,7 +83,7 @@ export default {
     const articles = await new ArticleQuery().get({
       offset: req.params.offset,
       limit: req.params.limit,
-      order: req.params.order
+      order: req.params.order,
     });
     reply.send(articles);
   },
@@ -72,32 +92,36 @@ export default {
       {
         offset: req.params.offset,
         limit: req.params.limit,
-        order: req.params.order
+        order: req.params.order,
       },
-      true
+      true,
     );
     reply.send(articles);
   },
   getWithLimit: async (req, reply) => {
     const articles = await new ArticleQuery().get({
-      limit: req.params.limit
+      limit: req.params.limit,
     });
     reply.send(articles);
   },
   getWithLimitAndOrder: async (req, reply) => {
     const articles = await new ArticleQuery().get({
       limit: req.params.limit,
-      order: req.params.order
+      order: req.params.order,
     });
     reply.send(articles);
   },
   publish: async (req, reply) => {
-    const publishedArticle = await new ArticleQuery().publish(req.body.id);
+    const publishedArticle = await new ArticleQuery().publish(
+      req.body.id,
+    );
 
     reply.send(publishedArticle);
   },
   unpublish: async (req, reply) => {
-    const unpublishedArticle = await new ArticleQuery().unpublish(req.body.id);
+    const unpublishedArticle = await new ArticleQuery().unpublish(
+      req.body.id,
+    );
 
     reply.send(unpublishedArticle);
   },
@@ -113,9 +137,9 @@ export default {
 
     const updatedArticle = await new ArticleQuery().update({
       image: image,
-      ...req.raw.body
+      ...req.raw.body,
     });
 
     reply.send(updatedArticle);
-  }
+  },
 };

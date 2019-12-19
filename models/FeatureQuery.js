@@ -14,6 +14,7 @@ class FeatureQuery {
       .select(
         `${this.tablename}.*`,
         'articles.title as article_title',
+        'articles.slug as article_slug',
         'articles.summary as article_summary',
         'articles.published as article_published',
         'articles.created_at as article_created_at',

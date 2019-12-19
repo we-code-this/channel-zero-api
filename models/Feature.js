@@ -11,6 +11,7 @@ class Feature extends Model {
     this.article = new Article({
       id: data.article_id,
       title: data.article_title,
+      slug: data.article_slug,
       summary: data.article_summary,
       published: data.article_published,
       created_at: data.created_at,

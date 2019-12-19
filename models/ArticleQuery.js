@@ -39,7 +39,7 @@ class ArticleQuery {
         .select('*')
         .from(this.tablename)
         .where(`${this.tablename}.id`, normalizeID(id));
-      
+
       console.log('article res:', res);
 
       return new Article(res[0]);
@@ -150,6 +150,38 @@ class ArticleQuery {
     );
 
     return this.items;
+  }
+
+  async getNext(id) {
+    const res = await knex
+      .select('*')
+      .from(this.tablename)
+      .where(`${this.tablename}.published`, true)
+      .where(`${this.tablename}.id`, '>', id)
+      .limit(1)
+      .orderBy('id', 'asc');
+
+    if (res.length > 0) {
+      return new Article(res[0]);
+    } else {
+      return undefined;
+    }
+  }
+
+  async getPrev(id) {
+    const res = await knex
+      .select('*')
+      .from(this.tablename)
+      .where(`${this.tablename}.published`, true)
+      .where(`${this.tablename}.id`, '<', id)
+      .limit(1)
+      .orderBy('id', 'desc');
+
+    if (res.length > 0) {
+      return new Article(res[0]);
+    } else {
+      return undefined;
+    }
   }
 
   async publish(id) {
