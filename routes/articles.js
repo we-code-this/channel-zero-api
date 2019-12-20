@@ -16,6 +16,7 @@ const routes = fastify => {
     '/articles/:limit/:order',
     articles.getWithLimitAndOrder,
   );
+  fastify.get('/articles/count/published', articles.countPublished);
   fastify.get('/articles/count', articles.count);
   fastify.get('/articles/:limit', articles.getWithLimit);
   fastify.get('/articles', articles.get);

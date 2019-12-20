@@ -12,7 +12,7 @@ exports.seed = function(knex, Promise) {
           description: 'Article 1 description',
           filename: 'example.png',
           published: true,
-          created_at: '2019-01-19 12:00:00'
+          created_at: '2019-01-19 12:00:00',
         },
         {
           id: 2,
@@ -23,7 +23,7 @@ exports.seed = function(knex, Promise) {
           description: 'Article 2 description',
           filename: 'example.png',
           published: true,
-          created_at: '2019-01-19 12:01:00'
+          created_at: '2019-01-19 12:01:00',
         },
         {
           id: 3,
@@ -34,7 +34,7 @@ exports.seed = function(knex, Promise) {
           description: 'Article 3 description',
           filename: 'example.png',
           published: true,
-          created_at: '2019-01-19 12:02:00'
+          created_at: '2019-01-19 12:02:00',
         },
         {
           id: 4,
@@ -45,7 +45,7 @@ exports.seed = function(knex, Promise) {
           description: 'Article 4 description',
           filename: 'example.png',
           published: true,
-          created_at: '2019-01-19 12:03:00'
+          created_at: '2019-01-19 12:03:00',
         },
         {
           id: 5,
@@ -56,7 +56,7 @@ exports.seed = function(knex, Promise) {
           description: 'Article 5 description',
           filename: 'example.png',
           published: true,
-          created_at: '2019-01-19 12:04:00'
+          created_at: '2019-01-19 12:04:00',
         },
         {
           id: 6,
@@ -67,7 +67,7 @@ exports.seed = function(knex, Promise) {
           description: 'Article 6 description',
           filename: 'example.png',
           published: true,
-          created_at: '2019-01-19 12:05:00'
+          created_at: '2019-01-19 12:05:00',
         },
         {
           id: 7,
@@ -78,7 +78,7 @@ exports.seed = function(knex, Promise) {
           description: 'Article 7 description',
           filename: 'example.png',
           published: true,
-          created_at: '2019-01-19 12:06:00'
+          created_at: '2019-01-19 12:06:00',
         },
         {
           id: 8,
@@ -89,7 +89,7 @@ exports.seed = function(knex, Promise) {
           description: 'Article 8 description',
           filename: 'example.png',
           published: true,
-          created_at: '2019-01-19 12:07:00'
+          created_at: '2019-01-19 12:07:00',
         },
         {
           id: 9,
@@ -100,7 +100,7 @@ exports.seed = function(knex, Promise) {
           description: 'Article 9 description',
           filename: 'example.png',
           published: true,
-          created_at: '2019-01-19 12:08:00'
+          created_at: '2019-01-19 12:08:00',
         },
         {
           id: 10,
@@ -110,8 +110,8 @@ exports.seed = function(knex, Promise) {
           summary: 'Article 10 summary',
           description: 'Article 10 description',
           filename: 'example.png',
-          published: true,
-          created_at: '2019-01-19 12:09:00'
+          published: false,
+          created_at: '2019-01-19 12:09:00',
         },
         {
           id: 11,
@@ -121,8 +121,8 @@ exports.seed = function(knex, Promise) {
           summary: 'Article 11 summary',
           description: 'Article 11 description',
           published: true,
-          created_at: '2019-01-19 12:10:00'
-        }
+          created_at: '2019-01-19 12:10:00',
+        },
       ]);
     });
 };

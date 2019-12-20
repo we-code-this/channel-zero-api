@@ -7,6 +7,10 @@ export default {
     const res = await new ArticleQuery().count();
     reply.send([{ count: parseInt(res.count) }]);
   },
+  countPublished: async (req, reply) => {
+    const res = await new ArticleQuery().count(true);
+    reply.send([{ count: parseInt(res.count) }]);
+  },
   create: async (req, reply) => {
     const id = await new UserQuery().getIdByEmail(req.decoded.user);
     const files = await req.raw.files;

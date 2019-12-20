@@ -51,21 +51,32 @@ describe('articles', function() {
       });
     });
 
-    describe('GET /articles/:limit', function() {
-      it('should return 11 articles if :limit is 11', async function() {
+    describe('GET /articles/count/published', function() {
+      it('should return count of 10', async function() {
         const response = await app.inject({
           method: 'GET',
-          url: '/articles/11',
+          url: '/articles/count/published',
         });
-        expect(JSON.parse(response.payload).length).to.equal(11);
-      });
 
+        expect(JSON.parse(response.payload)[0].count).to.equal(10);
+      });
+    });
+
+    describe('GET /articles/:limit', function() {
       it('should return 9 articles if :limit is 9', async function() {
         const response = await app.inject({
           method: 'GET',
           url: '/articles/9',
         });
         expect(JSON.parse(response.payload).length).to.equal(9);
+      });
+
+      it('should return 7 articles if :limit is 7', async function() {
+        const response = await app.inject({
+          method: 'GET',
+          url: '/articles/7',
+        });
+        expect(JSON.parse(response.payload).length).to.equal(7);
       });
     });
 

@@ -9,8 +9,16 @@ class ArticleQuery {
     this.items = undefined;
   }
 
-  async count() {
-    const count = await knex.count('* as count').from(this.tablename);
+  async count(published = false) {
+    let count;
+    if (published) {
+      count = await knex
+        .count('* as count')
+        .from(this.tablename)
+        .where('published', true);
+    } else {
+      count = await knex.count('* as count').from(this.tablename);
+    }
     return normalizeCount(count);
   }
 
