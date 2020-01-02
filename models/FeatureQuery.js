@@ -16,6 +16,7 @@ class FeatureQuery {
         'articles.title as article_title',
         'articles.slug as article_slug',
         'articles.summary as article_summary',
+        'articles.description as article_description',
         'articles.published as article_published',
         'articles.created_at as article_created_at',
         'articles.updated_at as article_updated_at',
@@ -96,8 +97,10 @@ class FeatureQuery {
   }
 
   async findById(id) {
-    const result = await this.select()
-      .where(`${this.tablename}.id`, id);
+    const result = await this.select().where(
+      `${this.tablename}.id`,
+      id,
+    );
 
     if (result.length > 0) {
       return new Feature(result[0]);

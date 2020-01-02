@@ -13,16 +13,17 @@ class Feature extends Model {
       title: data.article_title,
       slug: data.article_slug,
       summary: data.article_summary,
+      description: data.article_description,
       published: data.article_published,
       created_at: data.created_at,
-      updated_at: data.updated_at
+      updated_at: data.updated_at,
     });
 
     this.video = new Video({
       id: data.video_id,
       src: data.video_src,
       created_at: data.created_at,
-      updated_at: data.updated_at
+      updated_at: data.updated_at,
     });
   }
 
@@ -31,12 +32,18 @@ class Feature extends Model {
 
     valid = validator.isInt(this.article_id.toString());
     if (!valid) {
-      this.errors.push({ field: 'article_id', message: 'Invalid value' });
+      this.errors.push({
+        field: 'article_id',
+        message: 'Invalid value',
+      });
     }
 
     valid = valid && validator.isInt(this.video_id.toString());
     if (!valid) {
-      this.errors.push({ field: 'video_id', message: 'Invalid value' });
+      this.errors.push({
+        field: 'video_id',
+        message: 'Invalid value',
+      });
     }
 
     return valid;
