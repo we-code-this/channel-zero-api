@@ -11,7 +11,7 @@ exports.seed = function(knex, Promise) {
           filename: 'madurgency.svg',
           location: 'horizontal',
           published: true,
-          created_at: '2019-01-19 12:00:00'
+          created_at: '2019-01-19 12:00:00',
         },
         {
           id: 2,
@@ -21,7 +21,7 @@ exports.seed = function(knex, Promise) {
           filename: 'the-age.svg',
           location: 'horizontal',
           published: true,
-          created_at: '2019-01-19 12:01:00'
+          created_at: '2019-01-19 12:01:00',
         },
         {
           id: 3,
@@ -31,7 +31,7 @@ exports.seed = function(knex, Promise) {
           filename: 'enemy-books.svg',
           location: 'horizontal',
           published: true,
-          created_at: '2019-01-19 12:02:00'
+          created_at: '2019-01-19 12:02:00',
         },
         {
           id: 4,
@@ -41,7 +41,7 @@ exports.seed = function(knex, Promise) {
           filename: 'spitburg-pirates.svg',
           location: 'horizontal',
           published: true,
-          created_at: '2019-01-19 12:03:00'
+          created_at: '2019-01-19 12:03:00',
         },
         {
           id: 5,
@@ -51,17 +51,17 @@ exports.seed = function(knex, Promise) {
           filename: 'hiphopgods.svg',
           location: 'horizontal',
           published: true,
-          created_at: '2019-01-19 12:04:00'
+          created_at: '2019-01-19 12:04:00',
         },
         {
           id: 6,
           user_id: 1,
           name: 'Rapstation.com',
-          url: '#',
+          url: 'https://rapstation.com',
           filename: 'rapstation.svg',
           location: 'vertical',
           published: true,
-          created_at: '2019-01-19 12:05:00'
+          created_at: '2019-01-19 12:05:00',
         },
         {
           id: 7,
@@ -71,7 +71,7 @@ exports.seed = function(knex, Promise) {
           filename: 'spitslam.svg',
           location: 'vertical',
           published: true,
-          created_at: '2019-01-19 12:06:00'
+          created_at: '2019-01-19 12:06:00',
         },
         {
           id: 8,
@@ -81,7 +81,7 @@ exports.seed = function(knex, Promise) {
           filename: 'spitifly.svg',
           location: 'vertical',
           published: true,
-          created_at: '2019-01-19 12:06:00'
+          created_at: '2019-01-19 12:06:00',
         },
         {
           id: 9,
@@ -91,8 +91,8 @@ exports.seed = function(knex, Promise) {
           filename: 'dig-the-dig.svg',
           location: 'vertical',
           published: true,
-          created_at: '2019-01-19 12:07:00'
-        }
+          created_at: '2019-01-19 12:07:00',
+        },
       ]);
     });
 };
