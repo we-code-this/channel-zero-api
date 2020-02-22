@@ -16,8 +16,9 @@ exports.seed = function(knex, Promise) {
 After several whirlwind years of writing, recording, touring and creating art in multiple mediums, Chuck shows no signs of slowing down, telling fans, “Enjoy “Celebration of Ignorance” and catch me in 2019 on the road with Enemy Radio, Public Enemy, and Prophets of Rage, hopefully, maybe, doing these songs.” Chuck D is considered one of the most influential lyricists in contemporary music. Both as a solo artist and as the leader of the groundbreaking group Public Enemy (which was inducted into the Rock and Roll Hall of Fame in 2013), he helped pave the way for political, social, and culturally conscious hip-hop.
           
 Public Enemy's albums remain among the most critically acclaimed works in the genre, including “It Takes a Nation of Millions to Hold Us Back” and “Fear of a Black Planet.” Chuck is also a prominent figure on the speaking circuit lending his voice to issues and causes ranging from technology to race relations.  He is also a founding member of the supergroup Prophets of Rage, alongside members of Rage Against the Machine and Cypress Hill. Tiredof45 (12.30.84) 2:13 Bot 3:09 Ain't No 2:50 Cavemanic 4:57 Mutterert 3:56 Speak on It! 2:54 Freedblack 4:03 Blacknificent 4:19 Celebration of Ignorance 1:43 Tiredof45 (10.18.18)`,
+          catalog_number: 'cat0001',
           published: true,
-          created_at: '2019-01-19 12:00:00'
+          created_at: '2019-01-19 12:00:00',
         },
         {
           id: 2,
@@ -32,8 +33,9 @@ Public Enemy's albums remain among the most critically acclaimed works in the ge
 “I personally like to hear the beat rock,” Lord says, explaining why he wanted different versions of each track on the album. “If it’s a dope beat…let it breathe…scratch out to it…rock out.” “I love it when someone else remixes one of my tracks. It gives you another view, like ‘why didn’t I think of flipping the beat to that?’” “DJ Lord is a turntable musician,” adds Chuck D. “To work with him in not one, but two, groundbreaking groups, is a gift I could never repay.”
 
 Lord has spent nearly 20 years behind the decks for Public Enemy and the past two years recording and touring stadiums as a member of The Prophets of Rage. He has been a DMC World DJ Championships finalist twice and has embarked on over 100 worldwide tours.`,
+          catalog_number: 'cat0002',
           published: true,
-          created_at: '2019-01-19 12:01:00'
+          created_at: '2019-01-19 12:01:00',
         },
         {
           id: 3,
@@ -62,8 +64,9 @@ A woman’s heart, the casualty.
           
 **“Uber Loser”** Inspired by the male Uber drivers being accused of inappropriate behavior while they should be providing a safe ride. A parody that quickly becomes more serious with a potent message to all males on the prowl.`,
           filename: 'anime-oscen.jpg',
+          catalog_number: 'cat0003',
           published: true,
-          created_at: '2019-01-19 12:02:00'
+          created_at: '2019-01-19 12:02:00',
         },
         {
           id: 4,
@@ -71,11 +74,13 @@ A woman’s heart, the casualty.
           artist_id: 4,
           label_id: 2,
           title: 'Shootin Like A Beatbox featuring SG EP',
-          slug: 'professor-daddy-o-shootin-like-beatbox-featuring-sg-ep',
+          slug:
+            'professor-daddy-o-shootin-like-beatbox-featuring-sg-ep',
           description: `SLBB a musical essay that visits the answer to gun violence in our community from one of Hip Hop's most prominent rap voices, Stetsasonic Frontman Professor  Daddy-O. The accompanying short film is an eerie examination of the deadly consequences of ignoring said violence. The energetic, Played Out "...hookah lounges, Bravo, Andy, and Mona Scott..." is a grown folk water cooler conversation about today's surreality. A hilarious interlude taps on, "Are you grown and still living with your moms, Dude?" followed by Shinin, a hardcore Brooklyn anthem that'll make everybody dance.-...GG`,
+          catalog_number: 'cat0004',
           filename: 'daddy-o.jpg',
           published: true,
-          created_at: '2019-01-19 12:03:00'
+          created_at: '2019-01-19 12:03:00',
         },
         {
           id: 5,
@@ -86,8 +91,9 @@ A woman’s heart, the casualty.
           slug: 'memphis-jelks-booty-hair',
           description: `Memphis Jelks delivers a humor tinted song where the desire of enhancement in the daytime is the social club prelude to the club at night. Everybody wants to wonder what on the other side. Jelks also encourages people to be thankful for what they got, but sharing goals can be a social cultural exchange in the 21 C while spending money for it.`,
           filename: 'memphis-jelks.jpg',
+          catalog_number: 'cat0005',
           published: true,
-          created_at: '2019-01-19 12:04:00'
+          created_at: '2019-01-19 12:04:00',
         },
         {
           id: 6,
@@ -97,9 +103,10 @@ A woman’s heart, the casualty.
           title: 'Bringin 88 Back',
           slug: 'rukus-music-bringin-88-back',
           description: `The 5 track debut album of MEGAFORCE 911 co founders Ced Rat and Mainy Main has entered again the strength of DETROIT HIPHOP.`,
+          catalog_number: 'cat0006',
           filename: 'rukus-music.jpg',
           published: true,
-          created_at: '2019-01-19 12:05:00'
+          created_at: '2019-01-19 12:05:00',
         },
         {
           id: 7,
@@ -138,9 +145,10 @@ Im an Oakland resident and really feel at home, but I am still originally from E
 
 Real Recognize Real
 Im an introspective person at heart. Night time is always where I work out life. I also play beats mostly at night and open myself up to be a vessel for words. This track by Divided Souls wrote itself. The idea of going from good to great was on my mind for every line.`,
+          catalog_number: 'cat0007',
           filename: 'jahi-pe20.jpg',
           published: true,
-          created_at: '2019-01-19 12:06:00'
+          created_at: '2019-01-19 12:06:00',
         },
         {
           id: 8,
@@ -150,9 +158,10 @@ Im an introspective person at heart. Night time is always where I work out life.
           title: 'East Duel West',
           slug: 'east-duel-west-east-duel-west',
           description: `This new album by East Duel West is off the hook! Sammy and Charlie’s new instrumental project is extremely well produced. Each song is Powerful, full of emotion and Sammy and Charlie’s beats are EPIC!!! Music is great to paly when your doing work, dancing, cruising and is also great chill music. Can’t wait for their next project. Definitely pick this one up!`,
+          catalog_number: 'cat0008',
           filename: 'east-duel-west.jpg',
           published: true,
-          created_at: '2019-01-19 12:07:00'
+          created_at: '2019-01-19 12:07:00',
         },
         {
           id: 9,
@@ -162,9 +171,10 @@ Im an introspective person at heart. Night time is always where I work out life.
           title: 'The Familiar Stranger',
           slug: 'antwon-king-familiar-stranger',
           description: `The Familiar Stranger" is a very personal album but at the same time it's very relatable . The title is referring to people who may have never met me but listening to this album they will feel like they know me, hopefully . I want this album to inspire people to go hard for what they believe in and be proud of who they are. This is a soundtrack to our REAL life.`,
+          catalog_number: 'cat0009',
           filename: 'antwon-king.jpg',
           published: true,
-          created_at: '2019-01-19 12:08:00'
+          created_at: '2019-01-19 12:08:00',
         },
         {
           id: 10,
@@ -174,9 +184,10 @@ Im an introspective person at heart. Night time is always where I work out life.
           title: 'Live in Liverpool',
           slug: 'obeah-live-liverpool',
           description: `Recorded December 2 2015 during the off date of historic Public Enemy Tour 104 of UK and Europe with The Prodigy. MC OBEAH gets his indoctrination of planet rap performance while working with DJ LORD. On non arena dates OBEAH hit the stage opening with a solid 12 minute set featuring 2 songs recorded on DJ LORDs EAT THE RAT album Massdistractionville and World Citizen. World Citizen was predicted in song and video and new cuts Riots and Bloody were no doubt setting the stage in upcoming studio recordings by this Georgia MC.`,
+          catalog_number: 'cat0010',
           filename: 'obeah.jpg',
           published: true,
-          created_at: '2019-01-19 12:09:00'
+          created_at: '2019-01-19 12:09:00',
         },
         {
           id: 11,
@@ -196,9 +207,10 @@ This dope new album isn’t all, though… in the coming five months, The Bulls 
 A very sincere thank you to The Impossebulls and all collaborators for delivering yet another underground / independent / netlabel hip-hop classic. Sleepers will sleep… those who are woke will hear it. blocSonic’s going to continue to wake ’em. Word.
 
 Of course, thanks once again to you for downloading & listening. We always strive to deliver the music you’ll love. Please spread the word about blocSonic, if you enjoy what we do. Remember… everything we release is cool to share! Always keep the music moving… share it… blog it… podcast it! If you’re in radio… support independent music and broadcast it!`,
+          catalog_number: 'cat0011',
           filename: 'impossebulls.jpg',
           published: true,
-          created_at: '2019-01-19 12:10:00'
+          created_at: '2019-01-19 12:10:00',
         },
         {
           id: 12,
@@ -208,10 +220,11 @@ Of course, thanks once again to you for downloading & listening. We always striv
           title: 'Come Back',
           slug: 'jelani-malik-come-back',
           description: `Many times I get stuck in the struggles of trying to shape my future because I've pushed away memories of the past instead of facing them head on, letting go, and moving toward my future. The journey isn't the easiest but I make the best of it as I go. Come Back is the introduction to me.`,
+          catalog_number: 'cat0012',
           filename: 'jelani-malik.jpg',
           published: true,
-          created_at: '2019-01-19 12:11:00'
-        }
+          created_at: '2019-01-19 12:11:00',
+        },
       ]);
     });
 };

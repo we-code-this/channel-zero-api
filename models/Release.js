@@ -14,7 +14,7 @@ import {
   assetDirectories,
   saveFile,
   deleteFile,
-  publicUrl
+  publicUrl,
 } from '../lib/files';
 import ArtistQuery from './ArtistQuery';
 
@@ -24,6 +24,7 @@ class Release extends Model {
 
     this.title = sanitize(this.title);
     this.description = sanitize(this.description);
+    this.catalog_number = sanitize(this.catalog_number);
 
     this.published =
       this.published &&
@@ -46,7 +47,7 @@ class Release extends Model {
         slug: data.artist_slug,
         description: data.artist_description,
         created_at: data.created_at,
-        updated_at: data.updated_at
+        updated_at: data.updated_at,
       });
 
       this.label = new Label({
@@ -54,7 +55,7 @@ class Release extends Model {
         name: data.label_name,
         slug: data.label_slug,
         created_at: data.label_created_at,
-        updated_at: data.label_updated_at
+        updated_at: data.label_updated_at,
       });
     }
 
@@ -80,7 +81,7 @@ class Release extends Model {
         `release_vendors.id`,
         `release_vendors.url`,
         'vendors.name as name',
-        'vendors.icon_class as icon_class'
+        'vendors.icon_class as icon_class',
       )
       .from('release_vendors')
       .leftJoin('vendors', `release_vendors.vendor_id`, 'vendors.id')
@@ -128,9 +129,25 @@ class Release extends Model {
 
     if (this.create || this.image) {
       valid = this.validImage();
-      valid = valid && this.validTitle();
+      valid = valid && this.validTitle() && this.validCatalogNumber();
     } else {
-      valid = this.validTitle();
+      valid = this.validTitle() && this.validCatalogNumber();
+    }
+
+    return valid;
+  }
+
+  validCatalogNumber() {
+    let valid = validator.isLength(this.catalog_number, {
+      min: 1,
+      max: 255,
+    });
+
+    if (!valid) {
+      this.errors.push({
+        field: 'catalog_number',
+        message: 'Invalid length',
+      });
     }
 
     return valid;
@@ -155,7 +172,7 @@ class Release extends Model {
     } catch (e) {
       this.errors.push({
         field: 'image',
-        message: 'Invalid image file. Accepted: jpg, jpeg, png'
+        message: 'Invalid image file. Accepted: jpg, jpeg, png',
       });
 
       return false;
@@ -184,7 +201,7 @@ class Release extends Model {
     if (!valid) {
       this.errors.push({
         field: 'image',
-        message: 'Invalid image file type. Accepted: jpg, jpeg, png'
+        message: 'Invalid image file type. Accepted: jpg, jpeg, png',
       });
     }
 
@@ -201,7 +218,7 @@ class Release extends Model {
       this.slug = await slugify(
         `${this.artist.name} ${this.title}`,
         'releases',
-        'slug'
+        'slug',
       );
     }
   }
@@ -218,7 +235,7 @@ class Release extends Model {
       return saveFile(
         assetDirectories.releases,
         this.filename,
-        this.image.data
+        this.image.data,
       );
     }
 

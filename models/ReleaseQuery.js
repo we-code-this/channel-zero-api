@@ -48,6 +48,7 @@ class ReleaseQuery {
           title: release.title,
           slug: release.slug,
           description: release.description,
+          catalog_number: release.catalog_number,
           filename: release.filename,
           published: release.published,
         },
@@ -55,8 +56,10 @@ class ReleaseQuery {
       );
 
       const res = (
-        await this.select()
-          .where(`${this.tablename}.id`, normalizeID(id))
+        await this.select().where(
+          `${this.tablename}.id`,
+          normalizeID(id),
+        )
       )[0];
 
       return new Release(res).withRelated();
@@ -161,6 +164,7 @@ class ReleaseQuery {
           label_id: release.label_id,
           title: release.title,
           description: release.description,
+          catalog_number: release.catalog_number,
           updated_at: release.updated_at,
         });
 

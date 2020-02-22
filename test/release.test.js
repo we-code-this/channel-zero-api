@@ -397,6 +397,7 @@ describe('releases', function() {
       form.append('label_id', 1);
       form.append('title', 'Album 1000');
       form.append('description', 'Test description');
+      form.append('catalog_number', 'cat1000');
 
       let opts = {
         url: '/release',
@@ -428,6 +429,7 @@ describe('releases', function() {
       firstForm.append('label_id', 1);
       firstForm.append('title', title);
       firstForm.append('description', 'Test description');
+      firstForm.append('catalog_number', 'cat1002');
 
       let firstOpts = {
         url: '/release',
@@ -449,6 +451,7 @@ describe('releases', function() {
       secondForm.append('label_id', 1);
       secondForm.append('title', title);
       secondForm.append('description', 'Test description');
+      secondForm.append('catalog_number', 'cat0003');
 
       let secondOpts = {
         url: '/release',
@@ -532,6 +535,7 @@ describe('releases', function() {
         'description',
         "<script>console.log('yo')</script> release description",
       );
+      form.append('catalog_number', 'cat1001');
 
       let opts = {
         url: '/release',
@@ -562,6 +566,7 @@ describe('releases', function() {
         "<script>console.log('yo')</script> release title",
       );
       form.append('description', 'Album description');
+      form.append('catalog_number', 'cat1002');
 
       let opts = {
         url: '/release',
@@ -576,6 +581,37 @@ describe('releases', function() {
 
       expect(JSON.parse(response.payload).title).to.equal(
         'release title',
+      );
+    });
+
+    it('should sanitize catalog_number', async function() {
+      const token = await login(app);
+      let form = new FormData();
+      let rs = fs.createReadStream(filePath);
+
+      form.append('image', rs);
+      form.append('artist_id', 2);
+      form.append('label_id', 1);
+      form.append('title', 'release title');
+      form.append('description', 'Album description');
+      form.append(
+        'catalog_number',
+        "<script>console.log('yo')</script> cat1003",
+      );
+
+      let opts = {
+        url: '/release',
+        method: 'POST',
+        payload: form,
+        headers: form.getHeaders({
+          Authorization: `Bearer ${token}`,
+        }),
+      };
+
+      const response = await app.inject(opts);
+
+      expect(JSON.parse(response.payload).catalog_number).to.equal(
+        'cat1003',
       );
     });
   });
@@ -622,6 +658,7 @@ describe('releases', function() {
       original_form.append('label_id', 2);
       original_form.append('title', 'Test Album');
       original_form.append('description', 'Test album description');
+      original_form.append('catalog_number', 'cat1003');
 
       let original_opts = {
         url: '/release',
@@ -700,6 +737,7 @@ describe('releases', function() {
       form.append('title', 'Album 1001');
       form.append('published', 'false');
       form.append('description', 'Test description');
+      form.append('catalog_number', 'cat1001');
 
       let opts = {
         url: '/release',
@@ -745,6 +783,7 @@ describe('releases', function() {
       form.append('title', 'Album 1002');
       form.append('published', 'true');
       form.append('description', 'Test description');
+      form.append('catalog_number', 'cat1002');
 
       let opts = {
         url: '/release',
@@ -790,6 +829,7 @@ describe('releases', function() {
       form.append('title', 'Album 1003');
       form.append('published', 'true');
       form.append('description', 'Test description');
+      form.append('catalog_number', 'cat1003');
 
       let opts = {
         url: '/release',

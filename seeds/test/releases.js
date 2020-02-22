@@ -12,8 +12,9 @@ exports.seed = function(knex, Promise) {
           slug: 'artist-1-album-1',
           filename: 'example.png',
           description: 'album description',
+          catalog_number: 'cat0001',
           published: true,
-          created_at: '2019-01-19 12:00:00'
+          created_at: '2019-01-19 12:00:00',
         },
         {
           id: 2,
@@ -24,8 +25,9 @@ exports.seed = function(knex, Promise) {
           slug: 'artist-2-album-2',
           filename: 'example.png',
           description: 'album description',
+          catalog_number: 'cat0002',
           published: true,
-          created_at: '2019-01-19 12:01:00'
+          created_at: '2019-01-19 12:01:00',
         },
         {
           id: 3,
@@ -36,8 +38,9 @@ exports.seed = function(knex, Promise) {
           slug: 'artist-3-album-3',
           filename: 'example.png',
           description: 'album description',
+          catalog_number: 'cat0003',
           published: true,
-          created_at: '2019-01-19 12:02:00'
+          created_at: '2019-01-19 12:02:00',
         },
         {
           id: 4,
@@ -48,8 +51,9 @@ exports.seed = function(knex, Promise) {
           slug: 'artist-4-album-4',
           filename: 'example.png',
           description: 'album description',
+          catalog_number: 'cat0004',
           published: true,
-          created_at: '2019-01-19 12:03:00'
+          created_at: '2019-01-19 12:03:00',
         },
         {
           id: 5,
@@ -60,8 +64,9 @@ exports.seed = function(knex, Promise) {
           slug: 'artist-5-album-5',
           filename: 'example.png',
           description: 'album description',
+          catalog_number: 'cat0005',
           published: true,
-          created_at: '2019-01-19 12:04:00'
+          created_at: '2019-01-19 12:04:00',
         },
         {
           id: 6,
@@ -72,8 +77,9 @@ exports.seed = function(knex, Promise) {
           slug: 'artist-6-album-6',
           filename: 'example.png',
           description: 'album description',
+          catalog_number: 'cat0006',
           published: true,
-          created_at: '2019-01-19 12:05:00'
+          created_at: '2019-01-19 12:05:00',
         },
         {
           id: 7,
@@ -84,8 +90,9 @@ exports.seed = function(knex, Promise) {
           slug: 'artist-7-album-7',
           filename: 'example.png',
           description: 'album description',
+          catalog_number: 'cat0007',
           published: true,
-          created_at: '2019-01-19 12:06:00'
+          created_at: '2019-01-19 12:06:00',
         },
         {
           id: 8,
@@ -96,8 +103,9 @@ exports.seed = function(knex, Promise) {
           slug: 'artist-8-album-8',
           filename: 'example.png',
           description: 'album description',
+          catalog_number: 'cat0008',
           published: true,
-          created_at: '2019-01-19 12:07:00'
+          created_at: '2019-01-19 12:07:00',
         },
         {
           id: 9,
@@ -108,8 +116,9 @@ exports.seed = function(knex, Promise) {
           slug: 'artist-9-album-9',
           filename: 'example.png',
           description: 'album description',
+          catalog_number: 'cat0009',
           published: true,
-          created_at: '2019-01-19 12:08:00'
+          created_at: '2019-01-19 12:08:00',
         },
         {
           id: 10,
@@ -120,8 +129,9 @@ exports.seed = function(knex, Promise) {
           slug: 'artist-10-album-10',
           filename: 'example.png',
           description: 'album description',
+          catalog_number: 'cat0010',
           published: true,
-          created_at: '2019-01-19 12:09:00'
+          created_at: '2019-01-19 12:09:00',
         },
         {
           id: 11,
@@ -132,8 +142,9 @@ exports.seed = function(knex, Promise) {
           slug: 'artist-11-album-11',
           filename: 'example.png',
           description: 'album description',
+          catalog_number: 'cat0011',
           published: true,
-          created_at: '2019-01-19 12:10:00'
+          created_at: '2019-01-19 12:10:00',
         },
         {
           id: 12,
@@ -144,9 +155,10 @@ exports.seed = function(knex, Promise) {
           slug: 'artist-11-album-12',
           filename: 'example.png',
           description: 'album description',
+          catalog_number: 'cat0012',
           published: false,
-          created_at: '2019-01-19 12:11:00'
-        }
+          created_at: '2019-01-19 12:11:00',
+        },
       ]);
     });
 };
