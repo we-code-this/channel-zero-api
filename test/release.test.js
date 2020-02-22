@@ -398,6 +398,7 @@ describe('releases', function() {
       form.append('title', 'Album 1000');
       form.append('description', 'Test description');
       form.append('catalog_number', 'cat1000');
+      form.append('release_date', '2019-02-01');
 
       let opts = {
         url: '/release',
@@ -430,6 +431,7 @@ describe('releases', function() {
       firstForm.append('title', title);
       firstForm.append('description', 'Test description');
       firstForm.append('catalog_number', 'cat1002');
+      firstForm.append('release_date', '2019-02-01');
 
       let firstOpts = {
         url: '/release',
@@ -452,6 +454,7 @@ describe('releases', function() {
       secondForm.append('title', title);
       secondForm.append('description', 'Test description');
       secondForm.append('catalog_number', 'cat0003');
+      secondForm.append('release_date', '2019-02-01');
 
       let secondOpts = {
         url: '/release',
@@ -476,6 +479,8 @@ describe('releases', function() {
       form.append('label_id', 1);
       form.append('title', 'Album 1001');
       form.append('description', 'Test description');
+      form.append('catalog_number', 'cat1001');
+      form.append('release_date', '2019-02-01');
 
       let opts = {
         url: '/release',
@@ -504,6 +509,8 @@ describe('releases', function() {
       form.append('label_id', 1);
       form.append('title', '');
       form.append('description', 'Test description');
+      form.append('catalog_number', 'cat1001');
+      form.append('release_date', '2019-02-01');
 
       let opts = {
         url: '/release',
@@ -522,6 +529,66 @@ describe('releases', function() {
       );
     });
 
+    it('should return error with invalid catalog_number', async function() {
+      const token = await login(app);
+      let form = new FormData();
+      let rs = fs.createReadStream(filePath);
+
+      form.append('image', rs);
+      form.append('artist_id', 2);
+      form.append('label_id', 1);
+      form.append('title', 'release title');
+      form.append('description', 'Test description');
+      form.append('catalog_number', '');
+      form.append('release_date', '2019-02-01');
+
+      let opts = {
+        url: '/release',
+        method: 'POST',
+        payload: form,
+        headers: form.getHeaders({
+          Authorization: `Bearer ${token}`,
+        }),
+      };
+
+      const response = await app.inject(opts);
+
+      expect(JSON.parse(response.payload)).to.have.property('errors');
+      expect(JSON.parse(response.payload).errors[0].field).to.equal(
+        'catalog_number',
+      );
+    });
+
+    it('should return error with invalid release_date', async function() {
+      const token = await login(app);
+      let form = new FormData();
+      let rs = fs.createReadStream(filePath);
+
+      form.append('image', rs);
+      form.append('artist_id', 2);
+      form.append('label_id', 1);
+      form.append('title', 'release title');
+      form.append('description', 'Test description');
+      form.append('catalog_number', 'cat1001');
+      form.append('release_date', '2019-2-01');
+
+      let opts = {
+        url: '/release',
+        method: 'POST',
+        payload: form,
+        headers: form.getHeaders({
+          Authorization: `Bearer ${token}`,
+        }),
+      };
+
+      const response = await app.inject(opts);
+
+      expect(JSON.parse(response.payload)).to.have.property('errors');
+      expect(JSON.parse(response.payload).errors[0].field).to.equal(
+        'release_date',
+      );
+    });
+
     it('should sanitize description', async function() {
       const token = await login(app);
       let form = new FormData();
@@ -536,6 +603,7 @@ describe('releases', function() {
         "<script>console.log('yo')</script> release description",
       );
       form.append('catalog_number', 'cat1001');
+      form.append('release_date', '2019-02-01');
 
       let opts = {
         url: '/release',
@@ -567,6 +635,7 @@ describe('releases', function() {
       );
       form.append('description', 'Album description');
       form.append('catalog_number', 'cat1002');
+      form.append('release_date', '2019-02-01');
 
       let opts = {
         url: '/release',
@@ -598,6 +667,7 @@ describe('releases', function() {
         'catalog_number',
         "<script>console.log('yo')</script> cat1003",
       );
+      form.append('release_date', '2019-02-01');
 
       let opts = {
         url: '/release',
@@ -612,6 +682,38 @@ describe('releases', function() {
 
       expect(JSON.parse(response.payload).catalog_number).to.equal(
         'cat1003',
+      );
+    });
+
+    it('should sanitize release_date', async function() {
+      const token = await login(app);
+      let form = new FormData();
+      let rs = fs.createReadStream(filePath);
+
+      form.append('image', rs);
+      form.append('artist_id', 2);
+      form.append('label_id', 1);
+      form.append('title', 'release title');
+      form.append('description', 'Album description');
+      form.append('catalog_number', 'cat1001');
+      form.append(
+        'release_date',
+        "<script>console.log('yo')</script> 2019-02-01",
+      );
+
+      let opts = {
+        url: '/release',
+        method: 'POST',
+        payload: form,
+        headers: form.getHeaders({
+          Authorization: `Bearer ${token}`,
+        }),
+      };
+
+      const response = await app.inject(opts);
+
+      expect(JSON.parse(response.payload).release_date).to.equal(
+        '2019-02-01',
       );
     });
   });
@@ -659,6 +761,7 @@ describe('releases', function() {
       original_form.append('title', 'Test Album');
       original_form.append('description', 'Test album description');
       original_form.append('catalog_number', 'cat1003');
+      original_form.append('release_date', '2019-02-01');
 
       let original_opts = {
         url: '/release',
@@ -738,6 +841,7 @@ describe('releases', function() {
       form.append('published', 'false');
       form.append('description', 'Test description');
       form.append('catalog_number', 'cat1001');
+      form.append('release_date', '2019-02-01');
 
       let opts = {
         url: '/release',
@@ -784,6 +888,7 @@ describe('releases', function() {
       form.append('published', 'true');
       form.append('description', 'Test description');
       form.append('catalog_number', 'cat1002');
+      form.append('release_date', '2019-02-01');
 
       let opts = {
         url: '/release',
@@ -830,6 +935,7 @@ describe('releases', function() {
       form.append('published', 'true');
       form.append('description', 'Test description');
       form.append('catalog_number', 'cat1003');
+      form.append('release_date', '2019-02-01');
 
       let opts = {
         url: '/release',

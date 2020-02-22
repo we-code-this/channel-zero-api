@@ -14,6 +14,7 @@ exports.seed = function(knex, Promise) {
           description: 'album description',
           catalog_number: 'cat0001',
           published: true,
+          release_date: '2019-01-25',
           created_at: '2019-01-19 12:00:00',
         },
         {
@@ -27,6 +28,7 @@ exports.seed = function(knex, Promise) {
           description: 'album description',
           catalog_number: 'cat0002',
           published: true,
+          release_date: '2019-01-26',
           created_at: '2019-01-19 12:01:00',
         },
         {
@@ -40,6 +42,7 @@ exports.seed = function(knex, Promise) {
           description: 'album description',
           catalog_number: 'cat0003',
           published: true,
+          release_date: '2019-01-27',
           created_at: '2019-01-19 12:02:00',
         },
         {
@@ -53,6 +56,7 @@ exports.seed = function(knex, Promise) {
           description: 'album description',
           catalog_number: 'cat0004',
           published: true,
+          release_date: '2019-02-01',
           created_at: '2019-01-19 12:03:00',
         },
         {
@@ -66,6 +70,7 @@ exports.seed = function(knex, Promise) {
           description: 'album description',
           catalog_number: 'cat0005',
           published: true,
+          release_date: '2019-02-02',
           created_at: '2019-01-19 12:04:00',
         },
         {
@@ -79,6 +84,7 @@ exports.seed = function(knex, Promise) {
           description: 'album description',
           catalog_number: 'cat0006',
           published: true,
+          release_date: '2019-02-03',
           created_at: '2019-01-19 12:05:00',
         },
         {
@@ -92,6 +98,7 @@ exports.seed = function(knex, Promise) {
           description: 'album description',
           catalog_number: 'cat0007',
           published: true,
+          release_date: '2019-02-04',
           created_at: '2019-01-19 12:06:00',
         },
         {
@@ -105,6 +112,7 @@ exports.seed = function(knex, Promise) {
           description: 'album description',
           catalog_number: 'cat0008',
           published: true,
+          release_date: '2019-02-05',
           created_at: '2019-01-19 12:07:00',
         },
         {
@@ -118,6 +126,7 @@ exports.seed = function(knex, Promise) {
           description: 'album description',
           catalog_number: 'cat0009',
           published: true,
+          release_date: '2019-02-06',
           created_at: '2019-01-19 12:08:00',
         },
         {
@@ -131,6 +140,7 @@ exports.seed = function(knex, Promise) {
           description: 'album description',
           catalog_number: 'cat0010',
           published: true,
+          release_date: '2019-02-07',
           created_at: '2019-01-19 12:09:00',
         },
         {
@@ -144,6 +154,7 @@ exports.seed = function(knex, Promise) {
           description: 'album description',
           catalog_number: 'cat0011',
           published: true,
+          release_date: '2019-02-08',
           created_at: '2019-01-19 12:10:00',
         },
         {
@@ -157,6 +168,7 @@ exports.seed = function(knex, Promise) {
           description: 'album description',
           catalog_number: 'cat0012',
           published: false,
+          release_date: '2019-02-09',
           created_at: '2019-01-19 12:11:00',
         },
       ]);

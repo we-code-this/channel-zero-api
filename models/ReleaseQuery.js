@@ -49,6 +49,7 @@ class ReleaseQuery {
           slug: release.slug,
           description: release.description,
           catalog_number: release.catalog_number,
+          release_date: release.release_date,
           filename: release.filename,
           published: release.published,
         },
@@ -165,6 +166,7 @@ class ReleaseQuery {
           title: release.title,
           description: release.description,
           catalog_number: release.catalog_number,
+          release_date: release.release_date,
           updated_at: release.updated_at,
         });
 
