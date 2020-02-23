@@ -6,6 +6,7 @@ import endorsementRoutes from './endorsements';
 import labelRoutes from './labels';
 import promoRoutes from './promos';
 import releaseRoutes from './releases';
+import discRoutes from './discs';
 import featureRoutes from './features';
 import vendorRoutes from './vendors';
 import videoRoutes from './videos';
@@ -23,6 +24,7 @@ const routes = fastify => {
   labelRoutes(fastify);
   promoRoutes(fastify);
   releaseRoutes(fastify);
+  discRoutes(fastify);
   featureRoutes(fastify);
   vendorRoutes(fastify);
   videoRoutes(fastify);

@@ -17,7 +17,10 @@ describe('labels', function() {
 
   describe('GET /labels', function() {
     it('should return 10 labels', async function() {
-      const response = await app.inject({ method: 'GET', url: '/labels' });
+      const response = await app.inject({
+        method: 'GET',
+        url: '/labels',
+      });
       expect(JSON.parse(response.payload).length).to.equal(10);
     });
   });
@@ -26,7 +29,7 @@ describe('labels', function() {
     it('should return 11 labels if :limit is 11', async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/labels/11'
+        url: '/labels/11',
       });
       expect(JSON.parse(response.payload).length).to.equal(11);
     });
@@ -34,7 +37,7 @@ describe('labels', function() {
     it('should return 9 labels if :limit is 9', async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/labels/9'
+        url: '/labels/9',
       });
       expect(JSON.parse(response.payload).length).to.equal(9);
     });
@@ -44,7 +47,7 @@ describe('labels', function() {
     it("should return label with id of 11 when :order is 'desc'", async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/labels/1/desc'
+        url: '/labels/1/desc',
       });
       expect(JSON.parse(response.payload)[0].id).to.equal(11);
     });
@@ -52,7 +55,7 @@ describe('labels', function() {
     it("should return label with id of 1 when :order is 'asc'", async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/labels/1/asc'
+        url: '/labels/1/asc',
       });
       expect(JSON.parse(response.payload)[0].id).to.equal(1);
     });
@@ -62,7 +65,7 @@ describe('labels', function() {
     it("should return label with id of 10 with offset 1, limit 10 and order 'asc'", async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/labels/range/1/10/asc'
+        url: '/labels/range/1/10/asc',
       });
 
       const results = JSON.parse(response.payload);
@@ -76,7 +79,7 @@ describe('labels', function() {
     it('should return all labels sorted by name', async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/labels/by/name'
+        url: '/labels/by/name',
       });
 
       const results = JSON.parse(response.payload);
@@ -91,7 +94,7 @@ describe('labels', function() {
     it('should return count of 11', async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/labels/count'
+        url: '/labels/count',
       });
 
       expect(JSON.parse(response.payload)[0].count).to.equal(11);
@@ -102,7 +105,7 @@ describe('labels', function() {
     it("should return the label with a 'label-1' slug", async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/label/label-1'
+        url: '/label/label-1',
       });
       expect(JSON.parse(response.payload).slug).to.equal('label-1');
     });
@@ -110,7 +113,7 @@ describe('labels', function() {
     it("should return 404 if label record doesn't exist in database", async function() {
       const response = await app.inject({
         method: 'GET',
-        url: '/label/nonexistent-label'
+        url: '/label/nonexistent-label',
       });
 
       expect(response.statusCode).to.equal(404);
@@ -124,7 +127,7 @@ describe('labels', function() {
 
       const beforeResponse = await app.inject({
         method: 'GET',
-        url: `/label/${slug}`
+        url: `/label/${slug}`,
       });
 
       expect(beforeResponse.statusCode).to.equal(404);
@@ -133,11 +136,11 @@ describe('labels', function() {
         method: 'POST',
         url: '/label',
         payload: {
-          name: 'Label 1000'
+          name: 'Label 1000',
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       expect(JSON.parse(label.payload).slug).to.equal(slug);
@@ -152,11 +155,11 @@ describe('labels', function() {
         method: 'POST',
         url: '/label',
         payload: {
-          name: name
+          name: name,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       expect(JSON.parse(firstLabel.payload).slug).to.equal(slug);
@@ -165,14 +168,16 @@ describe('labels', function() {
         method: 'POST',
         url: '/label',
         payload: {
-          name: name
+          name: name,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      expect(JSON.parse(secondLabel.payload).slug).to.equal(`${slug}-1`);
+      expect(JSON.parse(secondLabel.payload).slug).to.equal(
+        `${slug}-1`,
+      );
     });
 
     it('should sanitize name', async function() {
@@ -181,14 +186,16 @@ describe('labels', function() {
         method: 'POST',
         url: '/label',
         payload: {
-          name: "<script>console.log('yo')</script> Label 1002"
+          name: "<script>console.log('yo')</script> Label 1002",
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      expect(JSON.parse(response.payload).name).to.equal('Label 1002');
+      expect(JSON.parse(response.payload).name).to.equal(
+        'Label 1002',
+      );
     });
   });
 
@@ -197,7 +204,7 @@ describe('labels', function() {
       const token = await login(app);
       const getResponse = await app.inject({
         method: 'GET',
-        url: '/label/label-11'
+        url: '/label/label-11',
       });
 
       const label = JSON.parse(getResponse.payload);
@@ -210,11 +217,11 @@ describe('labels', function() {
         method: 'PATCH',
         url: '/label/label-11',
         payload: {
-          name: newName
+          name: newName,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       expect(JSON.parse(response.payload).name).to.equal(newName);
@@ -226,14 +233,16 @@ describe('labels', function() {
         method: 'PATCH',
         url: '/label/label-11',
         payload: {
-          name: "<script>console.log('yo')</script> label name"
+          name: "<script>console.log('yo')</script> label name",
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      expect(JSON.parse(response.payload).name).to.equal('label name');
+      expect(JSON.parse(response.payload).name).to.equal(
+        'label name',
+      );
     });
 
     it("should return name field error of 'Invalid length'", async function() {
@@ -242,17 +251,19 @@ describe('labels', function() {
         method: 'PATCH',
         url: '/label/label-11',
         payload: {
-          name: ''
+          name: '',
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       expect(JSON.parse(response.payload)).to.have.property('errors');
-      expect(JSON.parse(response.payload).errors[0].field).to.equal('name');
+      expect(JSON.parse(response.payload).errors[0].field).to.equal(
+        'name',
+      );
       expect(JSON.parse(response.payload).errors[0].message).to.equal(
-        'Invalid length'
+        'Invalid length',
       );
     });
   });
@@ -264,7 +275,7 @@ describe('labels', function() {
 
       const beforeResponse = await app.inject({
         method: 'GET',
-        url: `/label/${slug}`
+        url: `/label/${slug}`,
       });
 
       expect(JSON.parse(beforeResponse.payload).id).to.equal(11);
@@ -273,16 +284,16 @@ describe('labels', function() {
         method: 'DELETE',
         url: '/label',
         payload: {
-          id: 11
+          id: 11,
         },
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const afterResponse = await app.inject({
         method: 'GET',
-        url: `/label/${slug}`
+        url: `/label/${slug}`,
       });
 
       expect(afterResponse.statusCode).to.equal(404);
