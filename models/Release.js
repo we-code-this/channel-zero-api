@@ -2,6 +2,7 @@ import fileType from 'file-type';
 import crypto from 'crypto';
 import validator from 'validator';
 import knex from '../lib/connection';
+import moment from 'moment';
 import Artist from './Artist';
 import Endorsement from './Endorsement';
 import Label from './Label';
@@ -25,7 +26,14 @@ class Release extends Model {
     this.title = sanitize(this.title);
     this.description = sanitize(this.description);
     this.catalog_number = sanitize(this.catalog_number);
-    this.release_date = sanitize(this.release_date);
+
+    if (typeof this.release_date === 'string') {
+      this.release_date = sanitize(this.release_date);
+    } else {
+      this.release_date = moment(this.release_date).format(
+        'YYYY-MM-DD',
+      );
+    }
 
     this.published =
       this.published &&

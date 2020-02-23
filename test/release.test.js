@@ -122,6 +122,7 @@ describe('releases', function() {
         method: 'GET',
         url: '/release/artist-9-album-9',
       });
+
       expect(JSON.parse(response.payload).slug).to.equal(
         'artist-9-album-9',
       );
@@ -559,7 +560,7 @@ describe('releases', function() {
       );
     });
 
-    it('should return error with invalid release_date', async function() {
+    it.only('should return error with invalid release_date', async function() {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -682,38 +683,6 @@ describe('releases', function() {
 
       expect(JSON.parse(response.payload).catalog_number).to.equal(
         'cat1003',
-      );
-    });
-
-    it('should sanitize release_date', async function() {
-      const token = await login(app);
-      let form = new FormData();
-      let rs = fs.createReadStream(filePath);
-
-      form.append('image', rs);
-      form.append('artist_id', 2);
-      form.append('label_id', 1);
-      form.append('title', 'release title');
-      form.append('description', 'Album description');
-      form.append('catalog_number', 'cat1001');
-      form.append(
-        'release_date',
-        "<script>console.log('yo')</script> 2019-02-01",
-      );
-
-      let opts = {
-        url: '/release',
-        method: 'POST',
-        payload: form,
-        headers: form.getHeaders({
-          Authorization: `Bearer ${token}`,
-        }),
-      };
-
-      const response = await app.inject(opts);
-
-      expect(JSON.parse(response.payload).release_date).to.equal(
-        '2019-02-01',
       );
     });
   });
