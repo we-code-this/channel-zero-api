@@ -19,6 +19,7 @@ Public Enemy's albums remain among the most critically acclaimed works in the ge
           catalog_number: 'cat0001',
           release_date: '2019-02-01',
           published: true,
+          release_type: 'Album',
           created_at: '2019-01-19 12:00:00',
         },
         {
@@ -37,6 +38,7 @@ Lord has spent nearly 20 years behind the decks for Public Enemy and the past tw
           catalog_number: 'cat0002',
           release_date: '2019-02-02',
           published: true,
+          release_type: 'Album',
           created_at: '2019-01-19 12:01:00',
         },
         {
@@ -69,6 +71,7 @@ A woman’s heart, the casualty.
           catalog_number: 'cat0003',
           release_date: '2019-02-03',
           published: true,
+          release_type: 'Album',
           created_at: '2019-01-19 12:02:00',
         },
         {
@@ -84,6 +87,7 @@ A woman’s heart, the casualty.
           release_date: '2019-02-04',
           filename: 'daddy-o.jpg',
           published: true,
+          release_type: 'Album',
           created_at: '2019-01-19 12:03:00',
         },
         {
@@ -98,6 +102,7 @@ A woman’s heart, the casualty.
           catalog_number: 'cat0005',
           release_date: '2019-02-05',
           published: true,
+          release_type: 'Album',
           created_at: '2019-01-19 12:04:00',
         },
         {
@@ -112,6 +117,7 @@ A woman’s heart, the casualty.
           release_date: '2019-02-06',
           filename: 'rukus-music.jpg',
           published: true,
+          release_type: 'Album',
           created_at: '2019-01-19 12:05:00',
         },
         {
@@ -155,6 +161,7 @@ Im an introspective person at heart. Night time is always where I work out life.
           release_date: '2019-02-07',
           filename: 'jahi-pe20.jpg',
           published: true,
+          release_type: 'Album',
           created_at: '2019-01-19 12:06:00',
         },
         {
@@ -169,6 +176,7 @@ Im an introspective person at heart. Night time is always where I work out life.
           release_date: '2019-02-08',
           filename: 'east-duel-west.jpg',
           published: true,
+          release_type: 'Album',
           created_at: '2019-01-19 12:07:00',
         },
         {
@@ -183,6 +191,7 @@ Im an introspective person at heart. Night time is always where I work out life.
           release_date: '2019-02-09',
           filename: 'antwon-king.jpg',
           published: true,
+          release_type: 'Album',
           created_at: '2019-01-19 12:08:00',
         },
         {
@@ -197,6 +206,7 @@ Im an introspective person at heart. Night time is always where I work out life.
           release_date: '2019-02-10',
           filename: 'obeah.jpg',
           published: true,
+          release_type: 'Album',
           created_at: '2019-01-19 12:09:00',
         },
         {
@@ -221,6 +231,7 @@ Of course, thanks once again to you for downloading & listening. We always striv
           release_date: '2019-02-11',
           filename: 'impossebulls.jpg',
           published: true,
+          release_type: 'Album',
           created_at: '2019-01-19 12:10:00',
         },
         {
@@ -235,6 +246,7 @@ Of course, thanks once again to you for downloading & listening. We always striv
           release_date: '2019-02-12',
           filename: 'jelani-malik.jpg',
           published: true,
+          release_type: 'Album',
           created_at: '2019-01-19 12:11:00',
         },
       ]);
