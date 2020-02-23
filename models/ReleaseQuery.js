@@ -52,6 +52,7 @@ class ReleaseQuery {
           release_date: release.release_date,
           filename: release.filename,
           published: release.published,
+          release_type: release.release_type,
         },
         ['id'],
       );
@@ -167,6 +168,7 @@ class ReleaseQuery {
           description: release.description,
           catalog_number: release.catalog_number,
           release_date: release.release_date,
+          release_type: release.release_type,
           updated_at: release.updated_at,
         });
 

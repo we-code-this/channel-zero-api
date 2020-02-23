@@ -26,6 +26,7 @@ class Release extends Model {
     this.title = sanitize(this.title);
     this.description = sanitize(this.description);
     this.catalog_number = sanitize(this.catalog_number);
+    this.release_type = sanitize(this.release_type);
 
     if (typeof this.release_date === 'string') {
       this.release_date = sanitize(this.release_date);
@@ -142,12 +143,14 @@ class Release extends Model {
         valid &&
         this.validTitle() &&
         this.validCatalogNumber() &&
-        this.validReleaseDate();
+        this.validReleaseDate() &&
+        this.validReleaseType();
     } else {
       valid =
         this.validTitle() &&
         this.validCatalogNumber() &&
-        this.validReleaseDate();
+        this.validReleaseDate() &&
+        this.validReleaseType();
     }
 
     return valid;
@@ -179,6 +182,22 @@ class Release extends Model {
       this.errors.push({
         field: 'release_date',
         message: 'Invalid release date',
+      });
+    }
+
+    return valid;
+  }
+
+  validReleaseType() {
+    let valid = validator.isLength(this.release_type, {
+      min: 1,
+      max: 255,
+    });
+
+    if (!valid) {
+      this.errors.push({
+        field: 'release_type',
+        message: 'Invalid length',
       });
     }
 
