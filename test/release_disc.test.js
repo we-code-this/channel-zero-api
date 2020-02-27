@@ -1,11 +1,8 @@
 import chai from 'chai';
-import dateString from 'chai-date-string';
 import buildApp from '../app';
 import { login } from './login';
 
 const expect = chai.expect;
-
-chai.use(dateString);
 
 describe('release_discs', function() {
   let app;
@@ -79,7 +76,7 @@ describe('release_discs', function() {
     });
 
     describe('GET /release/:release_id/discs/count', function() {
-      it('should return count of 1 with release_id of 1', async function() {
+      it('should return count of 3 with release_id of 1', async function() {
         const response = await app.inject({
           method: 'GET',
           url: '/release/1/discs/count',

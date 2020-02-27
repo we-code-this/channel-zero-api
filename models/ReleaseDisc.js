@@ -5,7 +5,7 @@ import Model from './Model';
 
 import { sanitize } from '../lib/strings';
 
-class Release extends Model {
+class ReleaseDisc extends Model {
   constructor(data, create) {
     super(data, create);
 
@@ -34,4 +34,4 @@ class Release extends Model {
   }
 }
 
-export default Release;
+export default ReleaseDisc;
