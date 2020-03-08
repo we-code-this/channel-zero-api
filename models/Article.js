@@ -8,7 +8,7 @@ import {
   assetDirectories,
   saveFile,
   deleteFile,
-  publicUrl
+  urls,
 } from '../lib/files';
 
 class Article extends Model {
@@ -20,7 +20,7 @@ class Article extends Model {
     this.description = sanitize(this.description);
 
     if (!this.create && this.filename) {
-      this.url = publicUrl(`/articles/${this.filename}`);
+      this.url = urls('articles', this.filename);
     }
 
     this.published =
@@ -68,7 +68,7 @@ class Article extends Model {
     if (!valid) {
       this.errors.push({
         field: 'image',
-        message: 'Invalid image file type. Accepted: jpg, jpeg, png'
+        message: 'Invalid image file type. Accepted: jpg, jpeg, png',
       });
     }
 
@@ -84,7 +84,7 @@ class Article extends Model {
     } catch (e) {
       this.errors.push({
         field: 'image',
-        message: 'Invalid image file. Accepted: jpg, jpeg, png'
+        message: 'Invalid image file. Accepted: jpg, jpeg, png',
       });
 
       return false;
@@ -107,7 +107,7 @@ class Article extends Model {
     if (!valid) {
       this.errors.push({
         field: 'description',
-        message: 'Description required'
+        message: 'Description required',
       });
     }
 
@@ -140,7 +140,7 @@ class Article extends Model {
       return saveFile(
         assetDirectories.articles,
         this.filename,
-        this.image.data
+        this.image.data,
       );
     }
 

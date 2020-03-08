@@ -16,7 +16,7 @@ import {
   assetDirectories,
   saveFile,
   deleteFile,
-  publicUrl,
+  urls,
 } from '../lib/files';
 import ArtistQuery from './ArtistQuery';
 
@@ -49,7 +49,7 @@ class Release extends Model {
       this.artist = undefined;
     } else {
       if (this.filename) {
-        this.url = publicUrl(`/releases/${this.filename}`);
+        this.url = urls('releases', this.filename);
       }
 
       this.artist = new Artist({

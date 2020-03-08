@@ -1,13 +1,10 @@
-import fs from 'fs-extra';
-import path from 'path';
 import fileType from 'file-type';
 import crypto from 'crypto';
 import {
-  fileRoot,
   assetDirectories,
   saveFile,
   deleteFile,
-  publicUrl
+  urls,
 } from '../lib/files';
 import Model from './Model';
 
@@ -19,7 +16,7 @@ class ArtistImage extends Model {
     this.extension = undefined;
 
     if (!this.create && this.filename) {
-      this.url = publicUrl(`/artists/${this.filename}`);
+      this.url = urls('artists', this.filename);
     }
   }
 
@@ -44,7 +41,7 @@ class ArtistImage extends Model {
     } catch (e) {
       this.errors.push({
         field: 'image',
-        message: 'Invalid image file. Accepted: jpg, jpeg, png'
+        message: 'Invalid image file. Accepted: jpg, jpeg, png',
       });
 
       return false;
@@ -73,7 +70,7 @@ class ArtistImage extends Model {
     if (!valid) {
       this.errors.push({
         field: 'image',
-        message: 'Invalid image file type. Accepted: jpg, jpeg, png'
+        message: 'Invalid image file type. Accepted: jpg, jpeg, png',
       });
     }
 
@@ -93,7 +90,11 @@ class ArtistImage extends Model {
 
   saveFile() {
     if (this.image) {
-      return saveFile(assetDirectories.artists, this.filename, this.image.data);
+      return saveFile(
+        assetDirectories.artists,
+        this.filename,
+        this.image.data,
+      );
     }
 
     return true;
