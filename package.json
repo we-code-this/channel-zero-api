@@ -11,7 +11,7 @@
     "seed": "knex seed:run",
     "start": "node -r esm ./server",
     "dev": "nodemon -r esm ./server",
-    "test": "NODE_ENV=test knex migrate:rollback && NODE_ENV=test knex migrate:latest && NODE_ENV=test knex seed:run && NODE_ENV=test nyc --reporter=lcov --all mocha -r esm"
+    "test": "NODE_ENV=test knex migrate:rollback && NODE_ENV=test knex migrate:latest && NODE_ENV=test knex seed:run && NODE_ENV=test nyc --reporter=lcov --all mocha --timeout 5000 -r esm"
   },
   "nyc": {
     "exclude": [
@@ -26,6 +26,7 @@
     "instrument": false
   },
   "dependencies": {
+    "aws-sdk": "^2.553.0",
     "bcrypt": "^3.0.6",
     "chai-date-string": "^0.1.0",
     "dotenv": "^6.2.0",
@@ -45,11 +46,11 @@
     "mysql2": "^1.6.4",
     "pg": "^7.14.0",
     "sanitize-html": "^1.20.1",
+    "sharp": "^0.25.1",
     "slug": "^1.0.0",
     "strip-js": "^1.2.0",
     "striptags": "^3.1.1",
-    "validator": "^10.11.0",
-    "aws-sdk": "^2.553.0"
+    "validator": "^10.11.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",

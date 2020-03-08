@@ -58,6 +58,7 @@ class ReleaseDiscQuery {
   }
 
   async delete(id) {
+    console.log('disc id:', id);
     const releaseId = (
       await knex
         .select('release_id')
@@ -94,7 +95,7 @@ class ReleaseDiscQuery {
       .where('id', id);
 
     if (result.length > 0) {
-      return new ReleaseDisc(result[0]);
+      return new ReleaseDisc(result[0]).withRelated();
     } else {
       return undefined;
     }
@@ -129,12 +130,13 @@ class ReleaseDiscQuery {
     );
   }
 
-  async update(id, updatedFields) {
+  async update(updatedFields) {
+    const { id, ...remainingUpdatedFields } = updatedFields;
     const oldDisc = await this.findById(id);
 
     const data = {
       ...oldDisc,
-      ...updatedFields,
+      ...remainingUpdatedFields,
       updated_at: moment().format('YYYY-MM-DD HH:mm:ss'),
     };
 

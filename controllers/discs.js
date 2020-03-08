@@ -1,4 +1,5 @@
 import ReleaseDiscQuery from '../models/ReleaseDiscQuery';
+import ReleaseTrackQuery from '../models/ReleaseTrackQuery';
 
 export default {
   count: async (req, reply) => {
@@ -17,9 +18,11 @@ export default {
     }
   },
   del: async (req, reply) => {
-    const deleted = await new ReleaseDiscQuery().delete(req.body.id);
+    const id = req.body.id;
+    const deleted = await new ReleaseDiscQuery().delete(id);
 
     if (deleted) {
+      await new ReleaseTrackQuery().deleteByDiscId(id);
       reply.send(deleted);
     } else {
       reply.status(404).send();
@@ -65,10 +68,7 @@ export default {
     reply.send([{ count: parseInt(res.count) }]);
   },
   update: async (req, reply) => {
-    const updatedDisc = await new ReleaseDiscQuery().update(
-      req.params.id,
-      req.body,
-    );
+    const updatedDisc = await new ReleaseDiscQuery().update(req.body);
     reply.send(updatedDisc);
   },
 };

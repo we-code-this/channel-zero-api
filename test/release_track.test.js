@@ -114,10 +114,11 @@ describe('release_tracks', function() {
   describe('POST /track', function() {
     it('should add release_track record to database', async function() {
       const token = await login(app);
+      const trackId = 13;
 
       const beforeResponse = await app.inject({
         method: 'GET',
-        url: `/track/12`,
+        url: `/track/${trackId}`,
       });
 
       expect(beforeResponse.statusCode).to.equal(404);
@@ -134,7 +135,7 @@ describe('release_tracks', function() {
         },
       });
 
-      expect(JSON.parse(track.payload).id).to.equal(12);
+      expect(JSON.parse(track.payload).id).to.equal(trackId);
     });
 
     it("should return title field error of 'Invalid length' when empty title provided", async function() {
@@ -304,7 +305,7 @@ describe('release_tracks', function() {
     });
   });
 
-  describe('PATCH /track/:id', function() {
+  describe('PATCH /track', function() {
     it('should update release_track database record', async function() {
       const token = await login(app);
 
@@ -321,8 +322,9 @@ describe('release_tracks', function() {
 
       const response = await app.inject({
         method: 'PATCH',
-        url: '/track/1',
+        url: '/track',
         payload: {
+          id: 1,
           title: newTitle,
         },
         headers: {

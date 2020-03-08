@@ -71,7 +71,6 @@ export default {
 
   update: async (req, reply) => {
     const updatedTrack = await new ReleaseTrackQuery().update(
-      req.params.id,
       req.body,
     );
     reply.send(updatedTrack);

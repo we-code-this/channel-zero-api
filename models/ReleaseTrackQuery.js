@@ -56,6 +56,14 @@ class ReleaseTrackQuery {
     return delResponse;
   }
 
+  async deleteByDiscId(discId) {
+    const delResponse = await knex(this.tablename)
+      .where('disc_id', discId)
+      .del();
+
+    return delResponse;
+  }
+
   async discCount(discId) {
     const count = await knex
       .count('* as count')
@@ -109,12 +117,13 @@ class ReleaseTrackQuery {
     );
   }
 
-  async update(id, updatedFields) {
+  async update(updatedFields) {
+    const { id, ...remainingUpdatedFields } = updatedFields;
     const oldTrack = await this.findById(id);
 
     const data = {
       ...oldTrack,
-      ...updatedFields,
+      ...remainingUpdatedFields,
       updated_at: moment().format('YYYY-MM-DD HH:mm:ss'),
     };
 

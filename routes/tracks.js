@@ -14,7 +14,7 @@ const routes = fastify => {
   fastify.get('/tracks', tracks.get);
 
   fastify.patch(
-    '/track/:id',
+    '/track',
     { beforeHandler: [validate, isAdmin] },
     tracks.update,
   );

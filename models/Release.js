@@ -9,6 +9,7 @@ import Label from './Label';
 import Model from './Model';
 import Vendor from './Vendor';
 import ReleaseCredit from './ReleaseCredit';
+import ReleaseDisc from './ReleaseDisc';
 
 import { sanitize, slugify } from '../lib/strings';
 import {
@@ -71,16 +72,18 @@ class Release extends Model {
 
     this.allowedExtensions = ['jpg', 'jpeg', 'png'];
 
-    this.vendors = undefined;
     this.credits = undefined;
+    this.discs = undefined;
     this.endorsements = undefined;
     this.extension = undefined;
+    this.vendors = undefined;
   }
 
   async withRelated() {
     await this.withVendors();
     await this.withCredits();
     await this.withEndorsements();
+    await this.withDiscs();
 
     return this;
   }
@@ -130,6 +133,23 @@ class Release extends Model {
     this.endorsements = results.map(function(record) {
       return new Endorsement(record);
     });
+
+    return this;
+  }
+
+  async withDiscs() {
+    const results = await knex
+      .select('*')
+      .from('release_discs')
+      .where('release_id', this.id)
+      .orderBy('sort', 'ASC');
+
+    this.discs = await Promise.all(
+      results.map(async function(record) {
+        const disc = new ReleaseDisc(record);
+        return await disc.withRelated();
+      }),
+    );
 
     return this;
   }

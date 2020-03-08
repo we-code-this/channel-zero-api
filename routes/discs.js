@@ -12,7 +12,7 @@ const routes = fastify => {
   fastify.get('/disc/:id', discs.getOneById);
 
   fastify.patch(
-    '/disc/:id',
+    '/disc',
     { beforeHandler: [validate, isAdmin] },
     discs.update,
   );

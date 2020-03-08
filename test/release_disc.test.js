@@ -221,7 +221,7 @@ describe('release_discs', function() {
     });
   });
 
-  describe('PATCH /disc/:id', function() {
+  describe('PATCH /disc', function() {
     it('should update release_disc database record', async function() {
       const token = await login(app);
 
@@ -238,8 +238,9 @@ describe('release_discs', function() {
 
       const response = await app.inject({
         method: 'PATCH',
-        url: '/disc/1',
+        url: '/disc',
         payload: {
+          id: 1,
           name: newName,
         },
         headers: {
@@ -254,8 +255,9 @@ describe('release_discs', function() {
       const token = await login(app);
       const response = await app.inject({
         method: 'PATCH',
-        url: '/disc/1',
+        url: '/disc',
         payload: {
+          id: 1,
           name: '',
         },
         headers: {
@@ -276,20 +278,32 @@ describe('release_discs', function() {
   describe('DELETE /disc', function() {
     it('should delete disc database record', async function() {
       const token = await login(app);
-      const id = 2;
+
+      const discResponse = await app.inject({
+        method: 'POST',
+        url: '/disc',
+        payload: {
+          release_id: 5,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const disc = JSON.parse(discResponse.payload);
 
       const beforeResponse = await app.inject({
         method: 'GET',
-        url: `/disc/${id}`,
+        url: `/disc/${disc.id}`,
       });
 
-      expect(JSON.parse(beforeResponse.payload).id).to.equal(id);
+      expect(JSON.parse(beforeResponse.payload).id).to.equal(disc.id);
 
       await app.inject({
         method: 'DELETE',
         url: '/disc',
         payload: {
-          id: id,
+          id: disc.id,
         },
         headers: {
           Authorization: `Bearer ${token}`,
@@ -298,7 +312,7 @@ describe('release_discs', function() {
 
       const afterResponse = await app.inject({
         method: 'GET',
-        url: `/disc/${id}`,
+        url: `/disc/${disc.id}`,
       });
 
       expect(afterResponse.statusCode).to.equal(404);
@@ -306,14 +320,56 @@ describe('release_discs', function() {
 
     it('should update sort value of remaining release discs when one is deleted', async function() {
       const token = await login(app);
-      const id = 12;
-      const releaseId = 1;
+      const releaseId = 12;
+
+      const discOneResponse = await app.inject({
+        method: 'POST',
+        url: '/disc',
+        payload: {
+          release_id: releaseId,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const discOne = JSON.parse(discOneResponse.payload);
+
+      const discTwoResponse = await app.inject({
+        method: 'POST',
+        url: '/disc',
+        payload: {
+          release_id: releaseId,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const discTwo = JSON.parse(discTwoResponse.payload);
+
+      const discThreeResponse = await app.inject({
+        method: 'POST',
+        url: '/disc',
+        payload: {
+          release_id: releaseId,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const discThree = JSON.parse(discThreeResponse.payload);
+
+      expect(discOne.sort).to.equal(0);
+      expect(discTwo.sort).to.equal(1);
+      expect(discThree.sort).to.equal(2);
 
       await app.inject({
         method: 'DELETE',
         url: '/disc',
         payload: {
-          id: id,
+          id: discTwo.id,
         },
         headers: {
           Authorization: `Bearer ${token}`,
@@ -330,6 +386,55 @@ describe('release_discs', function() {
       expect(releaseDiscs.length).to.equal(2);
       expect(releaseDiscs[0].sort).to.equal(0);
       expect(releaseDiscs[1].sort).to.equal(1);
+    });
+
+    it('should delete track when disc is deleted', async function() {
+      const token = await login(app);
+
+      const discResponse = await app.inject({
+        method: 'POST',
+        url: '/disc',
+        payload: {
+          release_id: 5,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const disc = JSON.parse(discResponse.payload);
+
+      const trackResponse = await app.inject({
+        method: 'POST',
+        url: '/track',
+        payload: {
+          title: 'Test Track Title',
+          disc_id: disc.id,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const track = JSON.parse(trackResponse.payload);
+
+      await app.inject({
+        method: 'DELETE',
+        url: '/disc',
+        payload: {
+          id: disc.id,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const afterResponse = await app.inject({
+        method: 'GET',
+        url: `/disc/${disc.id}/track/${track.slug}`,
+      });
+
+      expect(afterResponse.statusCode).to.equal(404);
     });
   });
 });
