@@ -91,6 +91,22 @@ exports.seed = function(knex, Promise) {
           url: null,
           created_at: '2019-02-03 12:10:00',
         },
+        {
+          id: 12,
+          release_id: 2,
+          label: 'Credit Label 12',
+          value: 'Credit Value 12',
+          url: null,
+          created_at: '2019-02-03 12:11:00',
+        },
+        {
+          id: 13,
+          release_id: 2,
+          label: 'Credit Label 13',
+          value: 'Credit Value 13',
+          url: null,
+          created_at: '2019-02-03 12:12:00',
+        },
       ]);
     });
 };

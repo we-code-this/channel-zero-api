@@ -25,7 +25,7 @@ class Release extends Model {
     super(data, create);
 
     this.title = sanitize(this.title);
-    this.description = sanitize(this.description);
+    this.description = sanitize(this.description, true);
     this.catalog_number = sanitize(this.catalog_number);
     this.release_type = sanitize(this.release_type);
 

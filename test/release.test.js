@@ -659,6 +659,39 @@ describe('releases', function() {
       );
     });
 
+    it('should not remove double space during description sanitization', async function() {
+      const token = await login(app);
+      let form = new FormData();
+      let rs = fs.createReadStream(filePath);
+
+      form.append('image', rs);
+      form.append('artist_id', 2);
+      form.append('label_id', 1);
+      form.append('title', 'Album 1002');
+      form.append(
+        'description',
+        'a markdown line that needs a forced line break  release description',
+      );
+      form.append('catalog_number', 'cat1001');
+      form.append('release_date', '2019-02-01');
+      form.append('release_type', 'Album');
+
+      let opts = {
+        url: '/release',
+        method: 'POST',
+        payload: form,
+        headers: form.getHeaders({
+          Authorization: `Bearer ${token}`,
+        }),
+      };
+
+      const response = await app.inject(opts);
+
+      expect(JSON.parse(response.payload).description).to.equal(
+        'a markdown line that needs a forced line break  release description',
+      );
+    });
+
     it('should sanitize title', async function() {
       const token = await login(app);
       let form = new FormData();
@@ -1032,6 +1065,192 @@ describe('releases', function() {
       });
 
       expect(response.statusCode).to.equal(404);
+    });
+
+    it('should delete disc when release is deleted', async function() {
+      const token = await login(app);
+
+      let form = new FormData();
+      let rs = fs.createReadStream(filePath);
+
+      form.append('image', rs);
+      form.append('artist_id', 2);
+      form.append('label_id', 1);
+      form.append('title', 'Album 3000');
+      form.append('published', 'true');
+      form.append('description', 'Test description');
+      form.append('catalog_number', 'cat3000');
+      form.append('release_date', '2020-03-10');
+      form.append('release_type', 'Album');
+
+      let opts = {
+        url: '/release',
+        method: 'POST',
+        payload: form,
+        headers: form.getHeaders({
+          Authorization: `Bearer ${token}`,
+        }),
+      };
+
+      const res = await app.inject(opts);
+      const release = JSON.parse(res.payload);
+
+      const discResponse = await app.inject({
+        method: 'POST',
+        url: '/disc',
+        payload: {
+          release_id: release.id,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const disc = JSON.parse(discResponse.payload);
+
+      await app.inject({
+        method: 'DELETE',
+        url: '/release',
+        payload: {
+          id: release.id,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const afterResponse = await app.inject({
+        method: 'GET',
+        url: `/disc/${disc.id}`,
+      });
+
+      expect(afterResponse.statusCode).to.equal(404);
+    });
+
+    it('should delete credit when release is deleted', async function() {
+      const token = await login(app);
+
+      let form = new FormData();
+      let rs = fs.createReadStream(filePath);
+
+      form.append('image', rs);
+      form.append('artist_id', 2);
+      form.append('label_id', 1);
+      form.append('title', 'Album 3001');
+      form.append('published', 'true');
+      form.append('description', 'Test description');
+      form.append('catalog_number', 'cat3001');
+      form.append('release_date', '2020-03-10');
+      form.append('release_type', 'Album');
+
+      let opts = {
+        url: '/release',
+        method: 'POST',
+        payload: form,
+        headers: form.getHeaders({
+          Authorization: `Bearer ${token}`,
+        }),
+      };
+
+      const res = await app.inject(opts);
+      const release = JSON.parse(res.payload);
+
+      const creditResponse = await app.inject({
+        method: 'POST',
+        url: '/credit',
+        payload: {
+          release_id: release.id,
+          label: 'Test Label',
+          value: 'Test Value',
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const credit = JSON.parse(creditResponse.payload);
+
+      await app.inject({
+        method: 'DELETE',
+        url: '/release',
+        payload: {
+          id: release.id,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const afterResponse = await app.inject({
+        method: 'GET',
+        url: `/credit/${credit.id}`,
+      });
+
+      expect(afterResponse.statusCode).to.equal(404);
+    });
+
+    it('should delete endorsement when release is deleted', async function() {
+      const token = await login(app);
+
+      let form = new FormData();
+      let rs = fs.createReadStream(filePath);
+
+      form.append('image', rs);
+      form.append('artist_id', 2);
+      form.append('label_id', 1);
+      form.append('title', 'Album 3002');
+      form.append('published', 'true');
+      form.append('description', 'Test description');
+      form.append('catalog_number', 'cat3002');
+      form.append('release_date', '2020-03-10');
+      form.append('release_type', 'Album');
+
+      let opts = {
+        url: '/release',
+        method: 'POST',
+        payload: form,
+        headers: form.getHeaders({
+          Authorization: `Bearer ${token}`,
+        }),
+      };
+
+      const res = await app.inject(opts);
+      const release = JSON.parse(res.payload);
+
+      const endorsementResponse = await app.inject({
+        method: 'POST',
+        url: '/endorsement',
+        payload: {
+          related_id: release.id,
+          review: 'Test review',
+          reviewer: '',
+          url: 'http://testreview.com',
+          type: 'release',
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const endorsement = JSON.parse(endorsementResponse.payload);
+
+      await app.inject({
+        method: 'DELETE',
+        url: '/release',
+        payload: {
+          id: release.id,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const afterResponse = await app.inject({
+        method: 'GET',
+        url: `/endorsement/${endorsement.id}`,
+      });
+
+      expect(afterResponse.statusCode).to.equal(404);
     });
   });
 });

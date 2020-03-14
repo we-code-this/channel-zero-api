@@ -112,7 +112,7 @@ describe('release_discs', function() {
 
       const beforeResponse = await app.inject({
         method: 'GET',
-        url: `/disc/14`,
+        url: `/disc/15`,
       });
 
       expect(beforeResponse.statusCode).to.equal(404);
@@ -128,7 +128,7 @@ describe('release_discs', function() {
         },
       });
 
-      expect(JSON.parse(disc.payload).id).to.equal(14);
+      expect(JSON.parse(disc.payload).id).to.equal(15);
     });
 
     it('release_disc sort should equal release disc count', async function() {

@@ -1,11 +1,11 @@
 import moment from 'moment';
 import knex from '../lib/connection';
-import ReleaseDisc from './ReleaseDisc';
+import ReleaseCredit from './ReleaseCredit';
 import { normalizeID, normalizeCount } from '../lib/utilities';
 
-class ReleaseDiscQuery {
+class ReleaseCreditQuery {
   constructor() {
-    this.tablename = 'release_discs';
+    this.tablename = 'release_credits';
     this.items = undefined;
   }
 
@@ -13,76 +13,34 @@ class ReleaseDiscQuery {
     return knex.select(`${this.tablename}.*`).from(this.tablename);
   }
 
-  async count() {
-    const count = await knex.count('* as count').from(this.tablename);
-    return normalizeCount(count);
-  }
-
-  async releaseCount(releaseId) {
-    const count = await knex
-      .count('* as count')
-      .from(this.tablename)
-      .where('release_id', releaseId);
-
-    return normalizeCount(count);
-  }
-
   async create(data) {
-    const discData = { ...data };
+    const creditData = { ...data };
 
-    const disc = new ReleaseDisc(discData, true);
-    const count = await this.releaseCount(disc.release_id);
+    const credit = new ReleaseCredit(creditData, true);
 
-    disc.sort = count.count;
-
-    if (!disc.name) {
-      disc.name = `Disc ${parseInt(disc.sort) + 1}`;
-    }
-
-    const isValid = disc.valid();
+    const isValid = credit.valid();
 
     if (isValid) {
       const id = await knex(this.tablename).insert(
         {
-          sort: disc.sort,
-          release_id: disc.release_id,
-          name: disc.name,
+          release_id: credit.release_id,
+          label: credit.label,
+          value: credit.value,
+          url: credit.url,
         },
         ['id'],
       );
 
       return await this.findById(normalizeID(id));
     } else {
-      return { errors: disc.validationErrors() };
+      return { errors: credit.validationErrors() };
     }
   }
 
   async delete(id) {
-    const releaseId = (
-      await knex
-        .select('release_id')
-        .from(this.tablename)
-        .where('id', id)
-    )[0].release_id;
-
     const delResponse = await knex(this.tablename)
       .where('id', id)
       .del();
-
-    const discs = await knex
-      .select(`${this.tablename}.*`)
-      .from(this.tablename)
-      .where('release_id', releaseId)
-      .orderBy('sort', 'ASC');
-
-    discs.map(async (disc, index) => {
-      await knex(this.tablename)
-        .where('id', disc.id)
-        .update({
-          sort: index,
-          updated_at: moment().format('YYYY-MM-DD HH:mm:ss'),
-        });
-    });
 
     return delResponse;
   }
@@ -102,7 +60,7 @@ class ReleaseDiscQuery {
       .where('id', id);
 
     if (result.length > 0) {
-      return new ReleaseDisc(result[0]).withRelated();
+      return new ReleaseCredit(result[0]);
     } else {
       return undefined;
     }
@@ -120,7 +78,7 @@ class ReleaseDiscQuery {
 
     return Promise.all(
       res.map(async function(record) {
-        return new ReleaseDisc(record);
+        return new ReleaseCredit(record);
       }),
     );
   }
@@ -128,41 +86,43 @@ class ReleaseDiscQuery {
   async getByReleaseId(releaseId) {
     let res = await this.select()
       .where('release_id', releaseId)
-      .orderBy('sort', 'ASC');
+      .orderBy('created_at', 'ASC');
 
     return Promise.all(
       res.map(async function(record) {
-        return new ReleaseDisc(record);
+        return new ReleaseCredit(record);
       }),
     );
   }
 
   async update(updatedFields) {
     const { id, ...remainingUpdatedFields } = updatedFields;
-    const oldDisc = await this.findById(id);
+    const oldCredit = await this.findById(id);
 
     const data = {
-      ...oldDisc,
+      ...oldCredit,
       ...remainingUpdatedFields,
       updated_at: moment().format('YYYY-MM-DD HH:mm:ss'),
     };
 
-    const disc = new ReleaseDisc(data);
-    const isValid = disc.valid();
+    const credit = new ReleaseCredit(data);
+    const isValid = credit.valid();
 
     if (isValid) {
       await knex(this.tablename)
         .where('id', id)
         .update({
-          name: disc.name,
-          updated_at: disc.updated_at,
+          label: credit.name,
+          value: credit.value,
+          url: credit.url,
+          updated_at: credit.updated_at,
         });
 
       return await this.findById(id);
     } else {
-      return { errors: disc.validationErrors() };
+      return { errors: credit.validationErrors() };
     }
   }
 }
 
-export default ReleaseDiscQuery;
+export default ReleaseCreditQuery;

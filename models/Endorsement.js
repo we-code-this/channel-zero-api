@@ -17,7 +17,11 @@ class Endorsement extends Model {
     valid = this.validReview();
     valid = valid && this.validReviewer();
     valid = valid && this.validRelatedId();
-    valid = valid && this.validUrl();
+
+    if (this.url && this.url !== '') {
+      valid = valid && this.validUrl();
+    }
+
     valid = valid && this.validType();
 
     return valid;
@@ -28,7 +32,10 @@ class Endorsement extends Model {
     valid = validator.isInt(this.related_id.toString());
 
     if (!valid) {
-      this.errors.push({ field: 'related_id', message: 'Invalid data' });
+      this.errors.push({
+        field: 'related_id',
+        message: 'Invalid data',
+      });
     }
 
     return valid;
@@ -39,7 +46,10 @@ class Endorsement extends Model {
     valid = validator.isLength(this.review, { min: 1, max: 255 });
 
     if (!valid) {
-      this.errors.push({ field: 'review', message: 'Invalid length' });
+      this.errors.push({
+        field: 'review',
+        message: 'Invalid length',
+      });
     }
 
     return valid;
@@ -50,7 +60,10 @@ class Endorsement extends Model {
     valid = validator.isLength(this.reviewer, { min: 1, max: 255 });
 
     if (!valid) {
-      this.errors.push({ field: 'reviewer', message: 'Invalid length' });
+      this.errors.push({
+        field: 'reviewer',
+        message: 'Invalid length',
+      });
     }
 
     return valid;

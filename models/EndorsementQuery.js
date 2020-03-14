@@ -44,6 +44,15 @@ class EndorsementQuery {
       .del();
   }
 
+  async deleteByIdAndType(id, type) {
+    const delResponse = await knex(this.tablename)
+      .where('related_id', id)
+      .where('type', type)
+      .del();
+
+    return delResponse;
+  }
+
   async findById(id) {
     const result = await knex
       .select('*')

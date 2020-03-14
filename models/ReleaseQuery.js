@@ -79,9 +79,10 @@ class ReleaseQuery {
     const release = await this.find(id);
 
     if (release && release.deleteFile()) {
-      return await knex(this.tablename)
+      const delResponse = await knex(this.tablename)
         .where('id', id)
         .del();
+      return delResponse;
     } else {
       return false;
     }

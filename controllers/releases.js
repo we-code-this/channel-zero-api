@@ -1,5 +1,8 @@
 import fs from 'fs-extra';
 import ReleaseQuery from '../models/ReleaseQuery';
+import ReleaseDiscQuery from '../models/ReleaseDiscQuery';
+import ReleaseCreditQuery from '../models/ReleaseCreditQuery';
+import EndorsementQuery from '../models/EndorsementQuery';
 import UserQuery from '../models/UserQuery';
 
 export default {
@@ -34,9 +37,16 @@ export default {
     }
   },
   del: async (req, reply) => {
-    const deleted = await new ReleaseQuery().delete(req.body.id);
+    const releaseId = req.body.id;
+    const deleted = await new ReleaseQuery().delete(releaseId);
 
     if (deleted) {
+      await new ReleaseDiscQuery().deleteByReleaseId(releaseId);
+      await new ReleaseCreditQuery().deleteByReleaseId(releaseId);
+      await new EndorsementQuery().deleteByIdAndType(
+        releaseId,
+        'release',
+      );
       reply.send(deleted);
     } else {
       reply.status(404).send();
