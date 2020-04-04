@@ -36,6 +36,10 @@ export default {
     const vendors = await new VendorQuery().all();
     reply.send(vendors);
   },
+  getByName: async (req, reply) => {
+    const vendors = await new VendorQuery().getByName();
+    reply.send(vendors);
+  },
   getOneById: async (req, reply) => {
     const vendor = await new VendorQuery().findById(req.params.id);
 

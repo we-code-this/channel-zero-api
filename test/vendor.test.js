@@ -4,19 +4,19 @@ import { login } from './login';
 
 const expect = chai.expect;
 
-describe('vendors', function() {
+describe('vendors', function () {
   let app;
 
-  before(function() {
+  before(function () {
     app = buildApp();
   });
 
-  after(function() {
+  after(function () {
     app.close();
   });
 
-  describe('GET /vendor/:id', function() {
-    it('should return the vendor with a id 1', async function() {
+  describe('GET /vendor/:id', function () {
+    it('should return the vendor with a id 1', async function () {
       const response = await app.inject({
         method: 'GET',
         url: '/vendor/1',
@@ -27,7 +27,7 @@ describe('vendors', function() {
       expect(JSON.parse(response.payload).name).to.equal('Vendor 1');
     });
 
-    it("should return 404 if vendor record doesn't exist in database", async function() {
+    it("should return 404 if vendor record doesn't exist in database", async function () {
       const response = await app.inject({
         method: 'GET',
         url: '/vendor/2000',
@@ -35,10 +35,25 @@ describe('vendors', function() {
 
       expect(response.statusCode).to.equal(404);
     });
+
+    describe.only('GET /vendors/by/name', function () {
+      it('should return all vendors sorted by name', async function () {
+        const response = await app.inject({
+          method: 'GET',
+          url: '/vendors/by/name',
+        });
+
+        const results = JSON.parse(response.payload);
+
+        expect(results[0].name).to.equal('Vendor 1');
+        expect(results[1].name).to.equal('Vendor 10');
+        expect(results[2].name).to.equal('Vendor 2');
+      });
+    });
   });
 
-  describe('PATCH /vendor', function() {
-    it('should update vendor database record', async function() {
+  describe('PATCH /vendor', function () {
+    it('should update vendor database record', async function () {
       const token = await login(app);
       const getResponse = await app.inject({
         method: 'GET',
@@ -66,7 +81,7 @@ describe('vendors', function() {
       expect(JSON.parse(response.payload).name).to.equal(newName);
     });
 
-    it('should sanitize name', async function() {
+    it('should sanitize name', async function () {
       const token = await login(app);
       const response = await app.inject({
         method: 'PATCH',
@@ -85,7 +100,7 @@ describe('vendors', function() {
       );
     });
 
-    it("should return name field error of 'Invalid length'", async function() {
+    it("should return name field error of 'Invalid length'", async function () {
       const token = await login(app);
       const response = await app.inject({
         method: 'PATCH',
@@ -109,8 +124,8 @@ describe('vendors', function() {
     });
   });
 
-  describe('GET /vendors', function() {
-    it('should return 10 vendors', async function() {
+  describe('GET /vendors', function () {
+    it('should return 10 vendors', async function () {
       const response = await app.inject({
         method: 'GET',
         url: '/vendors',
@@ -121,8 +136,8 @@ describe('vendors', function() {
       expect(JSON.parse(response.payload).length).to.equal(10);
     });
 
-    describe('GET /vendors/range/:offset/:limit/:order', function() {
-      it("should return vendor with id of 6 with offset 1, limit 5 and order 'asc'", async function() {
+    describe('GET /vendors/range/:offset/:limit/:order', function () {
+      it("should return vendor with id of 6 with offset 1, limit 5 and order 'asc'", async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/vendors/range/1/5/asc',
@@ -135,8 +150,8 @@ describe('vendors', function() {
       });
     });
 
-    describe('GET /vendors/count', function() {
-      it('should return the count of all vendors', async function() {
+    describe('GET /vendors/count', function () {
+      it('should return the count of all vendors', async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/vendors/count',
@@ -147,8 +162,8 @@ describe('vendors', function() {
     });
   });
 
-  describe('POST /vendor', function() {
-    it('should add vendor record to database', async function() {
+  describe('POST /vendor', function () {
+    it('should add vendor record to database', async function () {
       const token = await login(app);
       const name = 'Vendor 10001';
       const response = await app.inject({
@@ -168,7 +183,7 @@ describe('vendors', function() {
       expect(vendor.name).to.equal(name);
     });
 
-    it('should sanitize name', async function() {
+    it('should sanitize name', async function () {
       const token = await login(app);
       const response = await app.inject({
         method: 'POST',
@@ -187,7 +202,7 @@ describe('vendors', function() {
       );
     });
 
-    it('should sanitize icon_class', async function() {
+    it('should sanitize icon_class', async function () {
       const token = await login(app);
       const response = await app.inject({
         method: 'POST',
@@ -207,8 +222,8 @@ describe('vendors', function() {
     });
   });
 
-  describe('DELETE /vendor', function() {
-    it('should delete vendor database record', async function() {
+  describe('DELETE /vendor', function () {
+    it('should delete vendor database record', async function () {
       const token = await login(app);
       const beforeResponse = await app.inject({
         method: 'GET',
@@ -236,7 +251,7 @@ describe('vendors', function() {
       expect(afterResponse.statusCode).to.equal(404);
     });
 
-    it('should return 404 when trying to delete vendor that doesn’t exist', async function() {
+    it('should return 404 when trying to delete vendor that doesn’t exist', async function () {
       const token = await login(app);
       const response = await app.inject({
         method: 'DELETE',

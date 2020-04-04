@@ -19,7 +19,7 @@ class VendorQuery {
       .from(this.tablename)
       .orderBy('name', order);
 
-    this.items = results.map(function(record) {
+    this.items = results.map(function (record) {
       return new Vendor(record);
     });
 
@@ -27,9 +27,7 @@ class VendorQuery {
   }
 
   async delete(id) {
-    return await knex(this.tablename)
-      .where('id', id)
-      .del();
+    return await knex(this.tablename).where('id', id).del();
   }
 
   async findById(id) {
@@ -62,7 +60,7 @@ class VendorQuery {
       .orderBy('created_at', order);
 
     this.items = await Promise.all(
-      results.map(async function(record) {
+      results.map(async function (record) {
         return await new Vendor(record);
       }),
     );
@@ -97,6 +95,25 @@ class VendorQuery {
     }
   }
 
+  async getByName() {
+    if (this.items) {
+      return this.items;
+    }
+
+    const results = await knex
+      .select('*')
+      .from(this.tablename)
+      .orderBy('name', 'ASC');
+
+    this.items = await Promise.all(
+      results.map(async function (record) {
+        return await new Vendor(record);
+      }),
+    );
+
+    return this.items;
+  }
+
   async update(updatedFields) {
     const { id, ...remainingUpdatedFields } = updatedFields;
     const oldVendor = await this.findById(id);
@@ -111,13 +128,11 @@ class VendorQuery {
     const isValid = vendor.valid();
 
     if (isValid) {
-      await knex(this.tablename)
-        .where('id', id)
-        .update({
-          name: vendor.name,
-          icon_class: vendor.icon_class,
-          updated_at: vendor.updated_at,
-        });
+      await knex(this.tablename).where('id', id).update({
+        name: vendor.name,
+        icon_class: vendor.icon_class,
+        updated_at: vendor.updated_at,
+      });
 
       return await this.findById(id);
     } else {

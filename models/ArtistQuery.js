@@ -26,7 +26,7 @@ class ArtistQuery {
       .orderBy('created_at', order);
 
     this.items = await Promise.all(
-      results.map(async function(record) {
+      results.map(async function (record) {
         return await new Artist(record).withRelated();
       }),
     );
@@ -36,7 +36,7 @@ class ArtistQuery {
 
   async getByName() {
     if (this.items) {
-      return items;
+      return this.items;
     }
 
     const results = await knex
@@ -45,7 +45,7 @@ class ArtistQuery {
       .orderBy('name', 'ASC');
 
     this.items = await Promise.all(
-      results.map(async function(record) {
+      results.map(async function (record) {
         return await new Artist(record).withRelated();
       }),
     );
@@ -100,13 +100,11 @@ class ArtistQuery {
     const isValid = artist.valid();
 
     if (isValid) {
-      await knex(this.tablename)
-        .where('slug', slug)
-        .update({
-          name: artist.name,
-          description: artist.description,
-          updated_at: artist.updated_at,
-        });
+      await knex(this.tablename).where('slug', slug).update({
+        name: artist.name,
+        description: artist.description,
+        updated_at: artist.updated_at,
+      });
 
       return await this.findBySlug(slug);
     } else {
@@ -122,9 +120,7 @@ class ArtistQuery {
         error: 'Unable to delete artist with releases',
       };
     } else {
-      return await knex(this.tablename)
-        .where('id', id)
-        .del();
+      return await knex(this.tablename).where('id', id).del();
     }
   }
 
