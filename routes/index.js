@@ -6,6 +6,7 @@ import endorsementRoutes from './endorsements';
 import labelRoutes from './labels';
 import promoRoutes from './promos';
 import releaseRoutes from './releases';
+import releaseVendorRoutes from './release_vendors';
 import discRoutes from './discs';
 import creditRoutes from './credits';
 import featureRoutes from './features';
@@ -14,7 +15,7 @@ import vendorRoutes from './vendors';
 import videoRoutes from './videos';
 import userRoutes from './users';
 
-const routes = fastify => {
+const routes = (fastify) => {
   fastify.get('/health', async (req, reply) => {
     reply.send('OK');
   });
@@ -26,6 +27,7 @@ const routes = fastify => {
   labelRoutes(fastify);
   promoRoutes(fastify);
   releaseRoutes(fastify);
+  releaseVendorRoutes(fastify);
   discRoutes(fastify);
   creditRoutes(fastify);
   trackRoutes(fastify);
