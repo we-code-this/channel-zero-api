@@ -43,12 +43,12 @@ class Endorsement extends Model {
 
   validReview() {
     let valid = false;
-    valid = validator.isLength(this.review, { min: 1, max: 255 });
+    valid = validator.isLength(this.review, { min: 1 });
 
     if (!valid) {
       this.errors.push({
         field: 'review',
-        message: 'Invalid length',
+        message: 'Review is required',
       });
     }
 

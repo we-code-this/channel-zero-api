@@ -36,7 +36,7 @@ describe('vendors', function () {
       expect(response.statusCode).to.equal(404);
     });
 
-    describe.only('GET /vendors/by/name', function () {
+    describe('GET /vendors/by/name', function () {
       it('should return all vendors sorted by name', async function () {
         const response = await app.inject({
           method: 'GET',
