@@ -1,6 +1,7 @@
 import fileType from 'file-type';
 import crypto from 'crypto';
 import validator from 'validator';
+import moment from 'moment';
 import Model from './Model';
 
 import { sanitize, slugify } from '../lib/strings';
@@ -18,7 +19,14 @@ class Article extends Model {
     this.title = sanitize(this.title);
     this.summary = sanitize(this.summary);
     this.description = sanitize(this.description);
-    this.publish_date = sanitize(this.publish_date);
+
+    if (typeof this.publish_date === 'string') {
+      this.publish_date = sanitize(this.publish_date);
+    } else {
+      this.publish_date = moment(this.publish_date).format(
+        'YYYY-MM-DD',
+      );
+    }
 
     if (!this.create && this.filename) {
       this.url = urls('articles', this.filename);

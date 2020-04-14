@@ -49,8 +49,6 @@ class ArticleQuery {
         .from(this.tablename)
         .where(`${this.tablename}.id`, normalizeID(id));
 
-      console.log('article res:', res);
-
       return new Article(res[0]);
     } else {
       return { errors: article.validationErrors() };

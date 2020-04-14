@@ -46,7 +46,7 @@ export default {
       reply.status(404).send();
     }
   },
-  get: async function(req, reply) {
+  get: async function (req, reply) {
     const articles = await new ArticleQuery().get();
     reply.send(articles);
   },
