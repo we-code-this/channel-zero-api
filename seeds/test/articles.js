@@ -1,7 +1,7 @@
-exports.seed = function(knex, Promise) {
+exports.seed = function (knex, Promise) {
   return knex('articles')
     .del()
-    .then(function() {
+    .then(function () {
       return knex('articles').insert([
         {
           id: 1,
@@ -12,6 +12,7 @@ exports.seed = function(knex, Promise) {
           description: 'Article 1 description',
           filename: 'example.png',
           published: true,
+          publish_date: '2019-01-01',
           created_at: '2019-01-19 12:00:00',
         },
         {
@@ -23,6 +24,7 @@ exports.seed = function(knex, Promise) {
           description: 'Article 2 description',
           filename: 'example.png',
           published: true,
+          publish_date: '2019-01-02',
           created_at: '2019-01-19 12:01:00',
         },
         {
@@ -34,6 +36,7 @@ exports.seed = function(knex, Promise) {
           description: 'Article 3 description',
           filename: 'example.png',
           published: true,
+          publish_date: '2019-01-03',
           created_at: '2019-01-19 12:02:00',
         },
         {
@@ -45,6 +48,7 @@ exports.seed = function(knex, Promise) {
           description: 'Article 4 description',
           filename: 'example.png',
           published: true,
+          publish_date: '2019-01-04',
           created_at: '2019-01-19 12:03:00',
         },
         {
@@ -56,6 +60,7 @@ exports.seed = function(knex, Promise) {
           description: 'Article 5 description',
           filename: 'example.png',
           published: true,
+          publish_date: '2019-01-05',
           created_at: '2019-01-19 12:04:00',
         },
         {
@@ -67,6 +72,7 @@ exports.seed = function(knex, Promise) {
           description: 'Article 6 description',
           filename: 'example.png',
           published: true,
+          publish_date: '2019-01-06',
           created_at: '2019-01-19 12:05:00',
         },
         {
@@ -78,6 +84,7 @@ exports.seed = function(knex, Promise) {
           description: 'Article 7 description',
           filename: 'example.png',
           published: true,
+          publish_date: '2019-01-07',
           created_at: '2019-01-19 12:06:00',
         },
         {
@@ -89,6 +96,7 @@ exports.seed = function(knex, Promise) {
           description: 'Article 8 description',
           filename: 'example.png',
           published: true,
+          publish_date: '2019-01-08',
           created_at: '2019-01-19 12:07:00',
         },
         {
@@ -100,6 +108,7 @@ exports.seed = function(knex, Promise) {
           description: 'Article 9 description',
           filename: 'example.png',
           published: true,
+          publish_date: '2019-01-09',
           created_at: '2019-01-19 12:08:00',
         },
         {
@@ -111,6 +120,7 @@ exports.seed = function(knex, Promise) {
           description: 'Article 10 description',
           filename: 'example.png',
           published: false,
+          publish_date: '2019-01-10',
           created_at: '2019-01-19 12:09:00',
         },
         {
@@ -121,6 +131,7 @@ exports.seed = function(knex, Promise) {
           summary: 'Article 11 summary',
           description: 'Article 11 description',
           published: true,
+          publish_date: '2019-01-11',
           created_at: '2019-01-19 12:10:00',
         },
       ]);

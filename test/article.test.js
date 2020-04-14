@@ -81,35 +81,29 @@ describe('articles', function () {
     });
 
     describe('GET /articles/:limit/:order', function () {
-      it("should return article with id of 11 when :order is 'desc'", async function () {
+      it("should return article with publish_date of 2019-01-11 when :order is 'desc'", async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/articles/1/desc',
         });
-        expect(JSON.parse(response.payload)[0].id).to.equal(11);
+        expect(JSON.parse(response.payload)[0].publish_date).to.equal(
+          '2019-01-11',
+        );
       });
 
-      it("should return article with id of 1 when :order is 'asc'", async function () {
+      it("should return article with publish_date of 2019-01-01 when :order is 'asc'", async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/articles/1/asc',
         });
-        expect(JSON.parse(response.payload)[0].id).to.equal(1);
-      });
-
-      it('should return Object', async function () {
-        const response = await app.inject({
-          method: 'GET',
-          url: '/articles/1',
-        });
-        expect(JSON.parse(response.payload)[0]).to.be.an.instanceOf(
-          Object,
+        expect(JSON.parse(response.payload)[0].publish_date).to.equal(
+          '2019-01-01',
         );
       });
     });
 
     describe('GET /articles/range/:offset/:limit/:order', function () {
-      it("should return article with id of 11 with offset 1, limit 10 and order 'asc'", async function () {
+      it("should return article with publish_date of 2019-01-11 with offset 1, limit 10 and order 'asc'", async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/articles/range/1/10/asc',
@@ -118,7 +112,9 @@ describe('articles', function () {
         const results = JSON.parse(response.payload);
 
         expect(results[0].id).to.equal(2);
-        expect(results[results.length - 1].id).to.equal(11);
+        expect(results[results.length - 1].publish_date).to.equal(
+          '2019-01-11',
+        );
       });
     });
 
@@ -156,7 +152,9 @@ describe('articles', function () {
         url: `/article/next/${currentArticle.id}`,
       });
 
-      expect(JSON.parse(nextArticleResponse.payload).id).to.equal(2);
+      expect(
+        JSON.parse(nextArticleResponse.payload).publish_date,
+      ).to.equal('2019-01-02');
       expect(
         JSON.parse(nextArticleResponse.payload).published,
       ).to.equal(true);
@@ -201,7 +199,9 @@ describe('articles', function () {
         url: `/article/prev/${currentArticle.id}`,
       });
 
-      expect(JSON.parse(prevArticleResponse.payload).id).to.equal(1);
+      expect(
+        JSON.parse(prevArticleResponse.payload).publish_date,
+      ).to.equal('2019-01-01');
       expect(
         JSON.parse(prevArticleResponse.payload).published,
       ).to.equal(true);
@@ -256,6 +256,7 @@ describe('articles', function () {
       form.append('title', 'Article 1000');
       form.append('summary', 'Test summary');
       form.append('description', 'Test description');
+      form.append('publish_date', '2020-01-01');
 
       let opts = {
         url: '/article',
@@ -286,6 +287,7 @@ describe('articles', function () {
       firstForm.append('title', title);
       firstForm.append('summary', 'Test summary');
       firstForm.append('description', 'Test description');
+      firstForm.append('publish_date', '2020-01-01');
 
       let firstOpts = {
         url: '/article',
@@ -306,6 +308,7 @@ describe('articles', function () {
       secondForm.append('title', title);
       secondForm.append('summary', 'Test summary');
       secondForm.append('description', 'Test description');
+      secondForm.append('publish_date', '2020-01-01');
 
       let secondOpts = {
         url: '/article',
@@ -329,6 +332,7 @@ describe('articles', function () {
       form.append('title', 'Article 1002');
       form.append('summary', 'Test summary');
       form.append('description', 'Test description');
+      form.append('publish_date', '2020-01-01');
 
       let opts = {
         url: '/article',
@@ -373,6 +377,7 @@ describe('articles', function () {
       form.append('title', '');
       form.append('summary', 'Test summary');
       form.append('description', 'Test description');
+      form.append('publish_date', '2020-01-01');
 
       let opts = {
         url: '/article',
@@ -427,6 +432,7 @@ describe('articles', function () {
       form.append('image', rs);
       form.append('title', 'Article 1003');
       form.append('summary', 'Test summary');
+      form.append('publish_date', '2020-01-01');
 
       let opts = {
         url: '/article',
@@ -454,6 +460,7 @@ describe('articles', function () {
       form.append('title', 'Article 1003');
       form.append('summary', 'Test summary');
       form.append('description', '');
+      form.append('publish_date', '2020-01-01');
 
       let opts = {
         url: '/article',
@@ -484,6 +491,7 @@ describe('articles', function () {
         'description',
         "<script>console.log('yo')</script> article description",
       );
+      form.append('publish_date', '2020-01-01');
 
       let opts = {
         url: '/article',
@@ -513,6 +521,7 @@ describe('articles', function () {
         "<script>console.log('yo')</script> article summary",
       );
       form.append('description', 'Test description');
+      form.append('publish_date', '2020-01-01');
 
       let opts = {
         url: '/article',
@@ -542,6 +551,7 @@ describe('articles', function () {
       );
       form.append('summary', 'Test summary');
       form.append('description', 'Test description');
+      form.append('publish_date', '2020-01-01');
 
       let opts = {
         url: '/article',
@@ -556,6 +566,36 @@ describe('articles', function () {
 
       expect(JSON.parse(response.payload).title).to.equal(
         'Article 1005',
+      );
+    });
+
+    it('should sanitize publish_date', async function () {
+      const token = await login(app);
+      let form = new FormData();
+      let rs = fs.createReadStream(filePath);
+
+      form.append('image', rs);
+      form.append('title', 'Article 1005');
+      form.append('summary', 'Test summary');
+      form.append('description', 'Test description');
+      form.append(
+        'publish_date',
+        "<script>console.log('yo')</script> 2020-01-01",
+      );
+
+      let opts = {
+        url: '/article',
+        method: 'POST',
+        payload: form,
+        headers: form.getHeaders({
+          Authorization: `Bearer ${token}`,
+        }),
+      };
+
+      const response = await app.inject(opts);
+
+      expect(JSON.parse(response.payload).publish_date).to.equal(
+        '2020-01-01',
       );
     });
   });
@@ -602,6 +642,7 @@ describe('articles', function () {
       original_form.append('title', 'Test Article');
       original_form.append('summary', 'Test article summary');
       original_form.append('description', 'Test article description');
+      original_form.append('publish_date', '2020-01-01');
 
       let original_opts = {
         url: '/article',
@@ -656,6 +697,7 @@ describe('articles', function () {
       form.append('summary', 'Test summary');
       form.append('description', 'Test description');
       form.append('published', 'false');
+      form.append('publish_date', '2020-01-01');
 
       let opts = {
         url: '/article',
@@ -700,6 +742,7 @@ describe('articles', function () {
       form.append('summary', 'Test summary');
       form.append('description', 'Test description');
       form.append('published', 'true');
+      form.append('publish_date', '2020-01-01');
 
       let opts = {
         url: '/article',
@@ -744,6 +787,7 @@ describe('articles', function () {
       form.append('description', 'Test description');
       form.append('summary', 'Test summary');
       form.append('published', 'true');
+      form.append('publish_date', '2020-01-01');
 
       let opts = {
         url: '/article',

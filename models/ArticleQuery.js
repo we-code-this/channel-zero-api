@@ -120,7 +120,7 @@ class ArticleQuery {
         .from(this.tablename)
         .limit(limit)
         .offset(offset)
-        .orderBy('created_at', order);
+        .orderBy('publish_date', order);
     } else {
       results = await knex
         .select('*')
@@ -128,7 +128,7 @@ class ArticleQuery {
         .where('published', true)
         .limit(limit)
         .offset(offset)
-        .orderBy('created_at', order);
+        .orderBy('publish_date', order);
     }
 
     this.items = results.map(function (record) {
@@ -158,35 +158,55 @@ class ArticleQuery {
   }
 
   async getNext(id) {
-    const res = await knex
-      .select('*')
-      .from(this.tablename)
-      .where(`${this.tablename}.published`, true)
-      .where(`${this.tablename}.id`, '>', id)
-      .limit(1)
-      .orderBy('id', 'asc');
+    const current = await this.find(id);
 
-    if (res.length > 0) {
-      return new Article(res[0]);
-    } else {
-      return undefined;
+    if (current) {
+      const res = await knex
+        .select('*')
+        .from(this.tablename)
+        .where(`${this.tablename}.id`, '!=', id)
+        .where(`${this.tablename}.published`, true)
+        .where(
+          `${this.tablename}.publish_date`,
+          '>=',
+          current.publish_date,
+        )
+        .where(`${this.tablename}.title`, '>', current.title)
+        .limit(1)
+        .orderBy('id', 'asc');
+
+      if (res.length > 0) {
+        return new Article(res[0]);
+      }
     }
+
+    return undefined;
   }
 
   async getPrev(id) {
-    const res = await knex
-      .select('*')
-      .from(this.tablename)
-      .where(`${this.tablename}.published`, true)
-      .where(`${this.tablename}.id`, '<', id)
-      .limit(1)
-      .orderBy('id', 'desc');
+    const current = await this.find(id);
 
-    if (res.length > 0) {
-      return new Article(res[0]);
-    } else {
-      return undefined;
+    if (current) {
+      const res = await knex
+        .select('*')
+        .from(this.tablename)
+        .where(`${this.tablename}.id`, '!=', id)
+        .where(`${this.tablename}.published`, true)
+        .where(
+          `${this.tablename}.publish_date`,
+          '<=',
+          current.publish_date,
+        )
+        .where(`${this.tablename}.title`, '<', current.title)
+        .limit(1)
+        .orderBy('id', 'desc');
+
+      if (res.length > 0) {
+        return new Article(res[0]);
+      }
     }
+
+    return undefined;
   }
 
   async publish(id) {

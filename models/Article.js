@@ -18,10 +18,7 @@ class Article extends Model {
     this.title = sanitize(this.title);
     this.summary = sanitize(this.summary);
     this.description = sanitize(this.description);
-
-    if (this.publish_date) {
-      this.publish_date = sanitize(this.publish_date);
-    }
+    this.publish_date = sanitize(this.publish_date);
 
     if (!this.create && this.filename) {
       this.url = urls('articles', this.filename);
@@ -55,10 +52,7 @@ class Article extends Model {
       valid = this.validTitle();
     }
 
-    if (this.publish_date) {
-      valid = this.validPublishDate();
-    }
-
+    valid = valid && this.validPublishDate();
     valid = valid && this.validDescription();
 
     return valid;
