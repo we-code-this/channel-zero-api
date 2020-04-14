@@ -39,6 +39,7 @@ class ArticleQuery {
           description: article.description,
           filename: article.filename,
           published: article.published,
+          publish_date: article.publish_date,
         },
         ['id'],
       );
@@ -57,13 +58,9 @@ class ArticleQuery {
   }
 
   async deleteQuery(id, article) {
-    await knex('features')
-      .where('article_id', article.id)
-      .del();
+    await knex('features').where('article_id', article.id).del();
 
-    return await knex(this.tablename)
-      .where('id', id)
-      .del();
+    return await knex(this.tablename).where('id', id).del();
   }
 
   async delete(id) {
@@ -134,7 +131,7 @@ class ArticleQuery {
         .orderBy('created_at', order);
     }
 
-    this.items = results.map(function(record) {
+    this.items = results.map(function (record) {
       return new Article(record);
     });
 
@@ -152,7 +149,7 @@ class ArticleQuery {
       .orderBy('title', 'ASC');
 
     this.items = await Promise.all(
-      results.map(async function(record) {
+      results.map(async function (record) {
         return await new Article(record);
       }),
     );
@@ -223,24 +220,22 @@ class ArticleQuery {
 
     if (isValid && (await article.saveFile())) {
       if (article.image) {
-        await knex(this.tablename)
-          .where('id', id)
-          .update({
-            title: article.title,
-            summary: article.summary,
-            description: article.description,
-            filename: article.filename,
-            updated_at: article.updated_at,
-          });
+        await knex(this.tablename).where('id', id).update({
+          title: article.title,
+          summary: article.summary,
+          description: article.description,
+          filename: article.filename,
+          publish_date: article.publish_date,
+          updated_at: article.updated_at,
+        });
       } else {
-        await knex(this.tablename)
-          .where('id', id)
-          .update({
-            title: article.title,
-            summary: article.summary,
-            description: article.description,
-            updated_at: article.updated_at,
-          });
+        await knex(this.tablename).where('id', id).update({
+          title: article.title,
+          summary: article.summary,
+          description: article.description,
+          publish_date: article.publish_date,
+          updated_at: article.updated_at,
+        });
       }
 
       return await this.find(id);

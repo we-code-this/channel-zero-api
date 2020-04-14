@@ -19,6 +19,10 @@ class Article extends Model {
     this.summary = sanitize(this.summary);
     this.description = sanitize(this.description);
 
+    if (this.publish_date) {
+      this.publish_date = sanitize(this.publish_date);
+    }
+
     if (!this.create && this.filename) {
       this.url = urls('articles', this.filename);
     }
@@ -51,6 +55,10 @@ class Article extends Model {
       valid = this.validTitle();
     }
 
+    if (this.publish_date) {
+      valid = this.validPublishDate();
+    }
+
     valid = valid && this.validDescription();
 
     return valid;
@@ -59,7 +67,7 @@ class Article extends Model {
   validExtension() {
     let valid = false;
 
-    this.allowedExtensions.map(extension => {
+    this.allowedExtensions.map((extension) => {
       if (extension === this.extension) {
         valid = true;
       }
@@ -108,6 +116,22 @@ class Article extends Model {
       this.errors.push({
         field: 'description',
         message: 'Description required',
+      });
+    }
+
+    return valid;
+  }
+
+  validPublishDate() {
+    let valid = validator.matches(
+      this.publish_date,
+      /\d{4}-\d{2}-\d{2}/,
+    );
+
+    if (!valid) {
+      this.errors.push({
+        field: 'publish_date',
+        message: 'Date malformed',
       });
     }
 

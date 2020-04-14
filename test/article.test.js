@@ -15,21 +15,21 @@ const expect = chai.expect;
 
 chai.use(dateString);
 
-describe('articles', function() {
+describe('articles', function () {
   let articlesDir = path.join(fileRoot(), assetDirectories.articles);
   let app;
 
-  before(function() {
+  before(function () {
     rimraf(articlesDir, () => {});
     app = buildApp();
   });
 
-  after(function() {
+  after(function () {
     app.close();
   });
 
-  describe('GET /articles', function() {
-    it('should return 10 articles', async function() {
+  describe('GET /articles', function () {
+    it('should return 10 articles', async function () {
       const response = await app.inject({
         method: 'GET',
         url: '/articles',
@@ -40,8 +40,8 @@ describe('articles', function() {
       expect(JSON.parse(response.payload).length).to.equal(10);
     });
 
-    describe('GET /articles/count', function() {
-      it('should return count of 11', async function() {
+    describe('GET /articles/count', function () {
+      it('should return count of 11', async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/articles/count',
@@ -51,8 +51,8 @@ describe('articles', function() {
       });
     });
 
-    describe('GET /articles/count/published', function() {
-      it('should return count of 10', async function() {
+    describe('GET /articles/count/published', function () {
+      it('should return count of 10', async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/articles/count/published',
@@ -62,8 +62,8 @@ describe('articles', function() {
       });
     });
 
-    describe('GET /articles/:limit', function() {
-      it('should return 9 articles if :limit is 9', async function() {
+    describe('GET /articles/:limit', function () {
+      it('should return 9 articles if :limit is 9', async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/articles/9',
@@ -71,7 +71,7 @@ describe('articles', function() {
         expect(JSON.parse(response.payload).length).to.equal(9);
       });
 
-      it('should return 7 articles if :limit is 7', async function() {
+      it('should return 7 articles if :limit is 7', async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/articles/7',
@@ -80,8 +80,8 @@ describe('articles', function() {
       });
     });
 
-    describe('GET /articles/:limit/:order', function() {
-      it("should return article with id of 11 when :order is 'desc'", async function() {
+    describe('GET /articles/:limit/:order', function () {
+      it("should return article with id of 11 when :order is 'desc'", async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/articles/1/desc',
@@ -89,7 +89,7 @@ describe('articles', function() {
         expect(JSON.parse(response.payload)[0].id).to.equal(11);
       });
 
-      it("should return article with id of 1 when :order is 'asc'", async function() {
+      it("should return article with id of 1 when :order is 'asc'", async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/articles/1/asc',
@@ -97,7 +97,7 @@ describe('articles', function() {
         expect(JSON.parse(response.payload)[0].id).to.equal(1);
       });
 
-      it('should return Object', async function() {
+      it('should return Object', async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/articles/1',
@@ -108,8 +108,8 @@ describe('articles', function() {
       });
     });
 
-    describe('GET /articles/range/:offset/:limit/:order', function() {
-      it("should return article with id of 11 with offset 1, limit 10 and order 'asc'", async function() {
+    describe('GET /articles/range/:offset/:limit/:order', function () {
+      it("should return article with id of 11 with offset 1, limit 10 and order 'asc'", async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/articles/range/1/10/asc',
@@ -122,8 +122,8 @@ describe('articles', function() {
       });
     });
 
-    describe('GET /articles/by/title', function() {
-      it('should return all articles sorted by title', async function() {
+    describe('GET /articles/by/title', function () {
+      it('should return all articles sorted by title', async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/articles/by/title',
@@ -138,8 +138,8 @@ describe('articles', function() {
     });
   });
 
-  describe('GET /article/next/:id', function() {
-    it('should return the next published article', async function() {
+  describe('GET /article/next/:id', function () {
+    it('should return the next published article', async function () {
       const currentArticleResponse = await app.inject({
         method: 'GET',
         url: '/article/article-1',
@@ -162,7 +162,7 @@ describe('articles', function() {
       ).to.equal(true);
     });
 
-    it('should return 404 when no article available with higher id', async function() {
+    it('should return 404 when no article available with higher id', async function () {
       const currentArticleResponse = await app.inject({
         method: 'GET',
         url: '/article/article-11',
@@ -183,8 +183,8 @@ describe('articles', function() {
     });
   });
 
-  describe('GET /article/prev/:id', function() {
-    it('should return the previous published article', async function() {
+  describe('GET /article/prev/:id', function () {
+    it('should return the previous published article', async function () {
       const currentArticleResponse = await app.inject({
         method: 'GET',
         url: '/article/article-2',
@@ -207,7 +207,7 @@ describe('articles', function() {
       ).to.equal(true);
     });
 
-    it('should return 404 when no article available with lower id', async function() {
+    it('should return 404 when no article available with lower id', async function () {
       const currentArticleResponse = await app.inject({
         method: 'GET',
         url: '/article/article-1',
@@ -228,8 +228,8 @@ describe('articles', function() {
     });
   });
 
-  describe('GET /article/:slug', function() {
-    it('should return the article that has the :slug supplied', async function() {
+  describe('GET /article/:slug', function () {
+    it('should return the article that has the :slug supplied', async function () {
       const response = await app.inject({
         method: 'GET',
         url: '/article/article-1',
@@ -238,8 +238,8 @@ describe('articles', function() {
     });
   });
 
-  describe('POST /article', function() {
-    it('should add article record to database', async function() {
+  describe('POST /article', function () {
+    it('should add article record to database', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -274,7 +274,7 @@ describe('articles', function() {
       expect(JSON.parse(article.payload).slug).to.equal(slug);
     });
 
-    it('should increment article slug when same slug already exists', async function() {
+    it('should increment article slug when same slug already exists', async function () {
       const token = await login(app);
       let firstRs = fs.createReadStream(filePath);
       const title = 'Article 1001';
@@ -323,7 +323,7 @@ describe('articles', function() {
       );
     });
 
-    it('should not return error without an image', async function() {
+    it('should not return error without an image', async function () {
       const token = await login(app);
       let form = new FormData();
       form.append('title', 'Article 1002');
@@ -343,7 +343,28 @@ describe('articles', function() {
       expect(JSON.parse(response.payload).errors).to.have.length(0);
     });
 
-    it('should return error with invalid title', async function() {
+    it('should not return error with valid publish_date', async function () {
+      const token = await login(app);
+      let form = new FormData();
+      form.append('title', 'Article 1003');
+      form.append('summary', 'Test summary');
+      form.append('description', 'Test description');
+      form.append('publish_date', '2019-01-01');
+
+      let opts = {
+        url: '/article',
+        method: 'POST',
+        payload: form,
+        headers: form.getHeaders({
+          Authorization: `Bearer ${token}`,
+        }),
+      };
+
+      const response = await app.inject(opts);
+      expect(JSON.parse(response.payload).errors).to.have.length(0);
+    });
+
+    it('should return error with invalid title', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -370,7 +391,35 @@ describe('articles', function() {
       );
     });
 
-    it('should return error with no description', async function() {
+    it('should return error with invalid publish_date', async function () {
+      const token = await login(app);
+      let form = new FormData();
+      let rs = fs.createReadStream(filePath);
+
+      form.append('image', rs);
+      form.append('title', 'Article 2003');
+      form.append('summary', 'Test summary');
+      form.append('description', 'Test description');
+      form.append('publish_date', 'malformed-date');
+
+      let opts = {
+        url: '/article',
+        method: 'POST',
+        payload: form,
+        headers: form.getHeaders({
+          Authorization: `Bearer ${token}`,
+        }),
+      };
+
+      const response = await app.inject(opts);
+
+      expect(JSON.parse(response.payload)).to.have.property('errors');
+      expect(JSON.parse(response.payload).errors[0].field).to.equal(
+        'publish_date',
+      );
+    });
+
+    it('should return error with no description', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -396,7 +445,7 @@ describe('articles', function() {
       );
     });
 
-    it('should return error with invalid description', async function() {
+    it('should return error with invalid description', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -423,7 +472,7 @@ describe('articles', function() {
       );
     });
 
-    it('should sanitize description', async function() {
+    it('should sanitize description', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -452,7 +501,7 @@ describe('articles', function() {
       );
     });
 
-    it('should sanitize summary', async function() {
+    it('should sanitize summary', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -481,7 +530,7 @@ describe('articles', function() {
       );
     });
 
-    it('should sanitize title', async function() {
+    it('should sanitize title', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -511,8 +560,8 @@ describe('articles', function() {
     });
   });
 
-  describe('PATCH /article', function() {
-    it('should update article record in database', async function() {
+  describe('PATCH /article', function () {
+    it('should update article record in database', async function () {
       const token = await login(app);
       const getResponse = await app.inject({
         method: 'GET',
@@ -544,7 +593,7 @@ describe('articles', function() {
       );
     });
 
-    it('should replace image with new one', async function() {
+    it('should replace image with new one', async function () {
       const token = await login(app);
       let rs = fs.createReadStream(filePath);
       let original_form = new FormData();
@@ -596,8 +645,8 @@ describe('articles', function() {
     });
   });
 
-  describe('PATCH /article/publish', function() {
-    it('should publish an unpublished article', async function() {
+  describe('PATCH /article/publish', function () {
+    it('should publish an unpublished article', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -640,8 +689,8 @@ describe('articles', function() {
     });
   });
 
-  describe('PATCH /article/unpublish', function() {
-    it('should unpublish an published article', async function() {
+  describe('PATCH /article/unpublish', function () {
+    it('should unpublish an published article', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -684,8 +733,8 @@ describe('articles', function() {
     });
   });
 
-  describe('DELETE /article', function() {
-    it('should delete article database record, image file', async function() {
+  describe('DELETE /article', function () {
+    it('should delete article database record, image file', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -732,7 +781,7 @@ describe('articles', function() {
       expect(fs.existsSync(destPath)).to.be.false;
     });
 
-    it('should delete associated feature', async function() {
+    it('should delete associated feature', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -790,7 +839,7 @@ describe('articles', function() {
       expect(afterFeatureResponse.statusCode).to.equal(404);
     });
 
-    it('should return 404 when trying to delete article that doesn’t exist', async function() {
+    it('should return 404 when trying to delete article that doesn’t exist', async function () {
       const token = await login(app);
       const response = await app.inject({
         method: 'DELETE',
