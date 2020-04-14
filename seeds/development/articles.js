@@ -1,7 +1,7 @@
-exports.seed = function(knex, Promise) {
+exports.seed = function (knex, Promise) {
   return knex('articles')
     .del()
-    .then(function() {
+    .then(function () {
       return knex('articles').insert([
         {
           id: 1,
@@ -19,7 +19,8 @@ Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Etiam porta
 Nulla vitae elit libero, a pharetra augue. Curabitur blandit tempus porttitor. Sed posuere consectetur est at lobortis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Cras mattis consectetur purus sit amet fermentum.`,
           filename: '1.jpg',
           published: true,
-          created_at: '2019-01-19 12:00:00'
+          publish_date: '2019-01-01',
+          created_at: '2019-01-19 12:00:00',
         },
         {
           id: 2,
@@ -37,7 +38,8 @@ Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Curabitur b
 Donec id elit non mi porta gravida at eget metus. Cras mattis consectetur purus sit amet fermentum. Maecenas faucibus mollis interdum. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Nullam id dolor id nibh ultricies vehicula ut id elit.`,
           filename: '2.jpg',
           published: true,
-          created_at: '2019-01-19 12:01:00'
+          publish_date: '2019-01-02',
+          created_at: '2019-01-19 12:01:00',
         },
         {
           id: 3,
@@ -55,7 +57,8 @@ Sed posuere consectetur est at lobortis. Nullam quis risus eget urna mollis orna
 Nullam quis risus eget urna mollis ornare vel eu leo. Donec ullamcorper nulla non metus auctor fringilla. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec ullamcorper nulla non metus auctor fringilla. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Aenean lacinia bibendum nulla sed consectetur. Curabitur blandit tempus porttitor.`,
           filename: '3.jpg',
           published: true,
-          created_at: '2019-01-19 12:02:00'
+          publish_date: '2019-01-03',
+          created_at: '2019-01-19 12:02:00',
         },
         {
           id: 4,
@@ -73,7 +76,8 @@ Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus c
 Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Maecenas sed diam eget risus varius blandit sit amet non magna. Nullam quis risus eget urna mollis ornare vel eu leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
           filename: '4.jpg',
           published: true,
-          created_at: '2019-01-19 12:03:00'
+          publish_date: '2019-01-04',
+          created_at: '2019-01-19 12:03:00',
         },
         {
           id: 5,
@@ -91,7 +95,8 @@ Curabitur blandit tempus porttitor. Vestibulum id ligula porta felis euismod sem
 Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec sed odio dui. Maecenas faucibus mollis interdum. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.`,
           filename: '5.jpg',
           published: true,
-          created_at: '2019-01-19 12:04:00'
+          publish_date: '2019-01-04',
+          created_at: '2019-01-19 12:04:00',
         },
         {
           id: 6,
@@ -109,7 +114,8 @@ Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus v
 Donec sed odio dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae elit libero, a pharetra augue. Cras justo odio, dapibus ac facilisis in, egestas eget quam.`,
           filename: '6.jpg',
           published: true,
-          created_at: '2019-01-19 12:05:00'
+          publish_date: '2019-01-05',
+          created_at: '2019-01-19 12:05:00',
         },
         {
           id: 7,
@@ -127,7 +133,8 @@ Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut ferm
 Nulla vitae elit libero, a pharetra augue. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Vestibulum id ligula porta felis euismod semper. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.`,
           filename: '7.jpg',
           published: true,
-          created_at: '2019-01-19 12:06:00'
+          publish_date: '2019-01-06',
+          created_at: '2019-01-19 12:06:00',
         },
         {
           id: 8,
@@ -145,7 +152,8 @@ Maecenas sed diam eget risus varius blandit sit amet non magna. Cras justo odio,
 Etiam porta sem malesuada magna mollis euismod. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Curabitur blandit tempus porttitor. Sed posuere consectetur est at lobortis.`,
           filename: '8.jpg',
           published: true,
-          created_at: '2019-01-19 12:07:00'
+          publish_date: '2019-01-07',
+          created_at: '2019-01-19 12:07:00',
         },
         {
           id: 9,
@@ -163,7 +171,8 @@ Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Donec id elit non 
 Donec id elit non mi porta gravida at eget metus. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam id dolor id nibh ultricies vehicula ut id elit. Vestibulum id ligula porta felis euismod semper. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Donec id elit non mi porta gravida at eget metus.`,
           filename: '9.jpg',
           published: true,
-          created_at: '2019-01-19 12:08:00'
+          publish_date: '2019-01-08',
+          created_at: '2019-01-19 12:08:00',
         },
         {
           id: 10,
@@ -181,7 +190,8 @@ Donec sed odio dui. Aenean eu leo quam. Pellentesque ornare sem lacinia quam ven
 Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Nullam quis risus eget urna mollis ornare vel eu leo. Nulla vitae elit libero, a pharetra augue.`,
           filename: '10.jpg',
           published: true,
-          created_at: '2019-01-19 12:09:00'
+          publish_date: '2019-01-09',
+          created_at: '2019-01-19 12:09:00',
         },
         {
           id: 11,
@@ -198,8 +208,9 @@ Nullam quis risus eget urna mollis ornare vel eu leo. Donec id elit non mi porta
 
 Nulla vitae elit libero, a pharetra augue. Cras mattis consectetur purus sit amet fermentum. Nullam quis risus eget urna mollis ornare vel eu leo. Cras mattis consectetur purus sit amet fermentum. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Etiam porta sem malesuada magna mollis euismod. Cras justo odio, dapibus ac facilisis in, egestas eget quam.`,
           published: true,
-          created_at: '2019-01-19 12:10:00'
-        }
+          publish_date: '2019-01-10',
+          created_at: '2019-01-19 12:10:00',
+        },
       ]);
     });
 };
