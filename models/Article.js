@@ -18,7 +18,7 @@ class Article extends Model {
 
     this.title = sanitize(this.title);
     this.summary = sanitize(this.summary);
-    this.description = sanitize(this.description);
+    this.description = sanitize(this.description, true);
 
     if (typeof this.publish_date === 'string') {
       this.publish_date = sanitize(this.publish_date);
