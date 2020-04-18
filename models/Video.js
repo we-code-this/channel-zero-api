@@ -1,13 +1,51 @@
 import Model from './Model';
 import validator from 'validator';
+import urlParse from 'url-parse';
 import { sanitize } from '../lib/strings';
 
 class Video extends Model {
   constructor(data, create) {
     super(data, create);
 
-    this.src = sanitize(this.src);
+    this.src = this.parseSrc(this.src);
     this.title = sanitize(this.title);
+  }
+
+  parseSrc() {
+    this.src = sanitize(this.src);
+
+    if (
+      this.src.includes('youtube.com') &&
+      !this.src.includes('embed')
+    ) {
+      this.src = this.parseYoutube();
+    }
+
+    if (
+      this.src.includes('vimeo.com') &&
+      !this.src.includes('player')
+    ) {
+      this.src = this.parseVimeo();
+    }
+
+    return this.src;
+  }
+
+  parseVimeo() {
+    const url = urlParse(this.src, true);
+    const identifier = url.pathname.slice(1);
+
+    this.src = `https://player.vimeo.com/video/${identifier}`;
+
+    return this.src;
+  }
+
+  parseYoutube() {
+    const url = urlParse(this.src, true);
+
+    this.src = `https://www.youtube.com/embed/${url.query.v}`;
+
+    return this.src;
   }
 
   valid() {

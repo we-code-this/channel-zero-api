@@ -4,19 +4,19 @@ import { login } from './login';
 
 const expect = chai.expect;
 
-describe('videos', function() {
+describe('videos', function () {
   let app;
 
-  before(function() {
+  before(function () {
     app = buildApp();
   });
 
-  after(function() {
+  after(function () {
     app.close();
   });
 
-  describe('GET /videos', function() {
-    it('should return 10 videos', async function() {
+  describe('GET /videos', function () {
+    it('should return 10 videos', async function () {
       const response = await app.inject({
         method: 'GET',
         url: '/videos',
@@ -28,8 +28,8 @@ describe('videos', function() {
       expect(JSON.parse(response.payload).length).to.equal(10);
     });
 
-    describe('GET /videos/count', function() {
-      it('should return count of 11', async function() {
+    describe('GET /videos/count', function () {
+      it('should return count of 11', async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/videos/count',
@@ -39,8 +39,8 @@ describe('videos', function() {
       });
     });
 
-    describe('GET /videos/:limit', function() {
-      it('should return 11 videos if :limit is 11', async function() {
+    describe('GET /videos/:limit', function () {
+      it('should return 11 videos if :limit is 11', async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/videos/11',
@@ -48,7 +48,7 @@ describe('videos', function() {
         expect(JSON.parse(response.payload).length).to.equal(11);
       });
 
-      it('should return 9 videos if :limit is 9', async function() {
+      it('should return 9 videos if :limit is 9', async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/videos/9',
@@ -57,8 +57,8 @@ describe('videos', function() {
       });
     });
 
-    describe('GET /videos/:limit/:order', function() {
-      it("should return video with id of 11 when :order is 'desc'", async function() {
+    describe('GET /videos/:limit/:order', function () {
+      it("should return video with id of 11 when :order is 'desc'", async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/videos/1/desc',
@@ -66,7 +66,7 @@ describe('videos', function() {
         expect(JSON.parse(response.payload)[0].id).to.equal(11);
       });
 
-      it("should return video with id of 1 when :order is 'asc'", async function() {
+      it("should return video with id of 1 when :order is 'asc'", async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/videos/1/asc',
@@ -75,8 +75,8 @@ describe('videos', function() {
       });
     });
 
-    describe('GET /videos/range/:offset/:limit/:order', function() {
-      it("should return video with id of 11 with :offset 1, :limit 10 and :order 'asc'", async function() {
+    describe('GET /videos/range/:offset/:limit/:order', function () {
+      it("should return video with id of 11 with :offset 1, :limit 10 and :order 'asc'", async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/videos/range/1/10/asc',
@@ -89,8 +89,8 @@ describe('videos', function() {
       });
     });
 
-    describe('GET /videos/by/title', function() {
-      it('should return all videos sorted by title', async function() {
+    describe('GET /videos/by/title', function () {
+      it('should return all videos sorted by title', async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/videos/by/title',
@@ -105,8 +105,8 @@ describe('videos', function() {
     });
   });
 
-  describe('GET /video/:id', function() {
-    it('should return the video that has the :id supplied', async function() {
+  describe('GET /video/:id', function () {
+    it('should return the video that has the :id supplied', async function () {
       const response = await app.inject({
         method: 'GET',
         url: '/video/1',
@@ -117,8 +117,8 @@ describe('videos', function() {
     });
   });
 
-  describe('POST /video', function() {
-    it('should add video record to database', async function() {
+  describe('POST /video', function () {
+    it('should add video record to database', async function () {
       const token = await login(app);
       const newVideo = {
         src: 'http://video-2000.com',
@@ -140,7 +140,7 @@ describe('videos', function() {
       );
     });
 
-    it('should sanitize src', async function() {
+    it('should sanitize src', async function () {
       const token = await login(app);
       const response = await app.inject({
         method: 'POST',
@@ -160,7 +160,7 @@ describe('videos', function() {
       );
     });
 
-    it('should sanitize title', async function() {
+    it('should sanitize title', async function () {
       const token = await login(app);
       const response = await app.inject({
         method: 'POST',
@@ -178,10 +178,86 @@ describe('videos', function() {
         'Test Video',
       );
     });
+
+    it('should parse youtube page url and convert to embed url', async function () {
+      const token = await login(app);
+      const response = await app.inject({
+        method: 'POST',
+        url: '/video',
+        payload: {
+          src: 'https://www.youtube.com/watch?v=rDZwPhwDGtY',
+          title: 'Test Video',
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      expect(JSON.parse(response.payload).src).to.equal(
+        'https://www.youtube.com/embed/rDZwPhwDGtY',
+      );
+    });
+
+    it('should not parse youtube embed url', async function () {
+      const token = await login(app);
+      const response = await app.inject({
+        method: 'POST',
+        url: '/video',
+        payload: {
+          src: 'https://www.youtube.com/embed/rDZwPhwDGtY',
+          title: 'Test Video',
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      expect(JSON.parse(response.payload).src).to.equal(
+        'https://www.youtube.com/embed/rDZwPhwDGtY',
+      );
+    });
+
+    it('should parse vimeo page url and convert to embed url', async function () {
+      const token = await login(app);
+      const response = await app.inject({
+        method: 'POST',
+        url: '/video',
+        payload: {
+          src: 'https://vimeo.com/407694202',
+          title: 'Test Video',
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      expect(JSON.parse(response.payload).src).to.equal(
+        'https://player.vimeo.com/video/407694202',
+      );
+    });
+
+    it('should not parse vimeo embed url', async function () {
+      const token = await login(app);
+      const response = await app.inject({
+        method: 'POST',
+        url: '/video',
+        payload: {
+          src: 'https://player.vimeo.com/video/407694202',
+          title: 'Test Video',
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      expect(JSON.parse(response.payload).src).to.equal(
+        'https://player.vimeo.com/video/407694202',
+      );
+    });
   });
 
-  describe('PATCH /video', function() {
-    it('should update video database record', async function() {
+  describe('PATCH /video', function () {
+    it('should update video database record', async function () {
       const token = await login(app);
       const video = await app.inject({
         method: 'POST',
@@ -215,8 +291,8 @@ describe('videos', function() {
     });
   });
 
-  describe('DELETE /video', function() {
-    it('should delete video database record', async function() {
+  describe('DELETE /video', function () {
+    it('should delete video database record', async function () {
       const token = await login(app);
 
       const newVideoResponse = await app.inject({
@@ -261,7 +337,7 @@ describe('videos', function() {
       expect(afterResponse.statusCode).to.equal(404);
     });
 
-    it('should delete associated feature', async function() {
+    it('should delete associated feature', async function () {
       const token = await login(app);
 
       const newVideoResponse = await app.inject({
