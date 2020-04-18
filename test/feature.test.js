@@ -252,7 +252,7 @@ describe('features', function () {
     });
   });
 
-  describe.only('PATCH /feature/unpublish', function () {
+  describe('PATCH /feature/unpublish', function () {
     it('should unpublish a published feature', async function () {
       const token = await login(app);
       const articleId = 2;

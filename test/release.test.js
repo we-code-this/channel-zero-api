@@ -15,21 +15,21 @@ const expect = chai.expect;
 
 chai.use(dateString);
 
-describe('releases', function() {
+describe('releases', function () {
   let releasesDir = path.join(fileRoot(), assetDirectories.releases);
   let app;
 
-  before(function() {
+  before(function () {
     rimraf(releasesDir, () => {});
     app = buildApp();
   });
 
-  after(function() {
+  after(function () {
     app.close();
   });
 
-  describe('GET /releases', function() {
-    it('should return 10 releases', async function() {
+  describe('GET /releases', function () {
+    it('should return 10 releases', async function () {
       const response = await app.inject({
         method: 'GET',
         url: '/releases',
@@ -40,8 +40,8 @@ describe('releases', function() {
       expect(JSON.parse(response.payload).length).to.equal(10);
     });
 
-    describe('GET /releases/:limit', function() {
-      it('should return 11 releases if :limit is 11', async function() {
+    describe('GET /releases/:limit', function () {
+      it('should return 11 releases if :limit is 11', async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/releases/11',
@@ -49,7 +49,7 @@ describe('releases', function() {
         expect(JSON.parse(response.payload).length).to.equal(11);
       });
 
-      it('should return 9 releases if :limit is 9', async function() {
+      it('should return 9 releases if :limit is 9', async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/releases/9',
@@ -58,8 +58,8 @@ describe('releases', function() {
       });
     });
 
-    describe('GET /releases/:limit/:order', function() {
-      it("should return release with id of 11 when :order is 'desc'", async function() {
+    describe('GET /releases/:limit/:order', function () {
+      it("should return release with id of 11 when :order is 'desc'", async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/releases/1/desc',
@@ -67,7 +67,7 @@ describe('releases', function() {
         expect(JSON.parse(response.payload)[0].id).to.equal(11);
       });
 
-      it("should return release with id of 1 when :order is 'asc'", async function() {
+      it("should return release with id of 1 when :order is 'asc'", async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/releases/1/asc',
@@ -76,8 +76,8 @@ describe('releases', function() {
       });
     });
 
-    describe('GET /releases/unpublished/:offset/:limit/:order', function() {
-      it("should return releases with IDs in range of 12 to 3 with offset 0, limit 10 and order 'desc'", async function() {
+    describe('GET /releases/unpublished/:offset/:limit/:order', function () {
+      it("should return releases with IDs in range of 12 to 3 with offset 0, limit 10 and order 'desc'", async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/releases/unpublished/0/10/desc',
@@ -90,8 +90,8 @@ describe('releases', function() {
       });
     });
 
-    describe('GET /releases/range/:offset/:limit/:order', function() {
-      it("should return release with id of 11 with offset 1, limit 10 and order 'asc'", async function() {
+    describe('GET /releases/range/:offset/:limit/:order', function () {
+      it("should return release with id of 11 with offset 1, limit 10 and order 'asc'", async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/releases/range/1/10/asc',
@@ -104,8 +104,8 @@ describe('releases', function() {
       });
     });
 
-    describe('GET /releases/count', function() {
-      it('should return count of 12', async function() {
+    describe('GET /releases/count', function () {
+      it('should return count of 12', async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/releases/count',
@@ -116,8 +116,8 @@ describe('releases', function() {
     });
   });
 
-  describe('GET /release/:slug', function() {
-    it('should return the release that has the :slug supplied', async function() {
+  describe('GET /release/:slug', function () {
+    it('should return the release that has the :slug supplied', async function () {
       const response = await app.inject({
         method: 'GET',
         url: '/release/artist-9-album-9',
@@ -128,8 +128,8 @@ describe('releases', function() {
       );
     });
 
-    describe('release artist relationship', function() {
-      it('should return the release with an artist property', async function() {
+    describe('release artist relationship', function () {
+      it('should return the release with an artist property', async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/release/artist-9-album-9',
@@ -139,7 +139,7 @@ describe('releases', function() {
         );
       });
 
-      it("should return the release with an artist property that's an object", async function() {
+      it("should return the release with an artist property that's an object", async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/release/artist-9-album-9',
@@ -150,8 +150,8 @@ describe('releases', function() {
       });
     });
 
-    describe('release vendors relationship', function() {
-      it('should return the release with a vendors property', async function() {
+    describe('release vendors relationship', function () {
+      it('should return the release with a vendors property', async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/release/artist-9-album-9',
@@ -161,7 +161,7 @@ describe('releases', function() {
         );
       });
 
-      it("should return the release with a vendors property that's an array", async function() {
+      it("should return the release with a vendors property that's an array", async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/release/artist-9-album-9',
@@ -171,7 +171,7 @@ describe('releases', function() {
         ).to.be.an.instanceOf(Array);
       });
 
-      it('should return the release with 3 vendors', async function() {
+      it('should return the release with 3 vendors', async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/release/artist-9-album-9',
@@ -182,8 +182,8 @@ describe('releases', function() {
       });
     });
 
-    describe('release credits relationship', function() {
-      it('should return the release with a credits property', async function() {
+    describe('release credits relationship', function () {
+      it('should return the release with a credits property', async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/release/artist-1-album-1',
@@ -193,7 +193,7 @@ describe('releases', function() {
         );
       });
 
-      it("should return the release with a credits property that's an array", async function() {
+      it("should return the release with a credits property that's an array", async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/release/artist-1-album-1',
@@ -203,7 +203,7 @@ describe('releases', function() {
         ).to.be.an.instanceOf(Array);
       });
 
-      it('should return the release with 10 credits', async function() {
+      it('should return the release with 10 credits', async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/release/artist-1-album-1',
@@ -214,8 +214,8 @@ describe('releases', function() {
       });
     });
 
-    describe('release endorsements relationship', function() {
-      it('should return the release with a endorsements property', async function() {
+    describe('release endorsements relationship', function () {
+      it('should return the release with a endorsements property', async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/release/artist-1-album-1',
@@ -225,7 +225,7 @@ describe('releases', function() {
         );
       });
 
-      it("should return the release with a endorsements property that's an array", async function() {
+      it("should return the release with a endorsements property that's an array", async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/release/artist-1-album-1',
@@ -235,7 +235,7 @@ describe('releases', function() {
         ).to.be.an.instanceOf(Array);
       });
 
-      it('should return the release with 2 endorsements', async function() {
+      it('should return the release with 2 endorsements', async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/release/artist-1-album-1',
@@ -246,8 +246,8 @@ describe('releases', function() {
       });
     });
 
-    describe('release label relationship', function() {
-      it('should return the release with a label property', async function() {
+    describe('release label relationship', function () {
+      it('should return the release with a label property', async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/release/artist-1-album-1',
@@ -257,7 +257,7 @@ describe('releases', function() {
         );
       });
 
-      it("should return the release with a label property that's an object", async function() {
+      it("should return the release with a label property that's an object", async function () {
         const response = await app.inject({
           method: 'GET',
           url: '/release/artist-9-album-9',
@@ -267,8 +267,8 @@ describe('releases', function() {
         ).to.be.an.instanceof(Object);
       });
 
-      describe('release label id', function() {
-        it('should have a label property with an id', async function() {
+      describe('release label id', function () {
+        it('should have a label property with an id', async function () {
           const response = await app.inject({
             method: 'GET',
             url: '/release/artist-9-album-9',
@@ -278,7 +278,7 @@ describe('releases', function() {
           );
         });
 
-        it('should have a label property with an integer id', async function() {
+        it('should have a label property with an integer id', async function () {
           const response = await app.inject({
             method: 'GET',
             url: '/release/artist-9-album-9',
@@ -289,8 +289,8 @@ describe('releases', function() {
         });
       });
 
-      describe('release label name', function() {
-        it('should have a label property with a name', async function() {
+      describe('release label name', function () {
+        it('should have a label property with a name', async function () {
           const response = await app.inject({
             method: 'GET',
             url: '/release/artist-9-album-9',
@@ -300,7 +300,7 @@ describe('releases', function() {
           );
         });
 
-        it('should have a label property with a name string', async function() {
+        it('should have a label property with a name string', async function () {
           const response = await app.inject({
             method: 'GET',
             url: '/release/artist-9-album-9',
@@ -311,8 +311,8 @@ describe('releases', function() {
         });
       });
 
-      describe('release label slug', function() {
-        it('should have a label property with a slug', async function() {
+      describe('release label slug', function () {
+        it('should have a label property with a slug', async function () {
           const response = await app.inject({
             method: 'GET',
             url: '/release/artist-9-album-9',
@@ -322,7 +322,7 @@ describe('releases', function() {
           );
         });
 
-        it('should have a label property with a slug string', async function() {
+        it('should have a label property with a slug string', async function () {
           const response = await app.inject({
             method: 'GET',
             url: '/release/artist-9-album-9',
@@ -333,8 +333,8 @@ describe('releases', function() {
         });
       });
 
-      describe('release label created_at', function() {
-        it('should have a label property with a created_at property', async function() {
+      describe('release label created_at', function () {
+        it('should have a label property with a created_at property', async function () {
           const response = await app.inject({
             method: 'GET',
             url: '/release/artist-9-album-9',
@@ -344,7 +344,7 @@ describe('releases', function() {
           );
         });
 
-        it('should have a label property with a created_at datetime string', async function() {
+        it('should have a label property with a created_at datetime string', async function () {
           const response = await app.inject({
             method: 'GET',
             url: '/release/artist-9-album-9',
@@ -355,8 +355,8 @@ describe('releases', function() {
         });
       });
 
-      describe('release label updated_at', function() {
-        it('should have a label property with an updated_at property', async function() {
+      describe('release label updated_at', function () {
+        it('should have a label property with an updated_at property', async function () {
           const response = await app.inject({
             method: 'GET',
             url: '/release/artist-9-album-9',
@@ -366,7 +366,7 @@ describe('releases', function() {
           );
         });
 
-        it('should have a label property with an updated_at datetime string', async function() {
+        it('should have a label property with an updated_at datetime string', async function () {
           const response = await app.inject({
             method: 'GET',
             url: '/release/artist-9-album-9',
@@ -379,8 +379,8 @@ describe('releases', function() {
     });
   });
 
-  describe('POST /release', function() {
-    it('should add release record to database', async function() {
+  describe('POST /release', function () {
+    it('should add release record to database', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -419,7 +419,7 @@ describe('releases', function() {
       expect(JSON.parse(release.payload).slug).to.equal(slug);
     });
 
-    it('should increment release slug when same slug already exists', async function() {
+    it('should increment release slug when same slug already exists', async function () {
       const token = await login(app);
       let firstRs = fs.createReadStream(filePath);
       const title = 'Release 1002';
@@ -476,7 +476,7 @@ describe('releases', function() {
       );
     });
 
-    it('should return error without an image', async function() {
+    it('should return error without an image', async function () {
       const token = await login(app);
       let form = new FormData();
       form.append('artist_id', 2);
@@ -503,7 +503,7 @@ describe('releases', function() {
       );
     });
 
-    it('should return error with invalid title', async function() {
+    it('should return error with invalid title', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -534,7 +534,7 @@ describe('releases', function() {
       );
     });
 
-    it('should return error with invalid catalog_number', async function() {
+    it('should return error with invalid catalog_number', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -565,7 +565,7 @@ describe('releases', function() {
       );
     });
 
-    it('should return error with invalid release_type', async function() {
+    it('should return error with invalid release_type', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -596,7 +596,7 @@ describe('releases', function() {
       );
     });
 
-    it('should return error with invalid release_date', async function() {
+    it('should return error with invalid release_date', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -626,7 +626,7 @@ describe('releases', function() {
       );
     });
 
-    it('should sanitize description', async function() {
+    it('should sanitize description', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -659,7 +659,7 @@ describe('releases', function() {
       );
     });
 
-    it('should not remove double space during description sanitization', async function() {
+    it('should not remove double space during description sanitization', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -692,7 +692,7 @@ describe('releases', function() {
       );
     });
 
-    it('should sanitize title', async function() {
+    it('should sanitize title', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -725,7 +725,7 @@ describe('releases', function() {
       );
     });
 
-    it('should sanitize catalog_number', async function() {
+    it('should sanitize catalog_number', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -758,7 +758,7 @@ describe('releases', function() {
       );
     });
 
-    it('should sanitize release_type', async function() {
+    it('should sanitize release_type', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -792,8 +792,8 @@ describe('releases', function() {
     });
   });
 
-  describe('PATCH /release', function() {
-    it('should update release record in database', async function() {
+  describe('PATCH /release', function () {
+    it('should update release record in database', async function () {
       const token = await login(app);
       const getResponse = await app.inject({
         method: 'GET',
@@ -825,7 +825,7 @@ describe('releases', function() {
       );
     });
 
-    it('should replace image with new one', async function() {
+    it('should replace image with new one', async function () {
       const token = await login(app);
       let rs = fs.createReadStream(filePath);
       let original_form = new FormData();
@@ -879,7 +879,7 @@ describe('releases', function() {
       expect(new_file).to.not.deep.equal(original_file);
     });
 
-    it('should return error with invalid title', async function() {
+    it('should return error with invalid title', async function () {
       const token = await login(app);
       let form = new FormData();
       form.append('id', 1);
@@ -903,8 +903,8 @@ describe('releases', function() {
     });
   });
 
-  describe('PATCH /release/publish', function() {
-    it('should publish an unpublished release', async function() {
+  describe('PATCH /release/publish', function () {
+    it('should publish an unpublished release', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -951,8 +951,8 @@ describe('releases', function() {
     });
   });
 
-  describe('PATCH /release/unpublish', function() {
-    it('should unpublish an published release', async function() {
+  describe('PATCH /release/unpublish', function () {
+    it('should unpublish an published release', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -999,8 +999,8 @@ describe('releases', function() {
     });
   });
 
-  describe('DELETE /release', function() {
-    it('should delete release database record and image file', async function() {
+  describe('DELETE /release', function () {
+    it('should delete release database record and image file', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
@@ -1051,7 +1051,7 @@ describe('releases', function() {
       expect(fs.existsSync(destPath)).to.be.false;
     });
 
-    it('should return 404 when trying to delete release that doesn’t exist', async function() {
+    it('should return 404 when trying to delete release that doesn’t exist', async function () {
       const token = await login(app);
       const response = await app.inject({
         method: 'DELETE',
@@ -1067,7 +1067,7 @@ describe('releases', function() {
       expect(response.statusCode).to.equal(404);
     });
 
-    it('should delete disc when release is deleted', async function() {
+    it('should delete disc when release is deleted', async function () {
       const token = await login(app);
 
       let form = new FormData();
@@ -1127,7 +1127,7 @@ describe('releases', function() {
       expect(afterResponse.statusCode).to.equal(404);
     });
 
-    it('should delete credit when release is deleted', async function() {
+    it('should delete credit when release is deleted', async function () {
       const token = await login(app);
 
       let form = new FormData();
@@ -1189,7 +1189,7 @@ describe('releases', function() {
       expect(afterResponse.statusCode).to.equal(404);
     });
 
-    it('should delete endorsement when release is deleted', async function() {
+    it('should delete endorsement when release is deleted', async function () {
       const token = await login(app);
 
       let form = new FormData();
