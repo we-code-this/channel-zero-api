@@ -57,7 +57,7 @@ class FeatureQuery {
         .orderBy('created_at', order);
     }
 
-    this.items = results.map(function(record) {
+    this.items = results.map(function (record) {
       return new Feature(record);
     });
 
@@ -80,6 +80,7 @@ class FeatureQuery {
           user_id: feature.user_id,
           article_id: feature.article_id,
           video_id: feature.video_id,
+          published: feature.published,
         },
         ['id'],
       );
@@ -91,9 +92,7 @@ class FeatureQuery {
   }
 
   async delete(id) {
-    return await knex(this.tablename)
-      .where('id', id)
-      .del();
+    return await knex(this.tablename).where('id', id).del();
   }
 
   async findById(id) {
@@ -117,6 +116,22 @@ class FeatureQuery {
     return (await this.query({ limit: 1 }))[0];
   }
 
+  async publish(id) {
+    const response = await knex(this.tablename)
+      .where('id', id)
+      .update({ published: 1 });
+
+    return response === 1 ? await this.findById(id) : undefined;
+  }
+
+  async unpublish(id) {
+    const response = await knex(this.tablename)
+      .where('id', id)
+      .update({ published: 0 });
+
+    return response === 1 ? await this.findById(id) : undefined;
+  }
+
   async update(fieldData) {
     const { id, article_id, video_id } = fieldData;
     const oldFeature = await this.findById(id);
@@ -131,13 +146,11 @@ class FeatureQuery {
     const isValid = feature.valid();
 
     if (isValid) {
-      await knex(this.tablename)
-        .where('id', id)
-        .update({
-          article_id: feature.article_id,
-          video_id: feature.video_id,
-          updated_at: feature.updated_at,
-        });
+      await knex(this.tablename).where('id', id).update({
+        article_id: feature.article_id,
+        video_id: feature.video_id,
+        updated_at: feature.updated_at,
+      });
 
       return await this.findById(id);
     } else {

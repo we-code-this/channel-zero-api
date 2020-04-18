@@ -2,11 +2,18 @@ import Article from './Article';
 import Model from './Model';
 import Video from './Video';
 import validator from 'validator';
-import { sanitize } from '../lib/strings';
 
 class Feature extends Model {
   constructor(data) {
     super(data);
+
+    this.published =
+      this.published &&
+      (this.published === 'true' ||
+        this.published === true ||
+        this.published === 1)
+        ? true
+        : false;
 
     this.article = new Article({
       id: data.article_id,

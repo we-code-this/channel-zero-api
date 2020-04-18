@@ -2,9 +2,15 @@ import features from '../controllers/features';
 import { validate } from '../lib/tokens';
 import { isAdmin } from '../lib/auth';
 
-const routes = fastify => {
-  fastify.get('/features/range/:offset/:limit/:order', features.getRange);
-  fastify.get('/features/:limit/:order', features.getWithLimitAndOrder);
+const routes = (fastify) => {
+  fastify.get(
+    '/features/range/:offset/:limit/:order',
+    features.getRange,
+  );
+  fastify.get(
+    '/features/:limit/:order',
+    features.getWithLimitAndOrder,
+  );
   fastify.get('/features/count', features.count);
   fastify.get('/features/:limit', features.getWithLimit);
   fastify.get('/features', features.get);
@@ -14,18 +20,30 @@ const routes = fastify => {
   fastify.patch(
     '/feature',
     { beforeHandler: [validate, isAdmin] },
-    features.update
+    features.update,
+  );
+
+  fastify.patch(
+    '/feature/publish',
+    { beforeHandler: [validate, isAdmin] },
+    features.publish,
+  );
+
+  fastify.patch(
+    '/feature/unpublish',
+    { beforeHandler: [validate, isAdmin] },
+    features.unpublish,
   );
 
   fastify.delete(
     '/feature',
     { beforeHandler: [validate, isAdmin] },
-    features.del
+    features.del,
   );
   fastify.post(
     '/feature',
     { beforeHandler: [validate, isAdmin] },
-    features.create
+    features.create,
   );
 };
 

@@ -1,5 +1,5 @@
-import FeatureQuery from "../models/FeatureQuery";
-import UserQuery from "../models/UserQuery";
+import FeatureQuery from '../models/FeatureQuery';
+import UserQuery from '../models/UserQuery';
 
 export default {
   count: async (req, reply) => {
@@ -11,7 +11,10 @@ export default {
     let feature;
 
     if (id) {
-      feature = await new FeatureQuery().create({ ...req.body, user_id: id });
+      feature = await new FeatureQuery().create({
+        ...req.body,
+        user_id: id,
+      });
     }
 
     if (feature) {
@@ -51,27 +54,41 @@ export default {
       {
         offset: req.params.offset,
         limit: req.params.limit,
-        order: req.params.order
+        order: req.params.order,
       },
-      false
+      false,
     );
     reply.send(features);
   },
   getWithLimit: async (req, reply) => {
     const features = await new FeatureQuery().get({
-      limit: req.params.limit
+      limit: req.params.limit,
     });
     reply.send(features);
   },
   getWithLimitAndOrder: async (req, reply) => {
     const features = await new FeatureQuery().get({
       limit: req.params.limit,
-      order: req.params.order
+      order: req.params.order,
     });
     reply.send(features);
+  },
+  publish: async (req, reply) => {
+    const publishedFeature = await new FeatureQuery().publish(
+      req.body.id,
+    );
+
+    reply.send(publishedFeature);
+  },
+  unpublish: async (req, reply) => {
+    const unpublishedFeature = await new FeatureQuery().unpublish(
+      req.body.id,
+    );
+
+    reply.send(unpublishedFeature);
   },
   update: async (req, reply) => {
     const updatedFeature = await new FeatureQuery().update(req.body);
     reply.send(updatedFeature);
-  }
+  },
 };
