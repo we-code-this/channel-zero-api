@@ -2,7 +2,7 @@ import articles from '../controllers/articles';
 import { validate } from '../lib/tokens';
 import { isAdmin } from '../lib/auth';
 
-const routes = fastify => {
+const routes = (fastify) => {
   fastify.get(
     '/articles/range/:offset/:limit/:order',
     articles.getRange,
