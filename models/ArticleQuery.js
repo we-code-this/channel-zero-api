@@ -162,14 +162,8 @@ class ArticleQuery {
       const res = await knex
         .select('*')
         .from(this.tablename)
-        .where(`${this.tablename}.id`, '!=', id)
         .where(`${this.tablename}.published`, true)
-        .where(
-          `${this.tablename}.publish_date`,
-          '>=',
-          current.publish_date,
-        )
-        .where(`${this.tablename}.title`, '>', current.title)
+        .where(`${this.tablename}.id`, '>', current.id)
         .limit(1)
         .orderBy('id', 'asc');
 
@@ -188,14 +182,8 @@ class ArticleQuery {
       const res = await knex
         .select('*')
         .from(this.tablename)
-        .where(`${this.tablename}.id`, '!=', id)
         .where(`${this.tablename}.published`, true)
-        .where(
-          `${this.tablename}.publish_date`,
-          '<=',
-          current.publish_date,
-        )
-        .where(`${this.tablename}.title`, '<', current.title)
+        .where(`${this.tablename}.id`, '<', current.id)
         .limit(1)
         .orderBy('id', 'desc');
 
