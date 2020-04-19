@@ -43,7 +43,11 @@ class Video extends Model {
   parseYoutube() {
     const url = urlParse(this.src, true);
 
-    this.src = `https://www.youtube.com/embed/${url.query.v}`;
+    if (this.src.includes('playlist')) {
+      this.src = `https://www.youtube.com/embed/videoseries?list=${url.query.list}`;
+    } else {
+      this.src = `https://www.youtube.com/embed/${url.query.v}`;
+    }
 
     return this.src;
   }
