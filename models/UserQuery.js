@@ -1,6 +1,8 @@
 import knex from '../lib/connection';
+import moment from 'moment';
 import User from './User';
 import { compare } from '../lib/passwords';
+import { normalizeID, normalizeCount } from '../lib/utilities';
 
 import {
   USER_NOT_FOUND_ERROR,
@@ -25,6 +27,24 @@ class UserQuery {
       .from(this.tablename);
   }
 
+  selectWithId() {
+    return knex
+      .select(
+        'id',
+        'username',
+        'email',
+        'first_name',
+        'last_name',
+        'created_at',
+      )
+      .from(this.tablename);
+  }
+
+  async count() {
+    const count = await knex.count('* as count').from(this.tablename);
+    return normalizeCount(count);
+  }
+
   async create(data) {
     const userData = { ...data };
 
@@ -41,14 +61,21 @@ class UserQuery {
         ['id'],
       );
 
-      return await this.findById(id);
+      return await this.findById(normalizeID(id));
     } else {
       return { errors: user.validationErrors() };
     }
   }
 
+  async delete(id) {
+    return await knex(this.tablename).where('id', id).del();
+  }
+
   async findById(id) {
-    const res = await this.select().where(`${this.tablename}.id`, id);
+    const res = await this.selectWithId().where(
+      `${this.tablename}.id`,
+      id,
+    );
 
     if (res.length > 0) {
       return new User(res[0]);
@@ -76,6 +103,23 @@ class UserQuery {
     } else {
       return undefined;
     }
+  }
+
+  async get(params = {}) {
+    const offset = params.offset ? parseInt(params.offset) : 0;
+    const limit = params.limit ? parseInt(params.limit) : 10;
+    const order = params.order ? params.order.toUpperCase() : 'DESC';
+
+    const res = await this.selectWithId()
+      .limit(limit)
+      .offset(offset)
+      .orderBy('created_at', order);
+
+    return Promise.all(
+      res.map(async function (record) {
+        return new User(record);
+      }),
+    );
   }
 
   async getIdByEmail(email) {
@@ -126,7 +170,7 @@ class UserQuery {
 
     const groups = {};
 
-    res.map(group => {
+    res.map((group) => {
       groups[group.slug] = group.name;
     });
 
@@ -148,6 +192,30 @@ class UserQuery {
       }
     } catch (err) {
       return { error: AUTHENTICATION_ERROR };
+    }
+  }
+
+  async update(fieldData) {
+    const { id, ...remainingFields } = fieldData;
+    const oldUser = await this.findById(id);
+    const data = {
+      ...oldUser,
+      ...remainingFields,
+      updated_at: moment().format('YYYY-MM-DD HH:mm:ss'),
+    };
+
+    const user = new User(data);
+    const isValid = user.valid();
+
+    if (isValid) {
+      await knex(this.tablename).where('id', oldUser.id).update({
+        email: user.email,
+        updated_at: user.updated_at,
+      });
+
+      return await this.findById(oldUser.id);
+    } else {
+      return { errors: user.validationErrors() };
     }
   }
 }

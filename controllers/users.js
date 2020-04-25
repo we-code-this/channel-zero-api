@@ -9,6 +9,64 @@ import { AUTHENTICATION_ERROR } from '../lib/constants';
 import { jwtSecret } from '../lib/utilities';
 
 export default {
+  count: async (req, reply) => {
+    const res = await new UserQuery().count();
+    reply.send([{ count: parseInt(res.count) }]);
+  },
+  create: async (req, reply) => {
+    const user = await new UserQuery().create({
+      ...req.body,
+    });
+
+    if (user) {
+      reply.send(user);
+    } else {
+      reply.status(500).send();
+    }
+  },
+  del: async (req, reply) => {
+    const deleted = await new UserQuery().delete(req.body.id);
+
+    if (deleted) {
+      reply.send(deleted);
+    } else {
+      reply.status(404).send();
+    }
+  },
+  get: async (req, reply) => {
+    const users = await new UserQuery().get();
+    reply.send(users);
+  },
+  getOneById: async (req, reply) => {
+    const user = await new UserQuery().findById(req.params.id);
+
+    if (user) {
+      reply.send(user);
+    } else {
+      reply.status(404).send();
+    }
+  },
+  getRange: async (req, reply) => {
+    const users = await new UserQuery().get({
+      offset: req.params.offset,
+      limit: req.params.limit,
+      order: req.params.order,
+    });
+    reply.send(users);
+  },
+  getWithLimit: async (req, reply) => {
+    const users = await new UserQuery().get({
+      limit: req.params.limit,
+    });
+    reply.send(users);
+  },
+  getWithLimitAndOrder: async (req, reply) => {
+    const users = await new UserQuery().get({
+      limit: req.params.limit,
+      order: req.params.order,
+    });
+    reply.send(users);
+  },
   login: async (req, reply) => {
     let result = {};
     let status = 200;
@@ -51,5 +109,9 @@ export default {
     } else {
       reply.status(500).send();
     }
+  },
+  update: async (req, reply) => {
+    const updatedUser = await new UserQuery().update(req.body);
+    reply.send(updatedUser);
   },
 };
