@@ -633,4 +633,53 @@ describe('users', function () {
       expect(afterResponse.statusCode).to.equal(404);
     });
   });
+
+  describe('POST /password/forgot', function () {
+    it('should send email when user with email address exists', async function () {
+      const token = await login(app);
+      const newUser = {
+        email: 'forgottestuser@example.com',
+        username: 'forgottestuser',
+        password: 'password',
+        password_confirm: 'password',
+      };
+
+      const newUserResponse = await app.inject({
+        method: 'POST',
+        url: '/user',
+        payload: newUser,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const user = JSON.parse(newUserResponse.payload);
+
+      const forgotResponse = await app.inject({
+        method: 'POST',
+        url: '/password/forgot',
+        payload: {
+          email: user.email,
+        },
+      });
+
+      expect(JSON.parse(forgotResponse.payload).message).to.equal(
+        'email sent',
+      );
+    });
+
+    it('should return generic message when user email does not exist', async function () {
+      const forgotResponse = await app.inject({
+        method: 'POST',
+        url: '/password/forgot',
+        payload: {
+          email: 'emaildoesnotexist@example.com',
+        },
+      });
+
+      expect(JSON.parse(forgotResponse.payload).message).not.to.equal(
+        'email sent',
+      );
+    });
+  });
 });

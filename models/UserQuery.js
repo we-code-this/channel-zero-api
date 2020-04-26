@@ -1,7 +1,9 @@
 import knex from '../lib/connection';
 import moment from 'moment';
+import crypto from 'crypto';
 import User from './User';
 import { compare } from '../lib/passwords';
+import transporter from '../lib/email';
 import { normalizeID, normalizeCount } from '../lib/utilities';
 
 import {
@@ -103,6 +105,31 @@ class UserQuery {
     } else {
       return undefined;
     }
+  }
+
+  async forgot(email) {
+    const user = await this.findByEmail(email);
+
+    if (user) {
+      const buffer = await crypto.randomBytes(32);
+      const token = buffer.toString('hex');
+
+      await knex(this.tablename)
+        .where('email', user.email)
+        .update({
+          reset_token: token,
+          updated_at: moment().format('YYYY-MM-DD HH:mm:ss'),
+        });
+
+      return await transporter.sendMail({
+        from: process.env.FROM_EMAIL,
+        to: user.email,
+        subject: 'ChannelZero Password Reset',
+        text: 'This will contain url',
+      });
+    }
+
+    return true;
   }
 
   async get(params = {}) {

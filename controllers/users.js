@@ -33,6 +33,19 @@ export default {
       reply.status(404).send();
     }
   },
+
+  forgot: async (req, reply) => {
+    const forgotResult = await new UserQuery().forgot(req.body.email);
+
+    if (forgotResult === 'email sent') {
+      reply.send({ message: forgotResult });
+    } else {
+      reply.send({
+        message: `If a matching account was found an email was sent to ${req.body.email} to allow you to reset your password.`,
+      });
+    }
+  },
+
   get: async (req, reply) => {
     const users = await new UserQuery().get();
     reply.send(users);

@@ -6,6 +6,8 @@ const routes = (fastify) => {
   fastify.post('/login', users.login);
   fastify.post('/register', users.register);
 
+  fastify.post('/password/forgot', users.forgot);
+
   fastify.get(
     '/users',
     { beforeHandler: [validate, isAdmin] },
