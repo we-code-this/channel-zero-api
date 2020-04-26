@@ -125,7 +125,7 @@ class UserQuery {
         from: process.env.FROM_EMAIL,
         to: user.email,
         subject: 'ChannelZero Password Reset',
-        text: 'This will contain url',
+        text: `Reset your password at the following link: ${process.env.ADMIN_ORIGIN}/password/reset/${token}`,
       });
     }
 
