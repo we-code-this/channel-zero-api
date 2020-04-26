@@ -41,6 +41,10 @@ class User extends Model {
 
   async validEmail() {
     let valid = validator.isEmail(this.email);
+    valid =
+      validator.isLength(this.email, {
+        min: 6,
+      }) && valid;
 
     if (valid) {
       const res = await knex('users')

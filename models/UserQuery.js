@@ -205,7 +205,7 @@ class UserQuery {
     };
 
     const user = new User(data);
-    const isValid = user.valid();
+    const isValid = await user.valid();
 
     if (isValid) {
       await knex(this.tablename).where('id', oldUser.id).update({
