@@ -107,6 +107,20 @@ class UserQuery {
     }
   }
 
+  async findByEmailAndToken(email, token) {
+    const res = await knex
+      .select('*')
+      .from(this.tablename)
+      .where('email', email)
+      .where('reset_token', token);
+
+    if (res.length > 0) {
+      return new User(res[0]);
+    } else {
+      return undefined;
+    }
+  }
+
   async forgot(email) {
     const user = await this.findByEmail(email);
 
@@ -244,6 +258,38 @@ class UserQuery {
     } else {
       return { errors: user.validationErrors() };
     }
+  }
+
+  async reset(data) {
+    const oldUser = await this.findByEmailAndToken(
+      data.email,
+      data.reset_token,
+    );
+
+    if (oldUser) {
+      const newData = {
+        ...oldUser,
+        ...data,
+        updated_at: moment().format('YYYY-MM-DD HH:mm:ss'),
+      };
+
+      const user = new User(newData);
+      const isValid = await user.validReset();
+
+      if (isValid) {
+        await knex(this.tablename).where('email', user.email).update({
+          password: user.password,
+          reset_token: null,
+          updated_at: user.updated_at,
+        });
+
+        return true;
+      } else {
+        return { errors: user.validationErrors() };
+      }
+    }
+
+    return false;
   }
 }
 

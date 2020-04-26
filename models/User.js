@@ -39,6 +39,10 @@ class User extends Model {
     return valid;
   }
 
+  async validReset() {
+    return this.validPassword();
+  }
+
   async validEmail() {
     let valid = validator.isEmail(this.email);
     valid =

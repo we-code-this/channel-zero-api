@@ -1,5 +1,7 @@
+import crypto from 'crypto';
 import chai from 'chai';
 import knex from '../lib/connection';
+import { hash, compare } from '../lib/passwords';
 import { default as buildApp } from '../app';
 import {
   INVALID_LENGTH,
@@ -679,6 +681,197 @@ describe('users', function () {
 
       expect(JSON.parse(forgotResponse.payload).message).not.to.equal(
         'email sent',
+      );
+    });
+  });
+
+  describe('POST /password/reset', function () {
+    it('should update password and set reset_token to null', async function () {
+      const token = await login(app);
+      const buffer = await crypto.randomBytes(32);
+      const resetToken = buffer.toString('hex');
+
+      const newUser = {
+        email: 'resettest@example.com',
+        username: 'testuser',
+        password: hash('password'),
+        reset_token: resetToken,
+      };
+
+      await knex('users').insert(newUser);
+
+      const response = await app.inject({
+        method: 'POST',
+        url: '/password/reset',
+        payload: {
+          email: newUser.email,
+          password: 'newpassword',
+          password_confirm: 'newpassword',
+          reset_token: resetToken,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      expect(response.statusCode).to.equal(200);
+
+      const user = await knex('users')
+        .select('*')
+        .where('email', newUser.email)
+        .first();
+
+      expect(compare('newpassword', user.password)).to.be.true;
+      expect(user.reset_token).to.be.null;
+    });
+
+    it('should return false when token does not exist', async function () {
+      const token = await login(app);
+      const buffer = await crypto.randomBytes(32);
+      const resetToken = buffer.toString('hex');
+
+      const response = await app.inject({
+        method: 'POST',
+        url: '/password/reset',
+        payload: {
+          email: 'user@example.com',
+          password: 'newpassword',
+          password_confirm: 'newpassword',
+          reset_token: resetToken,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      expect(JSON.parse(response.payload)).to.be.false;
+    });
+
+    it('should return false when email does not exist', async function () {
+      const token = await login(app);
+      const buffer = await crypto.randomBytes(32);
+      const resetToken = buffer.toString('hex');
+
+      const response = await app.inject({
+        method: 'POST',
+        url: '/password/reset',
+        payload: {
+          email: 'nonexistantuser@example.com',
+          password: 'newpassword',
+          password_confirm: 'newpassword',
+          reset_token: resetToken,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      expect(JSON.parse(response.payload)).to.be.false;
+    });
+
+    it('should return error when password is too short', async function () {
+      const token = await login(app);
+      const buffer = await crypto.randomBytes(32);
+      const resetToken = buffer.toString('hex');
+
+      const newUser = {
+        email: 'resettest2@example.com',
+        username: 'testuser',
+        password: hash('password'),
+        reset_token: resetToken,
+      };
+
+      await knex('users').insert(newUser);
+
+      const response = await app.inject({
+        method: 'POST',
+        url: '/password/reset',
+        payload: {
+          email: newUser.email,
+          password: '1234567',
+          password_confirm: '1234567',
+          reset_token: resetToken,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const payload = JSON.parse(response.payload);
+
+      expect(payload.errors[0].field).to.equal('password');
+      expect(payload.errors[0].message).to.equal(
+        PASSWORD_WRONG_LENGTH,
+      );
+    });
+
+    it('should return error when password_confirm does not match password', async function () {
+      const token = await login(app);
+      const buffer = await crypto.randomBytes(32);
+      const resetToken = buffer.toString('hex');
+
+      const newUser = {
+        email: 'resettest2@example.com',
+        username: 'testuser',
+        password: hash('password'),
+        reset_token: resetToken,
+      };
+
+      await knex('users').insert(newUser);
+
+      const response = await app.inject({
+        method: 'POST',
+        url: '/password/reset',
+        payload: {
+          email: newUser.email,
+          password: 'password',
+          password_confirm: 'passwor',
+          reset_token: resetToken,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const payload = JSON.parse(response.payload);
+
+      expect(payload.errors[0].field).to.equal('password');
+      expect(payload.errors[0].message).to.equal(
+        PASSWORD_CONFIRMATION_MISMATCH,
+      );
+    });
+
+    it('should return error when password not provided', async function () {
+      const token = await login(app);
+      const buffer = await crypto.randomBytes(32);
+      const resetToken = buffer.toString('hex');
+
+      const newUser = {
+        email: 'resettest2@example.com',
+        username: 'testuser',
+        password: hash('password'),
+        reset_token: resetToken,
+      };
+
+      await knex('users').insert(newUser);
+
+      const response = await app.inject({
+        method: 'POST',
+        url: '/password/reset',
+        payload: {
+          email: newUser.email,
+          reset_token: resetToken,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const payload = JSON.parse(response.payload);
+
+      expect(payload.errors[0].field).to.equal('password');
+      expect(payload.errors[0].message).to.equal(
+        PASSWORD_CONFIRMATION_MISMATCH,
       );
     });
   });

@@ -123,6 +123,11 @@ export default {
       reply.status(500).send();
     }
   },
+  reset: async (req, reply) => {
+    const resetResult = await new UserQuery().reset(req.body);
+
+    reply.send(resetResult);
+  },
   update: async (req, reply) => {
     const updatedUser = await new UserQuery().update(req.body);
     reply.send(updatedUser);

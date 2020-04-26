@@ -5,8 +5,8 @@ import { isAdmin } from '../lib/auth';
 const routes = (fastify) => {
   fastify.post('/login', users.login);
   fastify.post('/register', users.register);
-
   fastify.post('/password/forgot', users.forgot);
+  fastify.post('/password/reset', users.reset);
 
   fastify.get(
     '/users',
