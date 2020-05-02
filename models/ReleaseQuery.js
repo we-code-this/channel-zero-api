@@ -70,8 +70,16 @@ class ReleaseQuery {
     }
   }
 
-  async count() {
-    const count = await knex.count('* as count').from(this.tablename);
+  async count(published = false) {
+    let count;
+    if (published) {
+      count = await knex
+        .count('* as count')
+        .from(this.tablename)
+        .where('published', true);
+    } else {
+      count = await knex.count('* as count').from(this.tablename);
+    }
     return normalizeCount(count);
   }
 
@@ -109,7 +117,7 @@ class ReleaseQuery {
     }
 
     return Promise.all(
-      res.map(async function(record) {
+      res.map(async function (record) {
         return new Release(record).withRelated();
       }),
     );
@@ -117,7 +125,7 @@ class ReleaseQuery {
 
   async findByArtist(id) {
     return (await knex(this.tablename).where('artist_id', id)).map(
-      release => {
+      (release) => {
         return new Release(release);
       },
     );
@@ -160,18 +168,16 @@ class ReleaseQuery {
     const isValid = release.valid();
 
     if (isValid && (await release.saveFile())) {
-      await knex(this.tablename)
-        .where('id', id)
-        .update({
-          artist_id: release.artist_id,
-          label_id: release.label_id,
-          title: release.title,
-          description: release.description,
-          catalog_number: release.catalog_number,
-          release_date: release.release_date,
-          release_type: release.release_type,
-          updated_at: release.updated_at,
-        });
+      await knex(this.tablename).where('id', id).update({
+        artist_id: release.artist_id,
+        label_id: release.label_id,
+        title: release.title,
+        description: release.description,
+        catalog_number: release.catalog_number,
+        release_date: release.release_date,
+        release_type: release.release_type,
+        updated_at: release.updated_at,
+      });
 
       return await this.find(id);
     } else {
