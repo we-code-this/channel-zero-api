@@ -744,7 +744,13 @@ describe('users', function () {
         },
       });
 
-      expect(JSON.parse(response.payload)).to.be.false;
+      const payload = JSON.parse(response.payload);
+
+      expect(payload).to.haveOwnProperty('errors');
+      expect(payload.errors[0].field).to.equal('other');
+      expect(payload.errors[0].message).to.equal(
+        'Something went wrong.',
+      );
     });
 
     it('should return false when email does not exist', async function () {
@@ -766,7 +772,13 @@ describe('users', function () {
         },
       });
 
-      expect(JSON.parse(response.payload)).to.be.false;
+      const payload = JSON.parse(response.payload);
+
+      expect(payload).to.haveOwnProperty('errors');
+      expect(payload.errors[0].field).to.equal('other');
+      expect(payload.errors[0].message).to.equal(
+        'Something went wrong.',
+      );
     });
 
     it('should return error when password is too short', async function () {

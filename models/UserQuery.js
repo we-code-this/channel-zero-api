@@ -139,7 +139,7 @@ class UserQuery {
         from: process.env.FROM_EMAIL,
         to: user.email,
         subject: 'ChannelZero Password Reset',
-        text: `Reset your password at the following link: ${process.env.ADMIN_ORIGIN}/password/reset/${token}`,
+        text: `Reset your password at the following link: ${process.env.ADMIN_ORIGIN}/reset/${token}`,
       });
     }
 
@@ -289,7 +289,9 @@ class UserQuery {
       }
     }
 
-    return false;
+    return {
+      errors: [{ field: 'other', message: 'Something went wrong.' }],
+    };
   }
 }
 
