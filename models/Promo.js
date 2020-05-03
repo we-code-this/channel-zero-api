@@ -10,7 +10,7 @@ import {
   assetDirectories,
   saveFile,
   deleteFile,
-  publicUrl
+  publicUrl,
 } from '../lib/files';
 
 class Promo extends Model {
@@ -30,7 +30,7 @@ class Promo extends Model {
     this.extension = undefined;
 
     if (!this.create && this.filename) {
-      this.image_url = publicUrl(`/promos/${this.filename}`);
+      this.image_url = publicUrl(`promos/${this.filename}`);
     }
   }
 
@@ -69,7 +69,7 @@ class Promo extends Model {
     } else {
       this.errors.push({
         field: 'image',
-        message: 'Invalid image file. Accepted: svg'
+        message: 'Invalid image file. Accepted: svg',
       });
     }
 
@@ -84,7 +84,10 @@ class Promo extends Model {
     }
 
     if (!valid) {
-      this.errors.push({ field: 'location', message: 'Invalid location' });
+      this.errors.push({
+        field: 'location',
+        message: 'Invalid location',
+      });
     }
 
     return valid;
@@ -123,7 +126,11 @@ class Promo extends Model {
 
   saveFile() {
     if (this.image) {
-      return saveFile(assetDirectories.promos, this.filename, this.image.data);
+      return saveFile(
+        assetDirectories.promos,
+        this.filename,
+        this.image.data,
+      );
     }
 
     return true;
