@@ -21,6 +21,7 @@ class FeatureQuery {
         'articles.created_at as article_created_at',
         'articles.updated_at as article_updated_at',
         'videos.src as video_src',
+        'videos.title as video_title',
         'videos.created_at as video_created_at',
         'videos.updated_at as video_updated_at',
       )

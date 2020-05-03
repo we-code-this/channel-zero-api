@@ -29,6 +29,7 @@ class Feature extends Model {
     this.video = new Video({
       id: data.video_id,
       src: data.video_src,
+      title: data.video_title,
       created_at: data.created_at,
       updated_at: data.updated_at,
     });
