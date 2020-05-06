@@ -963,7 +963,7 @@ describe('releases', function () {
   });
 
   describe('PATCH /release/unpublish', function () {
-    it('should unpublish an published release', async function () {
+    it('should unpublish a published release', async function () {
       const token = await login(app);
       let form = new FormData();
       let rs = fs.createReadStream(filePath);
