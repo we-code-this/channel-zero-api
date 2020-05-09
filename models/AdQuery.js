@@ -1,7 +1,11 @@
 import moment from 'moment';
 import knex from '../lib/connection';
 import Ad from './Ad';
-import { normalizeID, normalizeCount } from '../lib/utilities';
+import {
+  normalizeID,
+  normalizeCount,
+  normalizeRand,
+} from '../lib/utilities';
 
 class AdQuery {
   constructor() {
@@ -107,7 +111,7 @@ class AdQuery {
       .select('*')
       .from(this.tablename)
       .where('published', true)
-      .orderByRaw('random()')
+      .orderByRaw(normalizeRand())
       .limit(1);
 
     if (result.length > 0) {
