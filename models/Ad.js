@@ -49,14 +49,14 @@ class Ad extends Model {
     let valid = false;
 
     valid = this.validUrl();
-    valid = valid && this.validAlt();
+    valid = this.validAlt() && valid;
 
     if (this.create || this.desktop_image) {
-      valid = valid && this.validDesktopImage();
+      valid = this.validDesktopImage() && valid;
     }
 
     if (this.create || this.mobile_image) {
-      valid = valid && this.validMobileImage();
+      valid = this.validMobileImage() && valid;
     }
 
     return valid;
@@ -241,6 +241,7 @@ class Ad extends Model {
   }
 
   validationErrors() {
+    console.log('errors:', this.errors);
     return this.errors;
   }
 
