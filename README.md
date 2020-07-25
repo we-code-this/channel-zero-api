@@ -1,6 +1,6 @@
 # ChannelZero Data API
 
-Source code for the official future ChannelZero.net data API.
+Source code for the official future ChannelZero.net serverless API.
 
 Developed utilizing [fastify](https://www.fastify.io)
 
