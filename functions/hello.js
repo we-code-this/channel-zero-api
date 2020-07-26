@@ -1,5 +1,5 @@
-const validHost = require('./utils/validHost');
-const responses = require('./messages/responses');
+const validHost = require('./validHost');
+const responses = require('./responses');
 
 exports.handler = function(event, context, callback) {
   if (validHost(event.headers.host)) {
