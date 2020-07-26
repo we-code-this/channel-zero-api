@@ -10,9 +10,7 @@
     "migrate": "node migrate up",
     "rollback": "node migrate down",
     "seed": "",
-    "start": "",
-    "dev": "",
-    "test": ""
+    "test": "jest"
   },
   "nyc": {
     "exclude": [
@@ -30,7 +28,10 @@
     "dayjs": "^1.8.30",
     "dotenv": "^8.2.0",
     "fs-extra": "^9.0.1",
+    "netlify-lambda": "^2.0.1",
     "serverless-mysql": "^1.5.4"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "jest": "^26.1.0"
+  }
 }

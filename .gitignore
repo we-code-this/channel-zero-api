@@ -9,3 +9,6 @@ seeds/development/group_users.js
 test/test.sqlite3
 .env
 db-ca.crt
+
+# Local Netlify folder
+.netlify
