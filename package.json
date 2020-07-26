@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.553.0",
-    "bcrypt": "^3.0.6",
+    "bcryptjs": "^2.4.3",
     "chai-date-string": "^0.1.0",
     "dotenv": "^6.2.0",
     "esm": "^3.1.0",
