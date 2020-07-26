@@ -17,7 +17,13 @@ function buildApp() {
   fastify.register(helmet);
 
   fastify.register(cors, {
-    origin: [process.env.DEV_HOST, process.env.EDGE_HOST, process.env.STAGING_HOST, process.env.CLIENT_HOST, process.env.ADMIN_HOST],
+    origin: [
+      process.env.DEV_HOST,
+      process.env.EDGE_HOST,
+      process.env.STAGING_HOST,
+      process.env.CLIENT_HOST,
+      process.env.ADMIN_HOST,
+    ],
   });
 
   fastify.register(fileUpload, {
