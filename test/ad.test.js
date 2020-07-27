@@ -172,6 +172,7 @@ describe('ads', function () {
 
       const desktop_filename = JSON.parse(ad.payload)
         .desktop_filename;
+
       const desktopDestPath = path.join(adsDir, desktop_filename);
       const mobile_filename = JSON.parse(ad.payload).mobile_filename;
       const mobileDestPath = path.join(adsDir, mobile_filename);
