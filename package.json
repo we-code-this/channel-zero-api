@@ -1,18 +1,30 @@
 {
-    "name": "channelzero-api",
-    "version": "1.0.0",
-    "description": "package for creating workers templates",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "format": "prettier --write '**/*.{js,css,json,md}'"
-    },
-    "author": "Mike Gregoire <mgregoire@nvzion.com>",
-    "license": "ISC",
-    "devDependencies": {
-        "prettier": "^1.17.0"
-    },
-    "dependencies": {
-        "serverless-cloudflare-workers": "^1.2.0"
-    }
+  "name": "channelzero-api",
+  "version": "1.0.0",
+  "description": "package for creating workers templates",
+  "main": "index.js",
+  "scripts": {
+    "migrate": "node migrate up",
+    "rollback": "node migrate down",
+    "seed": "",
+    "test": "NODE_ENV=test npm run rollback && NODE_ENV=test npm run migrate && NODE_ENV=test npm run seed && NODE_ENV=test nyc --reporter=lcov --all mocha --timeout 5000 -r esm",
+    "format": "prettier --write '**/*.{js,css,json,md}'"
+  },
+  "author": "Mike Gregoire <mgregoire@nvzion.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "better-sqlite3": "^7.1.0",
+    "chai": "^4.2.0",
+    "chai-date-string": "^0.1.0",
+    "dayjs": "^1.8.31",
+    "esm": "^3.2.25",
+    "mocha": "^8.0.1",
+    "nyc": "^15.1.0",
+    "prettier": "^1.17.0"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "serverless-cloudflare-workers": "^1.2.0",
+    "serverless-mysql": "^1.5.4"
+  }
 }
