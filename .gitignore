@@ -2,6 +2,7 @@
 .nyc_output/
 .vscode/
 coverage/
+dist/
 node_modules/
 worker/
 seeds/development/users.js
