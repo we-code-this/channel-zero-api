@@ -1,14 +1,14 @@
 .idea/
-node_modules/
 .nyc_output/
 .vscode/
-coverage
+coverage/
+node_modules/
+worker/
 seeds/development/users.js
 seeds/development/groups.js
 seeds/development/group_users.js
 test/test.sqlite3
 .env
-db-ca.crt
-
-# Local Netlify folder
-.netlify
+.cargo-ok
+package-lock.json
+wrangler.toml

@@ -1,2 +1,0 @@
-/api    /.netlify/functions/health  200
-/api/*  /.netlify/functions/:splat  200

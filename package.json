@@ -1,37 +1,18 @@
 {
-  "name": "channel-zero-api",
-  "version": "2.0.0",
-  "description": "",
-  "main": "server.js",
-  "keywords": [],
-  "author": "Michael Gregoire <mgregoire@nvzion.com>",
-  "license": "Apache-2.0",
-  "scripts": {
-    "migrate": "node migrate up",
-    "rollback": "node migrate down",
-    "seed": "",
-    "test": "jest"
-  },
-  "nyc": {
-    "exclude": [
-      "coverage/**",
-      "tests/**",
-      "tests{,-*}.js",
-      "**/*.test.js",
-      "**/__tests__/**",
-      "**/node_modules/**"
-    ],
-    "sourceMap": false,
-    "instrument": false
-  },
-  "dependencies": {
-    "dayjs": "^1.8.30",
-    "dotenv": "^8.2.0",
-    "fs-extra": "^9.0.1",
-    "netlify-lambda": "^2.0.1",
-    "serverless-mysql": "^1.5.4"
-  },
-  "devDependencies": {
-    "jest": "^26.1.0"
-  }
+    "name": "channelzero-api",
+    "version": "1.0.0",
+    "description": "package for creating workers templates",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "format": "prettier --write '**/*.{js,css,json,md}'"
+    },
+    "author": "Mike Gregoire <mgregoire@nvzion.com>",
+    "license": "ISC",
+    "devDependencies": {
+        "prettier": "^1.17.0"
+    },
+    "dependencies": {
+        "serverless-cloudflare-workers": "^1.2.0"
+    }
 }
