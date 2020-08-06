@@ -11,6 +11,7 @@ const routes = (fastify) => {
     '/features/:limit/:order',
     features.getWithLimitAndOrder,
   );
+  fastify.get('/features/all', features.all);
   fastify.get('/features/count', features.count);
   fastify.get('/features/:limit', features.getWithLimit);
   fastify.get('/features', features.get);
