@@ -9,6 +9,13 @@ class ArticleQuery {
     this.items = undefined;
   }
 
+  async all() {
+    return await knex
+      .select(`slug`)
+      .from(this.tablename)
+      .orderBy('slug', 'asc');
+  }
+
   async count(published = false) {
     let count;
     if (published) {

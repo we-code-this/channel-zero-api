@@ -134,6 +134,32 @@ describe('articles', function () {
     });
   });
 
+  describe('GET /articles/all', function () {
+    it('should return all article slugs', async function () {
+      const response = await app.inject({
+        method: 'GET',
+        url: '/articles/all',
+      });
+
+      const articles = [
+        { slug: 'article-1' },
+        { slug: 'article-10' },
+        { slug: 'article-11' },
+        { slug: 'article-2' },
+        { slug: 'article-3' },
+        { slug: 'article-4' },
+        { slug: 'article-5' },
+        { slug: 'article-6' },
+        { slug: 'article-7' },
+        { slug: 'article-8' },
+        { slug: 'article-9' },
+      ];
+
+      expect(JSON.parse(response.payload).length).to.equal(11);
+      expect(JSON.parse(response.payload)).to.deep.equal(articles);
+    });
+  });
+
   describe('GET /article/next/:id', function () {
     it('should return the next published article', async function () {
       const currentArticleResponse = await app.inject({

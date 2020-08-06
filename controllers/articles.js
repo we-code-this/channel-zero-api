@@ -3,6 +3,10 @@ import ArticleQuery from '../models/ArticleQuery';
 import UserQuery from '../models/UserQuery';
 
 export default {
+  all: async (req, reply) => {
+    const all = await new ArticleQuery().all();
+    reply.send(all);
+  },
   count: async (req, reply) => {
     const res = await new ArticleQuery().count();
     reply.send([{ count: parseInt(res.count) }]);

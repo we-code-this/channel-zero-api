@@ -134,7 +134,7 @@ describe('releases', function () {
         url: '/releases/all',
       });
 
-      const features = [
+      const releases = [
         { slug: 'artist-1-album-1' },
         { slug: 'artist-10-album-10' },
         { slug: 'artist-11-album-11' },
@@ -150,7 +150,7 @@ describe('releases', function () {
       ];
 
       expect(JSON.parse(response.payload).length).to.equal(12);
-      expect(JSON.parse(response.payload)).to.deep.equal(features);
+      expect(JSON.parse(response.payload)).to.deep.equal(releases);
     });
   });
 

@@ -64,7 +64,7 @@ Nullam quis risus eget urna mollis ornare vel eu leo. Donec ullamcorper nulla no
           id: 4,
           user_id: 1,
           title: 'Sollicitudin Ligula Parturient',
-          slug: 'sollicitudin-ligula-parturient',
+          slug: 'sollicitudin-ligula-parturient-2',
           summary:
             'Maecenas sed diam eget risus varius blandit sit amet non magna. Donec id elit non mi porta gravida at eget metus. Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam',
           description: `Maecenas sed diam eget risus varius blandit sit amet non magna. Donec id elit non mi porta gravida at eget metus. Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam.
@@ -83,7 +83,7 @@ Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Maecenas sed
           id: 5,
           user_id: 1,
           title: 'Mattis Ultricies Egestas Pharetra',
-          slug: 'mattis-ultricies-egestas-pharetra',
+          slug: 'mattis-ultricies-egestas-pharetra-2',
           summary:
             'Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus',
           description: `Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
