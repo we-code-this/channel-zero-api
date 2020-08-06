@@ -9,6 +9,13 @@ class FeatureQuery {
     this.items = undefined;
   }
 
+  async all() {
+    return await knex
+      .select(`id`)
+      .from(this.tablename)
+      .orderBy('id', 'asc');
+  }
+
   select() {
     return knex
       .select(
