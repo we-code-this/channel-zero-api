@@ -32,6 +32,13 @@ class ReleaseQuery {
       .leftJoin('labels', `${this.tablename}.label_id`, 'labels.id');
   }
 
+  async all() {
+    return await knex
+      .select(`slug`)
+      .from(this.tablename)
+      .orderBy('slug', 'asc');
+  }
+
   async create(data) {
     const releaseData = { ...data };
     const release = new Release(releaseData, true);

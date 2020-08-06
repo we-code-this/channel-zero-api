@@ -6,6 +6,10 @@ import EndorsementQuery from '../models/EndorsementQuery';
 import UserQuery from '../models/UserQuery';
 
 export default {
+  all: async (req, reply) => {
+    const all = await new ReleaseQuery().all();
+    reply.send(all);
+  },
   count: async (req, reply) => {
     const res = await new ReleaseQuery().count();
     reply.send([{ count: parseInt(res.count) }]);

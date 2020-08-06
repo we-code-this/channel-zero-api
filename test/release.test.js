@@ -127,6 +127,33 @@ describe('releases', function () {
     });
   });
 
+  describe.only('GET /releases/all', function () {
+    it('should return all release slugs', async function () {
+      const response = await app.inject({
+        method: 'GET',
+        url: '/releases/all',
+      });
+
+      const features = [
+        { slug: 'artist-1-album-1' },
+        { slug: 'artist-10-album-10' },
+        { slug: 'artist-11-album-11' },
+        { slug: 'artist-11-album-12' },
+        { slug: 'artist-2-album-2' },
+        { slug: 'artist-3-album-3' },
+        { slug: 'artist-4-album-4' },
+        { slug: 'artist-5-album-5' },
+        { slug: 'artist-6-album-6' },
+        { slug: 'artist-7-album-7' },
+        { slug: 'artist-8-album-8' },
+        { slug: 'artist-9-album-9' },
+      ];
+
+      expect(JSON.parse(response.payload).length).to.equal(12);
+      expect(JSON.parse(response.payload)).to.deep.equal(features);
+    });
+  });
+
   describe('GET /release/:slug', function () {
     it('should return the release that has the :slug supplied', async function () {
       const response = await app.inject({
