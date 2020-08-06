@@ -127,7 +127,7 @@ describe('releases', function () {
     });
   });
 
-  describe.only('GET /releases/all', function () {
+  describe('GET /releases/all', function () {
     it('should return all release slugs', async function () {
       const response = await app.inject({
         method: 'GET',
