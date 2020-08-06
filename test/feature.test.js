@@ -89,6 +89,32 @@ describe('features', function () {
     });
   });
 
+  describe('GET /features/all', function () {
+    it('should return all feature IDs', async function () {
+      const response = await app.inject({
+        method: 'GET',
+        url: '/features/all',
+      });
+
+      const features = [
+        { id: 1 },
+        { id: 2 },
+        { id: 3 },
+        { id: 4 },
+        { id: 5 },
+        { id: 6 },
+        { id: 7 },
+        { id: 8 },
+        { id: 9 },
+        { id: 10 },
+        { id: 11 },
+      ];
+
+      expect(JSON.parse(response.payload).length).to.equal(11);
+      expect(JSON.parse(response.payload)).to.deep.equal(features);
+    });
+  });
+
   describe('GET /feature', function () {
     it('should return most recent feature', async function () {
       const response = await app.inject({
